@@ -217,6 +217,14 @@ function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): 
     case 'debug':
       logger.setDebug(value as boolean);
       break;
+    case 'keybindings': {
+      if (keyboardCleanup) {
+        keyboardCleanup();
+        keyboardCleanup = null;
+      }
+      setupKeyboard();
+      break;
+    }
     default:
       break;
   }
