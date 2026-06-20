@@ -8,6 +8,7 @@ import { logger } from '../shared/logger';
 
 const loadedUrls = new Set<string>();
 const failedUrls = new Set<string>();
+const loadingUrls = new Set<string>();
 
 export function isUrlLoaded(url: string): boolean {
   return loadedUrls.has(url);
@@ -33,6 +34,18 @@ export function clearFailedUrls(): void {
   failedUrls.clear();
 }
 
+export function isUrlLoading(url: string): boolean {
+  return loadingUrls.has(url);
+}
+
+export function markUrlLoading(url: string): void {
+  loadingUrls.add(url);
+}
+
+export function clearLoadingUrls(): void {
+  loadingUrls.clear();
+}
+
 export async function loadNextChapter(
   url: string,
   rule: SiteRule,
@@ -51,29 +64,39 @@ export async function loadNextChapter(
     return { status: 'skipped', chapter: null, url };
   }
 
-  let lastError: unknown;
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      logger.info(`加载下一页${attempt > 0 ? ` (重试 ${attempt}/${maxRetries})` : ''}: ${url}`);
-      const html = await gmFetch(url);
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const chapter = parseChapter(doc, url, rule, textRules, cleanOptions);
-      markUrlLoaded(url);
-      return { status: 'loaded', chapter, url };
-    } catch (e) {
-      lastError = e;
-      logger.warn(`加载下一页失败 (尝试 ${attempt + 1}/${maxRetries + 1}): ${url}`, e);
-      if (attempt < maxRetries) {
-        await new Promise((resolve) => setTimeout(resolve, retryDelay));
-      }
-    }
+  if (isUrlLoading(url)) {
+    logger.info(`跳过正在加载中的 URL: ${url}`);
+    return { status: 'skipped', chapter: null, url };
   }
 
-  markUrlFailed(url);
-  const errorMessage = lastError instanceof Error ? lastError.message : String(lastError);
-  logger.warn(`加载下一页最终失败: ${url}`, lastError);
-  return { status: 'failed', chapter: null, url, error: errorMessage };
+  markUrlLoading(url);
+  try {
+    let lastError: unknown;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        logger.info(`加载下一页${attempt > 0 ? ` (重试 ${attempt}/${maxRetries})` : ''}: ${url}`);
+        const html = await gmFetch(url);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const chapter = parseChapter(doc, url, rule, textRules, cleanOptions);
+        markUrlLoaded(url);
+        return { status: 'loaded', chapter, url };
+      } catch (e) {
+        lastError = e;
+        logger.warn(`加载下一页失败 (尝试 ${attempt + 1}/${maxRetries + 1}): ${url}`, e);
+        if (attempt < maxRetries) {
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
+        }
+      }
+    }
+
+    markUrlFailed(url);
+    const errorMessage = lastError instanceof Error ? lastError.message : String(lastError);
+    logger.warn(`加载下一页最终失败: ${url}`, lastError);
+    return { status: 'failed', chapter: null, url, error: errorMessage };
+  } finally {
+    loadingUrls.delete(url);
+  }
 }
 
 export function preloadImages(contentHtml: string, baseUrl: string): void {

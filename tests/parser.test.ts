@@ -299,6 +299,26 @@ describe('UTF-8 中文导航文本自动猜测', () => {
   });
 });
 
+describe('isSection 字段', () => {
+  it('短内容应标记 isSection=true', () => {
+    const doc = makeDoc('<p>短</p>');
+    const result = parseChapter(doc, 'https://example.com/novel/2', baseRule, [], {});
+    expect(result.isSection).toBe(true);
+  });
+
+  it('正常内容应标记 isSection=false', () => {
+    const doc = makeDoc(`
+      <div id="content">
+        <p>这是一段足够长的正文内容用来测试章节解析功能，确保超过VIP最小文本长度阈值，不会触发isSection检测，继续填充文字。</p>
+        <p>第二段内容继续填充确保不会误判为短内容，这样就可以正确测试isSection字段了。</p>
+      </div>
+    `);
+    const rule: SiteRule = { ...baseRule, contentSelector: '#content' };
+    const result = parseChapter(doc, 'https://example.com/novel/2', rule, [], {});
+    expect(result.isSection).toBe(false);
+  });
+});
+
 describe('parseChapter 集成', () => {
   it('完整解析章节', () => {
     const doc = makeDoc(`

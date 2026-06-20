@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadNextChapter, preloadImages, clearLoadedUrls, clearFailedUrls, isUrlLoaded, isUrlFailed, markUrlLoaded } from '../src/core/next-page-loader';
+import { loadNextChapter, preloadImages, clearLoadedUrls, clearFailedUrls, isUrlLoaded, isUrlFailed, markUrlLoaded, isUrlLoading, clearLoadingUrls, markUrlLoading } from '../src/core/next-page-loader';
 import type { SiteRule } from '../src/rules/rule-types';
 import type { CleanOptions } from '../src/core/content-cleaner';
 
@@ -29,6 +29,7 @@ describe('loadNextChapter', () => {
   beforeEach(() => {
     clearLoadedUrls();
     clearFailedUrls();
+    clearLoadingUrls();
     vi.clearAllMocks();
   });
 
@@ -117,6 +118,35 @@ describe('loadNextChapter', () => {
     await loadNextChapter('https://example.com/novel/2', mockRule, [], cleanOptions);
 
     expect(isUrlLoaded('https://example.com/novel/2')).toBe(true);
+  });
+
+  it('正在加载中的 URL 再次请求应返回 skipped', async () => {
+    let resolveFetch: (_: string) => void;
+    const fetchPromise = new Promise<string>((resolve) => {
+      resolveFetch = resolve;
+    });
+    vi.mocked(gmFetch).mockReturnValue(fetchPromise);
+
+    const url = 'https://example.com/novel/2';
+    markUrlLoading(url);
+
+    const result = await loadNextChapter(url, mockRule, [], cleanOptions);
+
+    expect(result.status).toBe('skipped');
+    expect(result.chapter).toBeNull();
+    expect(gmFetch).not.toHaveBeenCalled();
+  });
+
+  it('加载完成后 URL 从 loading 集合中移除', async () => {
+    vi.mocked(gmFetch).mockResolvedValueOnce(makeHtml('第一章', '测试正文内容确保超过最小文本长度阈值以便通过VIP检测继续填充更多文字。'));
+
+    const url = 'https://example.com/novel/2';
+    expect(isUrlLoading(url)).toBe(false);
+
+    await loadNextChapter(url, mockRule, [], cleanOptions);
+
+    expect(isUrlLoading(url)).toBe(false);
+    expect(isUrlLoaded(url)).toBe(true);
   });
 });
 

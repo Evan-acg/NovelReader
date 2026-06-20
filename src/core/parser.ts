@@ -286,6 +286,8 @@ export function parseChapter(
 
   const isVip = detectVip(cleaned.text, rule);
 
+  const isSection = cleaned.text.length < 20 || /^第[一二三四五六七八九十百零]+卷/.test(chapterTitle || '');
+
   const result: ParsedChapter = {
     url: currentUrl,
     bookTitle: bookTitle || rule.name || '',
@@ -297,6 +299,7 @@ export function parseChapter(
     nextUrl: nav.nextUrl,
     indexUrl: nav.indexUrl,
     isVip,
+    isSection,
   };
 
   logger.info(`解析完成: ${result.bookTitle} - ${result.chapterTitle}`);
