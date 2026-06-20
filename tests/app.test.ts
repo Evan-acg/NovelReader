@@ -3,6 +3,7 @@ import { JSDOM } from 'jsdom';
 import { initApp } from '../src/core/app';
 import { matchRule, resetRegistry } from '../src/rules/rule-registry';
 import { resetTextRuleRegistry, getCombinedTextRules } from '../src/text-rules/text-rule-registry';
+import { KEYS } from '../src/settings/schema';
 
 const mockStorage: Record<string, string> = {};
 
@@ -10,6 +11,7 @@ vi.mock('../src/shared/gm', () => ({
   gmGetValue: (key: string, defaultValue = '') => mockStorage[key] ?? defaultValue,
   gmSetValue: (key: string, value: string) => { mockStorage[key] = value; },
   gmFetch: vi.fn(),
+  gmAddStyle: vi.fn(),
 }));
 
 import { gmFetch } from '../src/shared/gm';
@@ -55,7 +57,8 @@ describe('initApp 集成流程', () => {
   it('应加载站点规则和文本规则、匹配 URL 并解析章节', async () => {
     vi.mocked(gmFetch)
       .mockResolvedValueOnce(JSON.stringify(mockSiteRules))
-      .mockResolvedValueOnce(JSON.stringify(mockTextRules));
+      .mockResolvedValueOnce(JSON.stringify(mockTextRules))
+      .mockResolvedValueOnce(JSON.stringify({}));
 
     const dom = new JSDOM(`
       <html><body>
@@ -73,9 +76,10 @@ describe('initApp 集成流程', () => {
     await initApp({
       doc: dom.window.document,
       url: 'https://www.example.com/novel/1/2.html',
+      autoLoadNext: false,
     });
 
-    expect(gmFetch).toHaveBeenCalledTimes(2);
+    expect(gmFetch).toHaveBeenCalledTimes(3);
 
     const rule = matchRule('https://www.example.com/novel/1/2.html');
     expect(rule).not.toBeNull();
@@ -114,6 +118,7 @@ describe('initApp 集成流程', () => {
 
     vi.mocked(gmFetch)
       .mockRejectedValueOnce(new Error('网络错误'))
+      .mockRejectedValueOnce(new Error('网络错误'))
       .mockRejectedValueOnce(new Error('网络错误'));
 
     const dom = new JSDOM(`
@@ -129,12 +134,46 @@ describe('initApp 集成流程', () => {
     await initApp({
       doc: dom.window.document,
       url: 'https://www.example.com/novel/1/2.html',
+      autoLoadNext: false,
     });
 
-    expect(gmFetch).toHaveBeenCalledTimes(2);
+    expect(gmFetch).toHaveBeenCalledTimes(3);
 
     const rule = matchRule('https://www.example.com/novel/1/2.html');
     expect(rule).not.toBeNull();
     expect(rule?.id).toBe('test-site');
+  });
+
+  it('应加载简繁映射并缓存，convertToTraditional 开启时传递给解析器', async () => {
+    mockStorage[KEYS.convertToTraditional] = 'true';
+
+    const s2tMapping = { '国': '國', '学': '學', '文': '文' };
+
+    vi.mocked(gmFetch)
+      .mockResolvedValueOnce(JSON.stringify(mockSiteRules))
+      .mockResolvedValueOnce(JSON.stringify(mockTextRules))
+      .mockResolvedValueOnce(JSON.stringify(s2tMapping));
+
+    const dom = new JSDOM(`
+      <html><body>
+        <span class="book">测试书</span>
+        <h1 class="title">第一章 中国文学</h1>
+        <div id="content">
+          <p>正文内容测试中国文学，需要足够长的文字来确保通过阈值检测，这里继续填充内容。</p>
+          <p>第二段内容继续填充，确保超过最小文本长度阈值，以便VIP检测正常工作。</p>
+        </div>
+        <a class="next" href="/novel/1/3.html">下一章</a>
+      </body></html>
+    `, { url: 'https://www.example.com/novel/1/2.html' });
+
+    await initApp({
+      doc: dom.window.document,
+      url: 'https://www.example.com/novel/1/2.html',
+      autoLoadNext: false,
+    });
+
+    expect(gmFetch).toHaveBeenCalledTimes(3);
+    expect(mockStorage[KEYS.s2tRulesCache]).toBeDefined();
+    expect(JSON.parse(mockStorage[KEYS.s2tRulesCache])).toEqual(s2tMapping);
   });
 });
