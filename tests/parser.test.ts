@@ -19,6 +19,10 @@ const baseRule: SiteRule = {
   url: '.*',
 };
 
+const TEST_S2T: Record<string, string> = {
+  '国': '國', '学': '學', '中': '中', '文': '文',
+};
+
 describe('书名提取', () => {
   it('按 bookTitleSelector 提取书名', () => {
     const doc = makeDoc('<span class="book-name">剑来</span><h1>第一章 惊蛰</h1>');
@@ -92,6 +96,16 @@ describe('正文提取', () => {
     const { html, text } = extractContent(doc, rule);
     expect(html).toBe('');
     expect(text).toBe('');
+  });
+
+  it('应通过 removeSelectors 移除广告节点', () => {
+    const doc = makeDoc('<div id="content"><p>正文</p><div class="ad">广告</div></div>');
+    const rule: SiteRule = { ...baseRule, contentSelector: '#content', removeSelectors: ['.ad'] };
+    const { html, text } = extractContent(doc, rule, rule.removeSelectors);
+    expect(html).toContain('正文');
+    expect(html).not.toContain('广告');
+    expect(text).toContain('正文');
+    expect(text).not.toContain('广告');
   });
 });
 
@@ -171,6 +185,60 @@ describe('VIP 检测', () => {
     const rule: SiteRule = { ...baseRule, contentSelector: '#content' };
     const chapter = parseChapter(doc, 'https://example.com/1', rule);
     expect(chapter.isVip).toBeFalsy();
+  });
+});
+
+describe('contentReplaceRules 站点级替换规则', () => {
+  it('站点级替换应先于远程文本规则执行', () => {
+    const doc = makeDoc('<div id="content"><p>ABC</p></div>');
+    const rule: SiteRule = {
+      ...baseRule,
+      contentSelector: '#content',
+      contentReplaceRules: [
+        { pattern: 'ABC', replacement: 'SITE_REPLACED' },
+      ],
+    };
+    const remoteRules = [
+      { pattern: 'SITE_REPLACED', replacement: 'REMOTE_REPLACED' },
+    ];
+    const result = parseChapter(doc, 'https://example.com/1', rule, remoteRules);
+    expect(result.contentHtml).toContain('REMOTE_REPLACED');
+    expect(result.contentHtml).not.toContain('ABC');
+  });
+
+  it('无 contentReplaceRules 时远程规则正常工作', () => {
+    const doc = makeDoc('<div id="content"><p>ABC</p></div>');
+    const rule: SiteRule = { ...baseRule, contentSelector: '#content' };
+    const remoteRules = [
+      { pattern: 'ABC', replacement: 'REMOTE' },
+    ];
+    const result = parseChapter(doc, 'https://example.com/1', rule, remoteRules);
+    expect(result.contentHtml).toContain('REMOTE');
+  });
+});
+
+describe('标题简繁转换', () => {
+  it('convertToTraditional 为 true 时应转换标题', () => {
+    const doc = makeDoc('<h1>第一章 中国文学</h1><div id="content"><p>测试正文内容，需要足够长来通过VIP检测，这里填充更多文字确保超过最小文本长度阈值。</p></div>');
+    const rule: SiteRule = {
+      ...baseRule,
+      chapterTitleSelector: 'h1',
+      contentSelector: '#content',
+    };
+    const result = parseChapter(doc, 'https://example.com/1', rule, [], { convertToTraditional: true, s2tMapping: TEST_S2T });
+    expect(result.chapterTitle).toContain('國');
+    expect(result.chapterTitle).toContain('學');
+  });
+
+  it('convertToTraditional 为 false 时标题不变', () => {
+    const doc = makeDoc('<h1>第一章 中国文学</h1><div id="content"><p>测试正文内容，需要足够长来通过VIP检测，这里填充更多文字确保超过最小文本长度阈值。</p></div>');
+    const rule: SiteRule = {
+      ...baseRule,
+      chapterTitleSelector: 'h1',
+      contentSelector: '#content',
+    };
+    const result = parseChapter(doc, 'https://example.com/1', rule, [], { convertToTraditional: false, s2tMapping: TEST_S2T });
+    expect(result.chapterTitle).toBe('第一章 中国文学');
   });
 });
 
