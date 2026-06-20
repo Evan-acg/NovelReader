@@ -1,9 +1,9 @@
 import type { SiteRule } from '../rules/rule-types';
 import type { ParsedChapter } from './reader-state';
 import type { TextRule } from '../text-rules/text-rule-types';
-import { querySelector, querySelectorAll, getAbsoluteUrl, getTextContent } from '../shared/dom';
+import { querySelector, querySelectorAll, removeElements, getAbsoluteUrl, getTextContent } from '../shared/dom';
 import { logger } from '../shared/logger';
-import { cleanContent, type CleanOptions } from './content-cleaner';
+import { cleanContent, convertS2T, type CleanOptions } from './content-cleaner';
 
 const VIP_MIN_TEXT_LENGTH = 50;
 
@@ -133,7 +133,7 @@ export function extractTitle(doc: Document, rule: SiteRule): { bookTitle: string
   return { bookTitle, chapterTitle };
 }
 
-export function extractContent(doc: Document, rule: SiteRule): { html: string; text: string } {
+export function extractContent(doc: Document, rule: SiteRule, removeSelectors?: string[]): { html: string; text: string } {
   let contentEl: Element | null = null;
 
   if (rule.contentSelector) {
@@ -168,6 +168,13 @@ export function extractContent(doc: Document, rule: SiteRule): { html: string; t
   }
 
   const clone = contentEl.cloneNode(true) as Element;
+
+  if (removeSelectors) {
+    for (const selector of removeSelectors) {
+      removeElements(selector, clone);
+    }
+  }
+
   return {
     html: clone.innerHTML,
     text: (clone.textContent ?? '').trim(),
@@ -261,27 +268,30 @@ export function parseChapter(
 ): ParsedChapter {
   logger.info(`解析章节: ${currentUrl}`);
 
-  const { bookTitle, chapterTitle } = extractTitle(doc, rule);
-  const { html, text } = extractContent(doc, rule);
+  let { bookTitle, chapterTitle } = extractTitle(doc, rule);
+  const { html } = extractContent(doc, rule, rule.removeSelectors);
   const nav = extractNavigation(doc, rule, currentUrl);
 
-  let contentHtml = html;
-  let contentText = text;
+  const allTextRules = [
+    ...(rule.contentReplaceRules ?? []),
+    ...(textRules ?? []),
+  ];
 
-  if (textRules && textRules.length > 0) {
-    const cleaned = cleanContent(html, textRules, cleanOptions);
-    contentHtml = cleaned.html;
-    contentText = cleaned.text;
+  const cleaned = cleanContent(html, allTextRules, cleanOptions);
+
+  if (cleanOptions?.convertToTraditional && cleanOptions?.s2tMapping) {
+    bookTitle = convertS2T(bookTitle, cleanOptions.s2tMapping);
+    chapterTitle = convertS2T(chapterTitle, cleanOptions.s2tMapping);
   }
 
-  const isVip = detectVip(contentText, rule);
+  const isVip = detectVip(cleaned.text, rule);
 
   const result: ParsedChapter = {
     bookTitle: bookTitle || rule.name || '',
     chapterTitle: chapterTitle || '',
     documentTitle: doc.title,
-    contentHtml,
-    contentText,
+    contentHtml: cleaned.html,
+    contentText: cleaned.text,
     prevUrl: nav.prevUrl,
     nextUrl: nav.nextUrl,
     indexUrl: nav.indexUrl,
