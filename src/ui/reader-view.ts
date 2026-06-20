@@ -76,6 +76,7 @@ function setupIntersectionObserver(): void {
             state.activeIndex = index;
             setActiveSidebarItem(index);
             applyTitleUpdate(index);
+            updateHistory(index);
           }
         }
       }
@@ -99,6 +100,20 @@ function applyTitleUpdate(index: number): void {
   if (newTitle && document.title !== newTitle) {
     document.title = newTitle;
   }
+}
+
+function updateHistory(index: number): void {
+  if (!state || !state.chapters[index]) return;
+  const settings = loadAllSettings();
+  if (!settings.addNextPageToHistory) return;
+  const chapter = state.chapters[index];
+  const title = chapter.bookTitle
+    ? `${chapter.chapterTitle || ''} - ${chapter.bookTitle}`
+    : chapter.chapterTitle || '';
+  history.pushState(
+    { chapterIndex: index, chapterTitle: chapter.chapterTitle, bookTitle: chapter.bookTitle },
+    title,
+  );
 }
 
 function showLoadingIndicator(): void {
@@ -375,6 +390,9 @@ export function appendChapter(chapter: ParsedChapter): void {
       await navigateToChapter(url);
     },
   );
+
+  applyTitleUpdate(index);
+  updateHistory(index);
 }
 
 export function scrollToChapter(index: number): void {
@@ -390,6 +408,7 @@ export function scrollToChapter(index: number): void {
   }
   setActiveSidebarItem(index);
   applyTitleUpdate(index);
+  updateHistory(index);
 }
 
 export async function navigateToChapter(url: string): Promise<void> {
