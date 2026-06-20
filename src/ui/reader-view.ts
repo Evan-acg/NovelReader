@@ -2,13 +2,15 @@ import type { ParsedChapter, ReaderState } from '../core/reader-state';
 import type { SiteRule } from '../rules/rule-types';
 import type { TextRule } from '../text-rules/text-rule-types';
 import type { CleanOptions } from '../core/content-cleaner';
-import { injectReaderStyles } from './styles';
+import type { Settings } from '../settings/schema';
+import { injectReaderStyles, updateReaderStyleVars, updateExtraCss, removeExtraCss } from './styles';
 import { createSidebar, addSidebarItem, setActiveSidebarItem, removeSidebar, toggleSidebarVisibility } from './sidebar';
 import { createBottomNav, updateBottomNav, removeBottomNav } from '../core/navigation';
-import { loadNextChapter, clearLoadedUrls, preloadImages } from '../core/next-page-loader';
-import { getSetting } from '../settings/storage';
-import { KEYS } from '../settings/schema';
+import { loadNextChapter, clearLoadedUrls, clearFailedUrls, preloadImages, isUrlFailed } from '../core/next-page-loader';
+import { loadAllSettings } from '../settings/storage';
 import { logger } from '../shared/logger';
+import { openPreferencesPanel } from './preferences-panel';
+import { initKeyboard, destroyKeyboard, type KeyboardHandlers } from './keyboard';
 
 let state: ReaderState | null = null;
 let rule: SiteRule | null = null;
@@ -21,6 +23,7 @@ let isLoadingNext = false;
 let loadingIndicatorEl: HTMLElement | null = null;
 let errorIndicatorEl: HTMLElement | null = null;
 let scrollHandler: (() => void) | null = null;
+let keyboardCleanup: (() => void) | null = null;
 
 export function getReaderState(): ReaderState | null {
   return state;
@@ -134,24 +137,26 @@ function removeErrorIndicator(): void {
 
 async function triggerAutoLoad(url: string): Promise<void> {
   if (isLoadingNext || !rule) return;
+  if (isUrlFailed(url)) return;
 
   isLoadingNext = true;
   removeErrorIndicator();
   showLoadingIndicator();
 
-  const maxRetries = Number(getSetting(KEYS.maxRetries)) || 2;
-  const retryDelay = Number(getSetting(KEYS.retryDelay)) || 2000;
+  const st = loadAllSettings();
+  const maxRetries = st.maxRetries;
+  const retryDelay = st.retryDelay;
 
-  const chapter = await loadNextChapter(url, rule, textRules, cleanOptions, maxRetries, retryDelay);
+  const result = await loadNextChapter(url, rule, textRules, cleanOptions, maxRetries, retryDelay);
 
   hideLoadingIndicator();
 
-  if (chapter) {
-    if (getSetting(KEYS.imagePreload) !== 'false') {
-      preloadImages(chapter.contentHtml);
+  if (result.status === 'loaded' && result.chapter) {
+    if (st.imagePreload) {
+      preloadImages(result.chapter.contentHtml, url);
     }
-    appendChapter(chapter);
-  } else {
+    appendChapter(result.chapter);
+  } else if (result.status === 'failed') {
     showErrorIndicator(url);
   }
 
@@ -161,7 +166,7 @@ async function triggerAutoLoad(url: string): Promise<void> {
 function setupScrollLoad(): void {
   if (!contentAreaEl) return;
 
-  const remainHeight = Number(getSetting(KEYS.remainHeight)) || 300;
+  const st = loadAllSettings();
 
   scrollHandler = () => {
     if (!contentAreaEl || isLoadingNext || !state) return;
@@ -169,12 +174,81 @@ function setupScrollLoad(): void {
     if (!lastChapter?.nextUrl) return;
 
     const { scrollTop, scrollHeight, clientHeight } = contentAreaEl;
-    if (scrollHeight - scrollTop - clientHeight < remainHeight) {
+    if (scrollHeight - scrollTop - clientHeight < st.remainHeight) {
       triggerAutoLoad(lastChapter.nextUrl);
     }
   };
 
   contentAreaEl.addEventListener('scroll', scrollHandler, { passive: true });
+}
+
+function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): void {
+  const all = loadAllSettings();
+  switch (key) {
+    case 'fontFamily':
+    case 'fontSize':
+    case 'lineHeight':
+    case 'contentWidth':
+      updateReaderStyleVars(all);
+      break;
+    case 'hideSidebar':
+      if (value) {
+        containerEl?.classList.add('nr-sidebar-hidden');
+      } else {
+        containerEl?.classList.remove('nr-sidebar-hidden');
+      }
+      if (state) state.sidebarVisible = !value;
+      break;
+    case 'hideFooterNav':
+      if (value) {
+        containerEl?.classList.add('nr-nav-hidden');
+      } else {
+        containerEl?.classList.remove('nr-nav-hidden');
+      }
+      break;
+    case 'hidePreferencesButton': {
+      const btn = document.querySelector('.nr-settings-btn') as HTMLElement | null;
+      if (btn) btn.style.display = value ? 'none' : '';
+      break;
+    }
+    case 'extraCss':
+      updateExtraCss(value as string);
+      break;
+    case 'debug':
+      logger.setDebug(value as boolean);
+      break;
+    default:
+      break;
+  }
+}
+
+function setupKeyboard(): void {
+  const handlers: KeyboardHandlers = {
+    onOpenIndex: () => {
+      const last = state?.chapters[state.chapters.length - 1];
+      if (last?.indexUrl) {
+        window.open(last.indexUrl, '_blank');
+      }
+    },
+    onPrevChapter: () => {
+      if (state && state.activeIndex > 0) {
+        scrollToChapter(state.activeIndex - 1);
+      } else if (state?.chapters[0]?.prevUrl) {
+        navigateToChapter(state.chapters[0].prevUrl);
+      }
+    },
+    onNextChapter: () => {
+      const last = state?.chapters[state.chapters.length - 1];
+      if (last?.nextUrl) {
+        navigateToChapter(last.nextUrl);
+      }
+    },
+    onToggleSidebar: () => toggleSidebarVisibility(),
+    onToggleQuietMode: () => toggleQuietMode(),
+    onOpenSettings: () => openPreferencesPanel(onSettingChange),
+  };
+
+  keyboardCleanup = initKeyboard(handlers, loadAllSettings().keybindings);
 }
 
 export function renderReaderView(
@@ -186,8 +260,13 @@ export function renderReaderView(
   rule = r;
   textRules = tr;
   cleanOptions = co;
+  const settings = loadAllSettings();
 
   injectReaderStyles();
+  updateReaderStyleVars(settings);
+  if (settings.extraCss) {
+    updateExtraCss(settings.extraCss);
+  }
   ensureViewport();
 
   document.body.innerHTML = '';
@@ -195,10 +274,10 @@ export function renderReaderView(
   containerEl = document.createElement('div');
   containerEl.className = 'nr-reader-container';
 
-  if (getSetting(KEYS.hideSidebar) === 'true') {
+  if (settings.hideSidebar) {
     containerEl.classList.add('nr-sidebar-hidden');
   }
-  if (getSetting(KEYS.hideFooterNav) === 'true') {
+  if (settings.hideFooterNav) {
     containerEl.classList.add('nr-nav-hidden');
   }
 
@@ -215,15 +294,18 @@ export function renderReaderView(
   settingsBtn.className = 'nr-settings-btn';
   settingsBtn.textContent = '⚙';
   settingsBtn.title = '设置';
-  if (getSetting(KEYS.hidePreferencesButton) === 'true') {
+  if (settings.hidePreferencesButton) {
     settingsBtn.style.display = 'none';
   }
+  settingsBtn.addEventListener('click', () => {
+    openPreferencesPanel(onSettingChange);
+  });
   document.body.appendChild(settingsBtn);
 
   state = {
     chapters: [initialChapter],
     activeIndex: 0,
-    sidebarVisible: getSetting(KEYS.hideSidebar) !== 'true',
+    sidebarVisible: !settings.hideSidebar,
     quietMode: false,
   };
 
@@ -246,6 +328,7 @@ export function renderReaderView(
   setupIntersectionObserver();
   applyTitleUpdate(0);
   setupScrollLoad();
+  setupKeyboard();
 
   logger.info('阅读视图渲染完成', {
     bookTitle: initialChapter.bookTitle,
@@ -304,17 +387,16 @@ export async function navigateToChapter(url: string): Promise<void> {
   removeErrorIndicator();
   showLoadingIndicator();
 
-  const maxRetries = Number(getSetting(KEYS.maxRetries)) || 2;
-  const retryDelay = Number(getSetting(KEYS.retryDelay)) || 2000;
+  const st = loadAllSettings();
 
-  const chapter = await loadNextChapter(url, rule, textRules, cleanOptions, maxRetries, retryDelay);
+  const result = await loadNextChapter(url, rule, textRules, cleanOptions, st.maxRetries, st.retryDelay);
 
   hideLoadingIndicator();
 
-  if (chapter) {
-    appendChapter(chapter);
+  if (result.status === 'loaded' && result.chapter) {
+    appendChapter(result.chapter);
     scrollToChapter(state!.chapters.length - 1);
-  } else {
+  } else if (result.status === 'failed') {
     showErrorIndicator(url);
     logger.warn(`无法加载章节: ${url}`);
   }
@@ -347,8 +429,13 @@ export function destroyReaderView(): void {
     contentAreaEl.removeEventListener('scroll', scrollHandler);
     scrollHandler = null;
   }
+  if (keyboardCleanup) {
+    keyboardCleanup();
+    keyboardCleanup = null;
+  }
   hideLoadingIndicator();
   removeErrorIndicator();
+  removeExtraCss();
   isLoadingNext = false;
   if (containerEl) {
     containerEl.remove();
@@ -360,6 +447,7 @@ export function destroyReaderView(): void {
   removeSidebar();
   removeBottomNav();
   clearLoadedUrls();
+  clearFailedUrls();
   containerEl = null;
   contentAreaEl = null;
   state = null;
