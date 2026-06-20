@@ -21,4 +21,7 @@ export const KEYS = {
   hideFooterNav: 'hideFooterNav',
   hidePreferencesButton: 'hidePreferencesButton',
   remainHeight: 'remainHeight',
+  maxRetries: 'maxRetries',
+  retryDelay: 'retryDelay',
+  imagePreload: 'imagePreload',
 } as const;
