@@ -1,4 +1,5 @@
 import { gmAddStyle } from '../shared/gm';
+import type { Settings } from '../settings/schema';
 
 const READER_CSS = `
 .nr-reader-container {
@@ -7,9 +8,9 @@ const READER_CSS = `
   z-index: 2147483647;
   background: #f5f5f5;
   color: #333;
-  font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 18px;
-  line-height: 1.8;
+  font-family: var(--nr-font-family);
+  font-size: var(--nr-font-size);
+  line-height: var(--nr-line-height);
   display: flex;
   overflow: hidden;
 }
@@ -89,6 +90,8 @@ const READER_CSS = `
   overflow-y: auto;
   overflow-x: hidden;
   padding: 40px 80px 80px;
+  max-width: var(--nr-content-max-width);
+  margin: 0 auto;
   scroll-behavior: smooth;
 }
 .nr-chapter {
@@ -210,6 +213,33 @@ const READER_CSS = `
 }
 `;
 
+let extraCssEl: HTMLStyleElement | null = null;
+
 export function injectReaderStyles(): void {
   gmAddStyle(READER_CSS);
+}
+
+export function updateReaderStyleVars(settings: Settings): void {
+  const container = document.querySelector('.nr-reader-container') as HTMLElement | null;
+  if (!container) return;
+  container.style.setProperty('--nr-font-family', settings.fontFamily);
+  container.style.setProperty('--nr-font-size', settings.fontSize + 'px');
+  container.style.setProperty('--nr-line-height', String(settings.lineHeight));
+  container.style.setProperty('--nr-content-max-width', settings.contentWidth + 'px');
+}
+
+export function updateExtraCss(css: string): void {
+  if (!extraCssEl) {
+    extraCssEl = document.createElement('style');
+    extraCssEl.id = 'nr-extra-css';
+    document.head.appendChild(extraCssEl);
+  }
+  extraCssEl.textContent = css;
+}
+
+export function removeExtraCss(): void {
+  if (extraCssEl) {
+    extraCssEl.remove();
+    extraCssEl = null;
+  }
 }
