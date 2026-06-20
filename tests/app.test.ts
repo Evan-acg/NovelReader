@@ -76,7 +76,6 @@ describe('initApp 集成流程', () => {
     await initApp({
       doc: dom.window.document,
       url: 'https://www.example.com/novel/1/2.html',
-      autoLoadNext: false,
     });
 
     expect(gmFetch).toHaveBeenCalledTimes(3);
@@ -134,7 +133,6 @@ describe('initApp 集成流程', () => {
     await initApp({
       doc: dom.window.document,
       url: 'https://www.example.com/novel/1/2.html',
-      autoLoadNext: false,
     });
 
     expect(gmFetch).toHaveBeenCalledTimes(3);
@@ -169,7 +167,6 @@ describe('initApp 集成流程', () => {
     await initApp({
       doc: dom.window.document,
       url: 'https://www.example.com/novel/1/2.html',
-      autoLoadNext: false,
     });
 
     expect(gmFetch).toHaveBeenCalledTimes(3);

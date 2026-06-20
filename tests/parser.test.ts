@@ -258,6 +258,47 @@ describe('标题简繁转换', () => {
   });
 });
 
+describe('UTF-8 中文导航文本自动猜测', () => {
+  const currentUrl = 'https://www.example.com/novel/123/2.html';
+
+  it('应通过中文文本"下一章"自动猜测下一页', () => {
+    const doc = makeDoc('<a href="/next">下一章</a>');
+    const nav = extractNavigation(doc, baseRule, currentUrl);
+    expect(nav.nextUrl).toBe('https://www.example.com/next');
+  });
+
+  it('应通过中文文本"上一章"自动猜测上一页', () => {
+    const doc = makeDoc('<a href="/prev">上一章</a>');
+    const nav = extractNavigation(doc, baseRule, currentUrl);
+    expect(nav.prevUrl).toBe('https://www.example.com/prev');
+  });
+
+  it('应通过中文文本"目录"、"返回目录"自动猜测目录页', () => {
+    const doc = makeDoc('<a href="/index">目录</a>');
+    const nav = extractNavigation(doc, baseRule, currentUrl);
+    expect(nav.indexUrl).toBe('https://www.example.com/index');
+  });
+
+  it('应通过中文文本"第一章"自动猜测章节标题', () => {
+    const doc = makeDoc('<h1>第一章 惊蛰</h1>', '第一章 惊蛰_剑来_起点中文网');
+    const result = extractTitle(doc, baseRule);
+    expect(result.chapterTitle).toContain('第一章');
+    expect(result.bookTitle).toBe('剑来');
+  });
+
+  it('多个中文导航链接时应正确提取各方向', () => {
+    const doc = makeDoc(`
+      <a href="/prev">← 上一章</a>
+      <a href="/next">下一章 →</a>
+      <a href="/index">返回目录</a>
+    `);
+    const nav = extractNavigation(doc, baseRule, currentUrl);
+    expect(nav.prevUrl).toBe('https://www.example.com/prev');
+    expect(nav.nextUrl).toBe('https://www.example.com/next');
+    expect(nav.indexUrl).toBe('https://www.example.com/index');
+  });
+});
+
 describe('parseChapter 集成', () => {
   it('完整解析章节', () => {
     const doc = makeDoc(`

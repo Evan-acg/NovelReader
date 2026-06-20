@@ -4,13 +4,12 @@ import { initRuleRegistry, matchRule } from '../rules/rule-registry';
 import { initTextRuleRegistry, getCombinedTextRules } from '../text-rules/text-rule-registry';
 import { parseChapter } from './parser';
 import { loadS2TMapping, type CleanOptions } from './content-cleaner';
-import { renderReaderView, appendChapter, navigateToChapter } from '../ui/reader-view';
-import { loadNextChapter, clearLoadedUrls } from './next-page-loader';
+import { renderReaderView } from '../ui/reader-view';
+import { clearLoadedUrls } from './next-page-loader';
 
-export async function initApp(options?: { doc?: Document; url?: string; autoLoadNext?: boolean }): Promise<void> {
+export async function initApp(options?: { doc?: Document; url?: string }): Promise<void> {
   const doc = options?.doc ?? document;
   const url = options?.url ?? location.href;
-  const autoLoadNext = options?.autoLoadNext ?? true;
 
   const settings = loadAllSettings();
   logger.setDebug(settings.debug);
@@ -46,11 +45,4 @@ export async function initApp(options?: { doc?: Document; url?: string; autoLoad
   });
 
   renderReaderView(chapter, rule, textRules, cleanOptions);
-
-  if (autoLoadNext && chapter.nextUrl) {
-    const result = await loadNextChapter(chapter.nextUrl, rule, textRules, cleanOptions);
-    if (result.status === 'loaded' && result.chapter) {
-      appendChapter(result.chapter);
-    }
-  }
 }
