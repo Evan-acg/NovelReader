@@ -22,6 +22,8 @@ vi.mock('../src/shared/gm', () => ({
 
 import { gmFetch } from '../src/shared/gm';
 
+import { clearFailedUrls, markUrlFailed, isUrlFailed } from '../src/core/next-page-loader';
+
 const baseRule: SiteRule = {
   id: 'test-site',
   name: '测试站',
@@ -324,6 +326,7 @@ describe('移动端 viewport 修正', () => {
 describe('连续加载', () => {
   beforeEach(() => {
     destroyReaderView();
+    clearFailedUrls();
     document.body.innerHTML = '<div id="original">原始页面内容</div>';
     document.head.innerHTML = '';
     vi.clearAllMocks();
@@ -365,7 +368,7 @@ describe('连续加载', () => {
     expect(link!.textContent).toContain('手动打开下一页');
   });
 
-  it('加载成功后再加载同一 URL 应跳过', async () => {
+  it('加载成功后再加载同一 URL 应跳过，不显示错误指示器', async () => {
     vi.mocked(gmFetch)
       .mockResolvedValueOnce(
         `<html><body><h1>第二章</h1><div id="content"><p>正文内容需要足够长的文字来确保通过阈值检测，这里继续填充使得文本长度超过VIP检测的最小阈值。添加更多内容以通过校验。</p></div></body></html>`,
@@ -378,11 +381,51 @@ describe('连续加载', () => {
     await navigateToChapter('https://example.com/novel/2');
 
     expect(gmFetch).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('.nr-error-indicator')).toBeNull();
+  });
+
+  it('滚动到底部附近应触发自动加载', async () => {
+    vi.mocked(gmFetch).mockResolvedValueOnce(
+      `<html><body><h1>第二章</h1><div id="content"><p>${'足够长的正文内容。'.repeat(20)}</p></div></body></html>`,
+    );
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    const contentArea = document.querySelector('.nr-content-area') as HTMLElement;
+    contentArea.dispatchEvent(new Event('scroll'));
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(gmFetch).toHaveBeenCalled();
+  });
+
+  it('已失败 URL 不会被自动滚动重试', async () => {
+    vi.mocked(gmFetch)
+      .mockRejectedValueOnce(new Error('网络错误'))
+      .mockRejectedValueOnce(new Error('网络错误'))
+      .mockRejectedValueOnce(new Error('网络错误'));
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    await navigateToChapter('https://example.com/novel/2');
+    expect(isUrlFailed('https://example.com/novel/2')).toBe(true);
+
+    vi.clearAllMocks();
+
+    const contentArea = document.querySelector('.nr-content-area') as HTMLElement;
+    contentArea.dispatchEvent(new Event('scroll'));
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(gmFetch).not.toHaveBeenCalled();
   });
 });
 
 describe('销毁视图清理', () => {
   beforeEach(() => {
+    clearFailedUrls();
     document.body.innerHTML = '<div id="original">原始页面内容</div>';
     document.head.innerHTML = '';
   });
