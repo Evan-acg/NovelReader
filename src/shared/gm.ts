@@ -1,6 +1,7 @@
 declare const GM_getValue: (key: string, defaultValue?: string) => string | undefined;
 declare const GM_setValue: (key: string, value: string) => void;
 declare const GM_addStyle: (css: string) => void;
+declare const GM_openInTab: (url: string, options?: { active?: boolean; insert?: boolean; setParent?: boolean }) => void;
 declare const GM_xmlhttpRequest: (details: {
   url: string;
   method?: 'GET' | 'POST';
@@ -42,6 +43,14 @@ export async function gmFetch(url: string, timeout = 10000): Promise<string> {
       ontimeout: () => reject(new Error(`请求超时: ${url}`)),
     });
   });
+}
+
+export function gmOpenInTab(url: string): void {
+  if (typeof GM_openInTab === 'function') {
+    GM_openInTab(url);
+  } else {
+    window.open(url, '_blank');
+  }
 }
 
 export function gmAddStyle(css: string): void {
