@@ -287,6 +287,7 @@ export function parseChapter(
   const isVip = detectVip(cleaned.text, rule);
 
   const result: ParsedChapter = {
+    url: currentUrl,
     bookTitle: bookTitle || rule.name || '',
     chapterTitle: chapterTitle || '',
     documentTitle: doc.title,

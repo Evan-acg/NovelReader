@@ -1,4 +1,5 @@
 export interface ParsedChapter {
+  url: string;
   bookTitle: string;
   chapterTitle: string;
   documentTitle: string;
@@ -16,6 +17,7 @@ export interface ReaderState {
   activeIndex: number;
   sidebarVisible: boolean;
   quietMode: boolean;
+  autoLoadPaused: boolean;
 }
 
 export function createInitialState(): ReaderState {
@@ -24,6 +26,7 @@ export function createInitialState(): ReaderState {
     activeIndex: 0,
     sidebarVisible: true,
     quietMode: false,
+    autoLoadPaused: false,
   };
 }
 
