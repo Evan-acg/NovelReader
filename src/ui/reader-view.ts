@@ -5,7 +5,7 @@ import type { CleanOptions } from '../core/content-cleaner';
 import { injectReaderStyles } from './styles';
 import { createSidebar, addSidebarItem, setActiveSidebarItem, removeSidebar, toggleSidebarVisibility } from './sidebar';
 import { createBottomNav, updateBottomNav, removeBottomNav } from '../core/navigation';
-import { loadNextChapter, clearLoadedUrls } from '../core/next-page-loader';
+import { loadNextChapter, clearLoadedUrls, preloadImages } from '../core/next-page-loader';
 import { getSetting } from '../settings/storage';
 import { KEYS } from '../settings/schema';
 import { logger } from '../shared/logger';
@@ -17,6 +17,10 @@ let cleanOptions: CleanOptions = {};
 let containerEl: HTMLElement | null = null;
 let contentAreaEl: HTMLElement | null = null;
 let intersectionObserver: IntersectionObserver | null = null;
+let isLoadingNext = false;
+let loadingIndicatorEl: HTMLElement | null = null;
+let errorIndicatorEl: HTMLElement | null = null;
+let scrollHandler: (() => void) | null = null;
 
 export function getReaderState(): ReaderState | null {
   return state;
@@ -94,6 +98,85 @@ function applyTitleUpdate(index: number): void {
   }
 }
 
+function showLoadingIndicator(): void {
+  if (!contentAreaEl || loadingIndicatorEl) return;
+  loadingIndicatorEl = document.createElement('div');
+  loadingIndicatorEl.className = 'nr-loading-indicator';
+  loadingIndicatorEl.textContent = '正在加载下一章...';
+  contentAreaEl.appendChild(loadingIndicatorEl);
+}
+
+function hideLoadingIndicator(): void {
+  if (loadingIndicatorEl) {
+    loadingIndicatorEl.remove();
+    loadingIndicatorEl = null;
+  }
+}
+
+function showErrorIndicator(url: string): void {
+  if (!contentAreaEl || errorIndicatorEl) return;
+  errorIndicatorEl = document.createElement('div');
+  errorIndicatorEl.className = 'nr-error-indicator';
+  const link = document.createElement('a');
+  link.textContent = '加载失败，点击手动打开下一页';
+  link.href = url;
+  link.target = '_blank';
+  errorIndicatorEl.appendChild(link);
+  contentAreaEl.appendChild(errorIndicatorEl);
+}
+
+function removeErrorIndicator(): void {
+  if (errorIndicatorEl) {
+    errorIndicatorEl.remove();
+    errorIndicatorEl = null;
+  }
+}
+
+async function triggerAutoLoad(url: string): Promise<void> {
+  if (isLoadingNext || !rule) return;
+
+  isLoadingNext = true;
+  removeErrorIndicator();
+  showLoadingIndicator();
+
+  const maxRetries = Number(getSetting(KEYS.maxRetries)) || 2;
+  const retryDelay = Number(getSetting(KEYS.retryDelay)) || 2000;
+
+  const chapter = await loadNextChapter(url, rule, textRules, cleanOptions, maxRetries, retryDelay);
+
+  hideLoadingIndicator();
+
+  if (chapter) {
+    if (getSetting(KEYS.imagePreload) !== 'false') {
+      preloadImages(chapter.contentHtml);
+    }
+    appendChapter(chapter);
+  } else {
+    showErrorIndicator(url);
+  }
+
+  isLoadingNext = false;
+}
+
+function setupScrollLoad(): void {
+  if (!contentAreaEl) return;
+
+  const remainHeight = Number(getSetting(KEYS.remainHeight)) || 300;
+
+  scrollHandler = () => {
+    if (!contentAreaEl || isLoadingNext || !state) return;
+    const lastChapter = state.chapters[state.chapters.length - 1];
+    if (!lastChapter?.nextUrl) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = contentAreaEl;
+    if (scrollHeight - scrollTop - clientHeight < remainHeight) {
+      triggerAutoLoad(lastChapter.nextUrl);
+    }
+  };
+
+  contentAreaEl.addEventListener('scroll', scrollHandler, { passive: true });
+}
+
 export function renderReaderView(
   initialChapter: ParsedChapter,
   r: SiteRule,
@@ -162,6 +245,7 @@ export function renderReaderView(
 
   setupIntersectionObserver();
   applyTitleUpdate(0);
+  setupScrollLoad();
 
   logger.info('阅读视图渲染完成', {
     bookTitle: initialChapter.bookTitle,
@@ -214,15 +298,28 @@ export function scrollToChapter(index: number): void {
 }
 
 export async function navigateToChapter(url: string): Promise<void> {
-  if (!rule) return;
+  if (!rule || isLoadingNext) return;
 
-  const chapter = await loadNextChapter(url, rule, textRules, cleanOptions);
+  isLoadingNext = true;
+  removeErrorIndicator();
+  showLoadingIndicator();
+
+  const maxRetries = Number(getSetting(KEYS.maxRetries)) || 2;
+  const retryDelay = Number(getSetting(KEYS.retryDelay)) || 2000;
+
+  const chapter = await loadNextChapter(url, rule, textRules, cleanOptions, maxRetries, retryDelay);
+
+  hideLoadingIndicator();
+
   if (chapter) {
     appendChapter(chapter);
     scrollToChapter(state!.chapters.length - 1);
   } else {
+    showErrorIndicator(url);
     logger.warn(`无法加载章节: ${url}`);
   }
+
+  isLoadingNext = false;
 }
 
 export function toggleQuietMode(): void {
@@ -245,6 +342,20 @@ export function destroyReaderView(): void {
   if (intersectionObserver) {
     intersectionObserver.disconnect();
     intersectionObserver = null;
+  }
+  if (scrollHandler && contentAreaEl) {
+    contentAreaEl.removeEventListener('scroll', scrollHandler);
+    scrollHandler = null;
+  }
+  hideLoadingIndicator();
+  removeErrorIndicator();
+  isLoadingNext = false;
+  if (containerEl) {
+    containerEl.remove();
+  }
+  const settingsBtn = document.querySelector('.nr-settings-btn');
+  if (settingsBtn) {
+    settingsBtn.remove();
   }
   removeSidebar();
   removeBottomNav();
