@@ -390,9 +390,6 @@ export function appendChapter(chapter: ParsedChapter): void {
       await navigateToChapter(url);
     },
   );
-
-  applyTitleUpdate(index);
-  updateHistory(index);
 }
 
 export function scrollToChapter(index: number): void {
