@@ -62,6 +62,54 @@ describe('站点规则校验', () => {
     const result = validateSiteRule('string');
     expect(result.success).toBe(false);
   });
+
+  it('contentReplaceRules 为合法数组时应通过', () => {
+    const result = validateSiteRule({
+      ...validRule,
+      contentReplaceRules: [
+        { pattern: '广告', replacement: '' },
+        { pattern: '请记住.*', replacement: '', flags: 'g' },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('contentReplaceRules 为非法数组时应失败', () => {
+    const result = validateSiteRule({
+      ...validRule,
+      contentReplaceRules: 'not-an-array',
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toContain('数组');
+    }
+  });
+
+  it('contentReplaceRules 中缺少 pattern 应失败', () => {
+    const result = validateSiteRule({
+      ...validRule,
+      contentReplaceRules: [
+        { replacement: '' },
+      ] as unknown[],
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toContain('pattern');
+    }
+  });
+
+  it('contentReplaceRules 中含非法 flags 应失败', () => {
+    const result = validateSiteRule({
+      ...validRule,
+      contentReplaceRules: [
+        { pattern: 'test', replacement: '', flags: 'invalid!' },
+      ] as unknown[],
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.message).toContain('flags');
+    }
+  });
 });
 
 describe('站点规则集校验', () => {
