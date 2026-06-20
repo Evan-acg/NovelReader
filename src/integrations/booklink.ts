@@ -41,16 +41,20 @@ export function findUnreadLinks(context: Element): HTMLAnchorElement[] {
 }
 
 export function hasNoPirateMarker(link: HTMLAnchorElement): boolean {
-  const chapterLink = link.parentNode?.nextSibling?.nextSibling?.querySelector('a');
+  const tr = link.closest('tr');
+  if (!tr) return false;
+  const chapterLink = tr.querySelector('td:last-child a');
   return !!chapterLink?.querySelector('font[color*="800000"]');
 }
 
 export function markClicked(link: HTMLAnchorElement): void {
-  const fontEl = link.parentNode?.previousSibling?.querySelector('font');
+  const tr = link.closest('tr');
+  if (!tr) return;
+  const fontEl = tr.querySelector('td:first-child font');
   if (fontEl) {
     fontEl.setAttribute('color', '666666');
   }
-  const chapterLink = link.parentNode?.nextSibling?.nextSibling?.querySelector('a');
+  const chapterLink = tr.querySelector('td:last-child a');
   if (chapterLink) {
     chapterLink.classList.add('mclicked');
   }

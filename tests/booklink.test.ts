@@ -181,10 +181,11 @@ describe('markClicked', () => {
 
     markClicked(links[0]);
 
-    const fontEl = links[0].parentNode?.previousSibling?.querySelector('font');
+    const tr = links[0].closest('tr');
+    const fontEl = tr?.querySelector('td:first-child font');
     expect(fontEl?.getAttribute('color')).toBe('666666');
 
-    const chapterLink = links[0].parentNode?.nextSibling?.nextSibling?.querySelector('a');
+    const chapterLink = tr?.querySelector('td:last-child a');
     expect(chapterLink?.classList.contains('mclicked')).toBe(true);
   });
 });
