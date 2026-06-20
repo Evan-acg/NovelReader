@@ -238,9 +238,13 @@ function setupKeyboard(): void {
       }
     },
     onNextChapter: () => {
-      const last = state?.chapters[state.chapters.length - 1];
-      if (last?.nextUrl) {
-        navigateToChapter(last.nextUrl);
+      if (state && state.activeIndex < state.chapters.length - 1) {
+        scrollToChapter(state.activeIndex + 1);
+      } else {
+        const last = state?.chapters[state.chapters.length - 1];
+        if (last?.nextUrl) {
+          navigateToChapter(last.nextUrl);
+        }
       }
     },
     onToggleSidebar: () => toggleSidebarVisibility(),
