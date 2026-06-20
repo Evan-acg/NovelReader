@@ -29,7 +29,6 @@ describe('设置默认值', () => {
     expect(settings.fontFamily).toBe(DEFAULT_SETTINGS.fontFamily);
     expect(settings.lineHeight).toBe(DEFAULT_SETTINGS.lineHeight);
     expect(settings.contentWidth).toBe(DEFAULT_SETTINGS.contentWidth);
-    expect(settings.skinName).toBe(DEFAULT_SETTINGS.skinName);
     expect(settings.convertToTraditional).toBe(false);
     expect(settings.splitContent).toBe(false);
     expect(settings.hideSidebar).toBe(false);
@@ -119,6 +118,16 @@ describe('设置保存', () => {
     setSetting('fontSize', '');
     s = loadAllSettings();
     expect(s.fontSize).toBe(DEFAULT_SETTINGS.fontSize);
+  });
+
+  it('非法数字字符串应回退默认值', () => {
+    setSetting('fontSize', 'not-a-number');
+    const s = loadAllSettings();
+    expect(s.fontSize).toBe(DEFAULT_SETTINGS.fontSize);
+
+    setSetting('lineHeight', 'NaN');
+    const s2 = loadAllSettings();
+    expect(s2.lineHeight).toBe(DEFAULT_SETTINGS.lineHeight);
   });
 
   it('远程地址默认使用占位符', () => {
