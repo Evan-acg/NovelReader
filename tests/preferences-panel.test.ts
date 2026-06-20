@@ -143,12 +143,22 @@ describe('设置面板内容', () => {
     expect(titleTexts).toContain('连续加载');
   });
 
+  it('面板应包含快捷键设置区', () => {
+    openPreferencesPanel();
+
+    const titles = document.querySelectorAll('.nr-panel-section-title');
+    const titleTexts = Array.from(titles).map((t) => t.textContent);
+    expect(titleTexts).toContain('快捷键');
+  });
+
   it('面板应包含简繁转换复选框', () => {
     openPreferencesPanel();
 
     const labels = document.querySelectorAll('.nr-panel-row label');
     const labelTexts = Array.from(labels).map((l) => l.textContent);
     expect(labelTexts.some((t) => t?.includes('简繁转换'))).toBe(true);
+    expect(labelTexts.some((t) => t?.includes('禁用自动启动'))).toBe(true);
+    expect(labelTexts.some((t) => t?.includes('滚动动画'))).toBe(true);
   });
 
   it('修改样式设置应触发 onChange 回调', () => {

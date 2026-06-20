@@ -245,4 +245,52 @@ describe('快捷键系统', () => {
     sendKey('o', { ctrlKey: true, shiftKey: true });
     expect(isPanelOpen()).toBe(true);
   });
+
+  it('通过设置面板修改快捷键后应即时生效', () => {
+    createReaderDOM();
+    const handler = vi.fn();
+    let cleanup = initKeyboard({ onOpenIndex: handler });
+
+    // Original binding: Enter triggers
+    sendKey('Enter');
+    expect(handler).toHaveBeenCalledTimes(1);
+    handler.mockClear();
+
+    // Open panel with callback that re-inits keyboard on keybinding change
+    openPreferencesPanel((key, value) => {
+      if (key === 'keybindings') {
+        if (cleanup) {
+          cleanup();
+        }
+        const bindings = value as Record<string, string>;
+        cleanup = initKeyboard({ onOpenIndex: handler }, bindings);
+      }
+    });
+
+    // Modify keybinding: change openIndex from Enter to F5
+    const textareas = document.querySelectorAll('.nr-panel textarea');
+    const kbTextarea = Array.from(textareas).find(
+      (ta) => (ta as HTMLTextAreaElement).previousElementSibling?.textContent?.includes('快捷键'),
+    ) as HTMLTextAreaElement | undefined;
+
+    if (kbTextarea) {
+      const newBindings = { openIndex: 'f5' };
+      kbTextarea.value = JSON.stringify(newBindings, null, 2);
+      kbTextarea.dispatchEvent(new Event('change'));
+    }
+
+    // Close panel — keyboard should now use new bindings
+    closePreferencesPanel();
+    expect(isPanelOpen()).toBe(false);
+
+    // Old key (Enter) should no longer trigger
+    sendKey('Enter');
+    expect(handler).not.toHaveBeenCalled();
+
+    // New key (F5) should trigger
+    sendKey('F5');
+    expect(handler).toHaveBeenCalledTimes(1);
+
+    if (cleanup) cleanup();
+  });
 });
