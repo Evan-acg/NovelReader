@@ -10,6 +10,7 @@ import {
   isQuietMode,
   destroyReaderView,
   getReaderState,
+  navigateToChapter,
 } from '../src/ui/reader-view';
 
 vi.mock('../src/shared/gm', () => ({
@@ -18,6 +19,8 @@ vi.mock('../src/shared/gm', () => ({
   gmSetValue: vi.fn(),
   gmFetch: vi.fn(),
 }));
+
+import { gmFetch } from '../src/shared/gm';
 
 const baseRule: SiteRule = {
   id: 'test-site',
@@ -315,5 +318,86 @@ describe('移动端 viewport 修正', () => {
     const metas = document.querySelectorAll('meta[name="viewport"]');
     expect(metas.length).toBe(1);
     expect(metas[0].getAttribute('content')).toBe('width=1024');
+  });
+});
+
+describe('连续加载', () => {
+  beforeEach(() => {
+    destroyReaderView();
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '';
+    vi.clearAllMocks();
+  });
+
+  it('navigateToChapter 成功后章节追加且无错误指示器', async () => {
+    vi.mocked(gmFetch).mockResolvedValueOnce(
+      `<html><body><h1>第二章 发展</h1><div id="content"><p>正文内容需要足够长的文字来确保通过阈值检测，这里继续填充文字使得文本长度超过VIP检测的最小阈值。添加更多内容。</p></div><a href="/novel/3">下一章</a></body></html>`,
+    );
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    await navigateToChapter('https://example.com/novel/2');
+
+    const chapters = document.querySelectorAll('.nr-chapter');
+    expect(chapters.length).toBe(2);
+    expect(document.querySelector('.nr-loading-indicator')).toBeNull();
+    expect(document.querySelector('.nr-error-indicator')).toBeNull();
+  });
+
+  it('navigateToChapter 失败后显示错误指示器含手动打开链接', async () => {
+    vi.mocked(gmFetch)
+      .mockRejectedValueOnce(new Error('网络错误'))
+      .mockRejectedValueOnce(new Error('网络错误'))
+      .mockRejectedValueOnce(new Error('网络错误'));
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    await navigateToChapter('https://example.com/novel/2');
+
+    const errorEl = document.querySelector('.nr-error-indicator');
+    expect(errorEl).not.toBeNull();
+    const link = errorEl!.querySelector('a');
+    expect(link).not.toBeNull();
+    expect(link!.getAttribute('href')).toBe('https://example.com/novel/2');
+    expect(link!.getAttribute('target')).toBe('_blank');
+    expect(link!.textContent).toContain('手动打开下一页');
+  });
+
+  it('加载成功后再加载同一 URL 应跳过', async () => {
+    vi.mocked(gmFetch)
+      .mockResolvedValueOnce(
+        `<html><body><h1>第二章</h1><div id="content"><p>正文内容需要足够长的文字来确保通过阈值检测，这里继续填充使得文本长度超过VIP检测的最小阈值。添加更多内容以通过校验。</p></div></body></html>`,
+      );
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    await navigateToChapter('https://example.com/novel/2');
+    await navigateToChapter('https://example.com/novel/2');
+
+    expect(gmFetch).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('销毁视图清理', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '';
+  });
+
+  it('destroyReaderView 应移除所有阅读器元素', () => {
+    const chapter = makeChapter();
+    renderReaderView(chapter, baseRule, [], {});
+
+    destroyReaderView();
+
+    expect(document.querySelector('.nr-reader-container')).toBeNull();
+    expect(document.querySelector('.nr-bottom-nav')).toBeNull();
+    expect(document.querySelector('.nr-settings-btn')).toBeNull();
+    expect(document.querySelector('.nr-sidebar')).toBeNull();
+    expect(document.querySelector('.nr-loading-indicator')).toBeNull();
+    expect(document.querySelector('.nr-error-indicator')).toBeNull();
   });
 });
