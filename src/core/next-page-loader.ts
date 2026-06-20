@@ -1,12 +1,13 @@
 import type { SiteRule } from '../rules/rule-types';
 import type { TextRule } from '../text-rules/text-rule-types';
-import type { ParsedChapter } from './reader-state';
+import type { ParsedChapter, LoadResult } from './reader-state';
 import type { CleanOptions } from './content-cleaner';
 import { parseChapter } from './parser';
 import { gmFetch } from '../shared/gm';
 import { logger } from '../shared/logger';
 
 const loadedUrls = new Set<string>();
+const failedUrls = new Set<string>();
 
 export function isUrlLoaded(url: string): boolean {
   return loadedUrls.has(url);
@@ -20,6 +21,18 @@ export function clearLoadedUrls(): void {
   loadedUrls.clear();
 }
 
+export function isUrlFailed(url: string): boolean {
+  return failedUrls.has(url);
+}
+
+export function markUrlFailed(url: string): void {
+  failedUrls.add(url);
+}
+
+export function clearFailedUrls(): void {
+  failedUrls.clear();
+}
+
 export async function loadNextChapter(
   url: string,
   rule: SiteRule,
@@ -27,10 +40,15 @@ export async function loadNextChapter(
   cleanOptions: CleanOptions,
   maxRetries = 2,
   retryDelay = 2000,
-): Promise<ParsedChapter | null> {
+): Promise<LoadResult> {
   if (isUrlLoaded(url)) {
     logger.info(`跳过已加载 URL: ${url}`);
-    return null;
+    return { status: 'skipped', chapter: null, url };
+  }
+
+  if (isUrlFailed(url)) {
+    logger.info(`跳过已失败 URL: ${url}`);
+    return { status: 'skipped', chapter: null, url };
   }
 
   let lastError: unknown;
@@ -42,7 +60,7 @@ export async function loadNextChapter(
       const doc = parser.parseFromString(html, 'text/html');
       const chapter = parseChapter(doc, url, rule, textRules, cleanOptions);
       markUrlLoaded(url);
-      return chapter;
+      return { status: 'loaded', chapter, url };
     } catch (e) {
       lastError = e;
       logger.warn(`加载下一页失败 (尝试 ${attempt + 1}/${maxRetries + 1}): ${url}`, e);
@@ -52,18 +70,24 @@ export async function loadNextChapter(
     }
   }
 
+  markUrlFailed(url);
+  const errorMessage = lastError instanceof Error ? lastError.message : String(lastError);
   logger.warn(`加载下一页最终失败: ${url}`, lastError);
-  return null;
+  return { status: 'failed', chapter: null, url, error: errorMessage };
 }
 
-export function preloadImages(contentHtml: string): void {
+export function preloadImages(contentHtml: string, baseUrl: string): void {
   const parser = new DOMParser();
   const doc = parser.parseFromString(contentHtml, 'text/html');
   const imgs = doc.querySelectorAll('img[src]');
   for (const img of imgs) {
     const src = img.getAttribute('src');
     if (src) {
-      new Image().src = src;
+      try {
+        new Image().src = new URL(src, baseUrl).href;
+      } catch {
+        new Image().src = src;
+      }
     }
   }
 }
