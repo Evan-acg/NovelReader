@@ -1,7 +1,9 @@
 import type { SiteRule } from '../rules/rule-types';
 import type { ParsedChapter } from './reader-state';
+import type { TextRule } from '../text-rules/text-rule-types';
 import { querySelector, querySelectorAll, getAbsoluteUrl, getTextContent } from '../shared/dom';
 import { logger } from '../shared/logger';
+import { cleanContent, type CleanOptions } from './content-cleaner';
 
 const VIP_MIN_TEXT_LENGTH = 50;
 
@@ -250,20 +252,36 @@ export function detectVip(contentText: string, rule: SiteRule): boolean {
   return false;
 }
 
-export function parseChapter(doc: Document, currentUrl: string, rule: SiteRule): ParsedChapter {
+export function parseChapter(
+  doc: Document,
+  currentUrl: string,
+  rule: SiteRule,
+  textRules?: TextRule[],
+  cleanOptions?: CleanOptions,
+): ParsedChapter {
   logger.info(`解析章节: ${currentUrl}`);
 
   const { bookTitle, chapterTitle } = extractTitle(doc, rule);
   const { html, text } = extractContent(doc, rule);
   const nav = extractNavigation(doc, rule, currentUrl);
-  const isVip = detectVip(text, rule);
+
+  let contentHtml = html;
+  let contentText = text;
+
+  if (textRules && textRules.length > 0) {
+    const cleaned = cleanContent(html, textRules, cleanOptions);
+    contentHtml = cleaned.html;
+    contentText = cleaned.text;
+  }
+
+  const isVip = detectVip(contentText, rule);
 
   const result: ParsedChapter = {
     bookTitle: bookTitle || rule.name || '',
     chapterTitle: chapterTitle || '',
     documentTitle: doc.title,
-    contentHtml: html,
-    contentText: text,
+    contentHtml,
+    contentText,
     prevUrl: nav.prevUrl,
     nextUrl: nav.nextUrl,
     indexUrl: nav.indexUrl,
