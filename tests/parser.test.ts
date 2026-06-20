@@ -240,6 +240,22 @@ describe('标题简繁转换', () => {
     const result = parseChapter(doc, 'https://example.com/1', rule, [], { convertToTraditional: false, s2tMapping: TEST_S2T });
     expect(result.chapterTitle).toBe('第一章 中国文学');
   });
+
+  it('convertToTraditional 开启时应同时转换标题和正文', () => {
+    const doc = makeDoc('<h1>第一章 中国文学</h1><div id="content"><p>中国文学测试正文，需要足够长来通过VIP检测，这里填充更多文字确保超过最小文本长度阈值。</p></div>');
+    const rule: SiteRule = {
+      ...baseRule,
+      chapterTitleSelector: 'h1',
+      contentSelector: '#content',
+    };
+    const result = parseChapter(doc, 'https://example.com/1', rule, [], { convertToTraditional: true, s2tMapping: TEST_S2T });
+    expect(result.chapterTitle).toContain('國');
+    expect(result.chapterTitle).toContain('學');
+    expect(result.contentHtml).toContain('國');
+    expect(result.contentHtml).toContain('學');
+    expect(result.contentText).toContain('國');
+    expect(result.contentText).toContain('學');
+  });
 });
 
 describe('parseChapter 集成', () => {
