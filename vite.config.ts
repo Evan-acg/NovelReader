@@ -25,8 +25,6 @@ export default defineConfig({
           'GM_getValue',
           'GM_setValue',
           'GM_openInTab',
-          'GM_setClipboard',
-          'GM_registerMenuCommand',
           'GM_info',
           'unsafeWindow',
         ],

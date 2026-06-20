@@ -7,7 +7,7 @@
 
 ## 关于GIT
 
-1. 当用户要求提交git的时候，请检查项目目录下，是否存在.lazygit.yaml文件，如果存在，使用其中的内容作为构建type(scope): message的内容，如果不存在，请参考此风格来生成， 生成的message应该使用中文，type和scope保持英文。
+1. 当用户要求提交git的时候，请检查项目目录下，是否存在.lazygit.yaml文件，如果存在，使用其中的内容作为构建type(scope): message的内容，如果不存在，请参考此风格来生成， 生成的message应该使用中文，type和scope保持英文。type和scope必须首字母大写。
 
 ## 关于修改
 
