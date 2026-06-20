@@ -1,4 +1,7 @@
 import type { TextRule } from '../text-rules/text-rule-types';
+import { gmFetch } from '../shared/gm';
+import { getSetting, getJsonSetting, setJsonSetting } from '../settings/storage';
+import { KEYS, S2T_RULES_URL } from '../settings/schema';
 import { logger } from '../shared/logger';
 
 export interface CleanOptions {
@@ -96,6 +99,35 @@ function forceSplitContent(html: string): string {
     .replace(/([。！？；!?;])\s*/g, '$1</p><p>')
     .replace(/^/, '<p>')
     .replace(/$/, '</p>');
+}
+
+export type S2TMapping = Record<string, string>;
+
+export async function loadS2TMapping(): Promise<S2TMapping> {
+  const url = getSetting(KEYS.s2tRulesUrl, S2T_RULES_URL);
+
+  try {
+    logger.info(`正在加载简繁映射: ${url}`);
+    const text = await gmFetch(url);
+    const json = JSON.parse(text);
+    if (typeof json === 'object' && json !== null && !Array.isArray(json)) {
+      setJsonSetting(KEYS.s2tRulesCache, json);
+      setJsonSetting(KEYS.s2tRulesCacheUpdatedAt, Date.now());
+      logger.info('简繁映射加载成功');
+      return json as S2TMapping;
+    }
+  } catch (e) {
+    logger.warn('远程简繁映射拉取失败:', e);
+  }
+
+  const cached = getJsonSetting<S2TMapping | null>(KEYS.s2tRulesCache, null);
+  if (cached && typeof cached === 'object' && !Array.isArray(cached)) {
+    logger.info('使用缓存的简繁映射');
+    return cached;
+  }
+
+  logger.warn('无可用简繁映射，简繁转换将不生效');
+  return {};
 }
 
 export function convertS2T(text: string, mapping: Record<string, string>): string {
