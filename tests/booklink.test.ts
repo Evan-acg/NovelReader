@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 vi.mock('../src/shared/gm', () => ({
   gmOpenInTab: vi.fn(),
@@ -16,6 +18,7 @@ vi.mock('../src/settings/storage', () => ({
 
 import { gmOpenInTab } from '../src/shared/gm';
 import {
+  isBooklinkHost,
   findUnreadParent,
   findUnreadLinks,
   hasNoPirateMarker,
@@ -186,6 +189,28 @@ describe('markClicked', () => {
   });
 });
 
+describe('isBooklinkHost', () => {
+  it('booklink.me 应返回 true', () => {
+    expect(isBooklinkHost('booklink.me')).toBe(true);
+  });
+
+  it('www.booklink.me 应返回 true', () => {
+    expect(isBooklinkHost('www.booklink.me')).toBe(true);
+  });
+
+  it('evilbooklink.me 应返回 false', () => {
+    expect(isBooklinkHost('evilbooklink.me')).toBe(false);
+  });
+
+  it('booklink.me.example 应返回 false', () => {
+    expect(isBooklinkHost('booklink.me.example')).toBe(false);
+  });
+
+  it('not-booklink.me 应返回 false', () => {
+    expect(isBooklinkHost('not-booklink.me')).toBe(false);
+  });
+});
+
 describe('init', () => {
   const originalLocation = window.location;
 
@@ -204,7 +229,7 @@ describe('init', () => {
 
   it('非 booklink.me 页面不应执行任何操作', () => {
     Object.defineProperty(window, 'location', {
-      value: { host: 'www.example.com' },
+      value: { hostname: 'www.example.com' },
       writable: true,
     });
 
@@ -215,7 +240,7 @@ describe('init', () => {
   it('booklinkEnable 为 false 时不执行任何操作', () => {
     mockLoadAllSettings.mockReturnValue({ booklinkEnable: false });
     Object.defineProperty(window, 'location', {
-      value: { host: 'booklink.me' },
+      value: { hostname: 'booklink.me' },
       writable: true,
     });
 
@@ -226,9 +251,9 @@ describe('init', () => {
     expect(document.querySelector('a[title="一键打开所有未读链接"]')).toBeNull();
   });
 
-  it('booklink.me 页面存在未读区域时应插入按钮', () => {
+  it('www.booklink.me 子域名应插入按钮', () => {
     Object.defineProperty(window, 'location', {
-      value: { host: 'booklink.me' },
+      value: { hostname: 'www.booklink.me' },
       writable: true,
     });
 
@@ -241,9 +266,50 @@ describe('init', () => {
     expect(btn!.querySelector('img')).not.toBeNull();
   });
 
+  it('booklink.me 页面存在未读区域时应插入按钮', () => {
+    Object.defineProperty(window, 'location', {
+      value: { hostname: 'booklink.me' },
+      writable: true,
+    });
+
+    const table = buildBooklinkTable(true);
+    document.body.appendChild(table);
+
+    init();
+    const btn = document.querySelector('a[title="一键打开所有未读链接"]');
+    expect(btn).not.toBeNull();
+    expect(btn!.querySelector('img')).not.toBeNull();
+  });
+
+  it('evilbooklink.me 不应执行任何操作', () => {
+    Object.defineProperty(window, 'location', {
+      value: { hostname: 'evilbooklink.me' },
+      writable: true,
+    });
+
+    const table = buildBooklinkTable(true);
+    document.body.appendChild(table);
+
+    init();
+    expect(document.querySelector('a[title="一键打开所有未读链接"]')).toBeNull();
+  });
+
+  it('booklink.me.example 不应执行任何操作', () => {
+    Object.defineProperty(window, 'location', {
+      value: { hostname: 'booklink.me.example' },
+      writable: true,
+    });
+
+    const table = buildBooklinkTable(true);
+    document.body.appendChild(table);
+
+    init();
+    expect(document.querySelector('a[title="一键打开所有未读链接"]')).toBeNull();
+  });
+
   it('booklink.me 页面无未读区域时不插入按钮', () => {
     Object.defineProperty(window, 'location', {
-      value: { host: 'booklink.me' },
+      value: { hostname: 'booklink.me' },
       writable: true,
     });
 
@@ -254,7 +320,7 @@ describe('init', () => {
 
   it('点击按钮应逐个打开未读链接并跳过无盗版标记章节', async () => {
     Object.defineProperty(window, 'location', {
-      value: { host: 'booklink.me' },
+      value: { hostname: 'booklink.me' },
       writable: true,
     });
 
@@ -324,5 +390,14 @@ describe('init', () => {
     expect(gmOpenInTab).toHaveBeenCalledWith('https://booklink.me/chapter/1');
     expect(gmOpenInTab).not.toHaveBeenCalledWith('https://booklink.me/chapter/2');
     expect(gmOpenInTab).toHaveBeenCalledWith('https://booklink.me/chapter/3');
+  });
+});
+
+describe('booklink userscript metadata', () => {
+  it('vite.config.ts 应声明 booklink.me 裸域和子域名的 match', () => {
+    const configPath = resolve(__dirname, '../vite.config.ts');
+    const config = readFileSync(configPath, 'utf-8');
+    expect(config).toContain('*://booklink.me/*');
+    expect(config).toContain('*://*.booklink.me/*');
   });
 });

@@ -2,6 +2,10 @@ import { logger } from '../shared/logger';
 import { gmOpenInTab } from '../shared/gm';
 import { loadAllSettings } from '../settings/storage';
 
+export function isBooklinkHost(hostname = location.hostname): boolean {
+  return hostname === 'booklink.me' || hostname.endsWith('.booklink.me');
+}
+
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -78,7 +82,7 @@ function createButton(parent: Element): void {
 }
 
 export function init(): void {
-  if (location.host.indexOf('booklink.me') === -1) return;
+  if (!isBooklinkHost()) return;
 
   const settings = loadAllSettings();
   if (!settings.booklinkEnable) return;

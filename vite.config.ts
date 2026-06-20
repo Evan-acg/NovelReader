@@ -48,6 +48,7 @@ export default defineConfig({
           '*://*.biquge.tv/*',
           '*://*.biquge.tw/*',
           '*://booklink.me/*',
+          '*://*.booklink.me/*',
         ],
       },
     }),
