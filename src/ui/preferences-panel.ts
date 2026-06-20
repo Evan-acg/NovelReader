@@ -227,7 +227,6 @@ function buildPanel(settings: Settings): HTMLElement {
   styleSection.appendChild(createRow('字号(px)', createNumberInput('fontSize', settings.fontSize)));
   styleSection.appendChild(createRow('行高', createNumberInput('lineHeight', settings.lineHeight, 0.1)));
   styleSection.appendChild(createRow('内容宽度(px)', createNumberInput('contentWidth', settings.contentWidth)));
-  styleSection.appendChild(createRow('皮肤', createTextInput('skinName', settings.skinName)));
   styleSection.appendChild(createRow('自定义CSS', createTextarea('extraCss', settings.extraCss), true));
 
   const toggleSection = addSection('功能开关');
@@ -238,10 +237,8 @@ function buildPanel(settings: Settings): HTMLElement {
   toggleSection.appendChild(createRow('隐藏设置按钮', createCheckbox('hidePreferencesButton', settings.hidePreferencesButton)));
   toggleSection.appendChild(createRow('图片预加载', createCheckbox('imagePreload', settings.imagePreload)));
   toggleSection.appendChild(createRow('调试日志', createCheckbox('debug', settings.debug)));
-  toggleSection.appendChild(createRow('界面语言', createTextInput('language', settings.language)));
   toggleSection.appendChild(createRow('禁用自动启动', createCheckbox('disableAutoLaunch', settings.disableAutoLaunch)));
   toggleSection.appendChild(createRow('启用Booklink', createCheckbox('booklinkEnable', settings.booklinkEnable)));
-  toggleSection.appendChild(createRow('复制当前标题', createCheckbox('copyCurrentTitle', settings.copyCurrentTitle)));
   toggleSection.appendChild(createRow('下一页加入历史', createCheckbox('addNextPageToHistory', settings.addNextPageToHistory)));
   toggleSection.appendChild(createRow('双击暂停', createCheckbox('doubleClickPause', settings.doubleClickPause)));
   toggleSection.appendChild(createRow('滚动动画', createCheckbox('scrollAnimate', settings.scrollAnimate)));

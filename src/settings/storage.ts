@@ -61,7 +61,7 @@ export function loadAllSettings(): Settings {
       result[key] = raw;
     }
   }
-  return result as Settings;
+  return result as unknown as Settings;
 }
 
 export function saveSetting<K extends keyof Settings>(key: K, value: Settings[K]): void {

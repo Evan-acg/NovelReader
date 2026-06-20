@@ -45,12 +45,9 @@ describe('设置默认值', () => {
     expect(settings.keybindings).toEqual({});
     expect(settings.disableAutoLaunch).toBe(false);
     expect(settings.booklinkEnable).toBe(true);
-    expect(settings.language).toBe('zh-CN');
-    expect(settings.copyCurrentTitle).toBe(false);
     expect(settings.addNextPageToHistory).toBe(true);
     expect(settings.doubleClickPause).toBe(true);
     expect(settings.scrollAnimate).toBe(true);
-    expect(settings.skinName).toBe('default');
   });
 });
 
@@ -65,8 +62,6 @@ describe('设置保存', () => {
     saveSetting('hideSidebar', true);
     saveSetting('remainHeight', 500);
     saveSetting('disableAutoLaunch', true);
-    saveSetting('skinName', 'dark');
-    saveSetting('language', 'en');
 
     const settings = loadAllSettings();
     expect(settings.fontSize).toBe(22);
@@ -74,8 +69,6 @@ describe('设置保存', () => {
     expect(settings.hideSidebar).toBe(true);
     expect(settings.remainHeight).toBe(500);
     expect(settings.disableAutoLaunch).toBe(true);
-    expect(settings.skinName).toBe('dark');
-    expect(settings.language).toBe('en');
   });
 
   it('保存布尔值后应正确还原 true/false', () => {
