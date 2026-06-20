@@ -227,7 +227,6 @@ function buildPanel(settings: Settings): HTMLElement {
   styleSection.appendChild(createRow('字号(px)', createNumberInput('fontSize', settings.fontSize)));
   styleSection.appendChild(createRow('行高', createNumberInput('lineHeight', settings.lineHeight, 0.1)));
   styleSection.appendChild(createRow('内容宽度(px)', createNumberInput('contentWidth', settings.contentWidth)));
-  styleSection.appendChild(createRow('皮肤', createTextInput('skinName', settings.skinName)));
   styleSection.appendChild(createRow('自定义CSS', createTextarea('extraCss', settings.extraCss), true));
 
   const toggleSection = addSection('功能开关');
