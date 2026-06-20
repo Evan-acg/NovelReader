@@ -17,4 +17,8 @@ export const KEYS = {
   enabledTextRuleGroups: 'enabledTextRuleGroups',
   convertToTraditional: 'convertToTraditional',
   splitContent: 'splitContent',
+  hideSidebar: 'hideSidebar',
+  hideFooterNav: 'hideFooterNav',
+  hidePreferencesButton: 'hidePreferencesButton',
+  remainHeight: 'remainHeight',
 } as const;
