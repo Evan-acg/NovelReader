@@ -8,6 +8,12 @@ vi.mock('../src/shared/gm', () => ({
   gmFetch: vi.fn(),
 }));
 
+const mockLoadAllSettings = vi.hoisted(() => vi.fn(() => ({ booklinkEnable: true })));
+
+vi.mock('../src/settings/storage', () => ({
+  loadAllSettings: mockLoadAllSettings,
+}));
+
 import { gmOpenInTab } from '../src/shared/gm';
 import {
   findUnreadParent,
@@ -186,6 +192,7 @@ describe('init', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
     vi.clearAllMocks();
+    mockLoadAllSettings.mockReturnValue({ booklinkEnable: true });
   });
 
   afterEach(() => {
@@ -200,6 +207,20 @@ describe('init', () => {
       value: { host: 'www.example.com' },
       writable: true,
     });
+
+    init();
+    expect(document.querySelector('a[title="一键打开所有未读链接"]')).toBeNull();
+  });
+
+  it('booklinkEnable 为 false 时不执行任何操作', () => {
+    mockLoadAllSettings.mockReturnValue({ booklinkEnable: false });
+    Object.defineProperty(window, 'location', {
+      value: { host: 'booklink.me' },
+      writable: true,
+    });
+
+    const table = buildBooklinkTable(true);
+    document.body.appendChild(table);
 
     init();
     expect(document.querySelector('a[title="一键打开所有未读链接"]')).toBeNull();

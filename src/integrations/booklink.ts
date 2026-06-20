@@ -1,5 +1,6 @@
 import { logger } from '../shared/logger';
 import { gmOpenInTab } from '../shared/gm';
+import { loadAllSettings } from '../settings/storage';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -78,6 +79,9 @@ function createButton(parent: Element): void {
 
 export function init(): void {
   if (location.host.indexOf('booklink.me') === -1) return;
+
+  const settings = loadAllSettings();
+  if (!settings.booklinkEnable) return;
 
   const parent = findUnreadParent();
   if (!parent) {
