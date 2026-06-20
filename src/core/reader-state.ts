@@ -26,3 +26,12 @@ export function createInitialState(): ReaderState {
     quietMode: false,
   };
 }
+
+export type LoadStatus = 'loaded' | 'skipped' | 'failed';
+
+export interface LoadResult {
+  status: LoadStatus;
+  chapter: ParsedChapter | null;
+  url: string;
+  error?: string;
+}
