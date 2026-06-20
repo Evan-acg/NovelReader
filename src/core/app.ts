@@ -1,6 +1,5 @@
 import { logger } from '../shared/logger';
-import { getSetting } from '../settings/storage';
-import { KEYS, SITE_RULES_URL, TEXT_RULES_URL } from '../settings/schema';
+import { loadAllSettings } from '../settings/storage';
 import { initRuleRegistry, matchRule } from '../rules/rule-registry';
 import { initTextRuleRegistry, getCombinedTextRules } from '../text-rules/text-rule-registry';
 import { parseChapter } from './parser';
@@ -13,15 +12,14 @@ export async function initApp(options?: { doc?: Document; url?: string; autoLoad
   const url = options?.url ?? location.href;
   const autoLoadNext = options?.autoLoadNext ?? true;
 
+  const settings = loadAllSettings();
+  logger.setDebug(settings.debug);
   logger.info('ReaderApp 启动');
 
   clearLoadedUrls();
 
-  const siteRulesUrl = getSetting(KEYS.siteRulesUrl, SITE_RULES_URL);
-  const textRulesUrl = getSetting(KEYS.textRulesUrl, TEXT_RULES_URL);
-
-  await initRuleRegistry(siteRulesUrl);
-  await initTextRuleRegistry(textRulesUrl);
+  await initRuleRegistry(settings.siteRulesUrl);
+  await initTextRuleRegistry(settings.textRulesUrl);
 
   const rule = matchRule(url);
   if (!rule) {
@@ -32,8 +30,8 @@ export async function initApp(options?: { doc?: Document; url?: string; autoLoad
   const textRules = getCombinedTextRules();
   const s2tMapping = await loadS2TMapping();
   const cleanOptions: CleanOptions = {
-    convertToTraditional: getSetting(KEYS.convertToTraditional) === 'true',
-    splitContent: getSetting(KEYS.splitContent) === 'true',
+    convertToTraditional: settings.convertToTraditional,
+    splitContent: settings.splitContent,
     s2tMapping,
   };
 
@@ -50,9 +48,9 @@ export async function initApp(options?: { doc?: Document; url?: string; autoLoad
   renderReaderView(chapter, rule, textRules, cleanOptions);
 
   if (autoLoadNext && chapter.nextUrl) {
-    const nextChapter = await loadNextChapter(chapter.nextUrl, rule, textRules, cleanOptions);
-    if (nextChapter) {
-      appendChapter(nextChapter);
+    const result = await loadNextChapter(chapter.nextUrl, rule, textRules, cleanOptions);
+    if (result.status === 'loaded' && result.chapter) {
+      appendChapter(result.chapter);
     }
   }
 }
