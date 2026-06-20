@@ -15,12 +15,12 @@ import {
 
 vi.mock('../src/shared/gm', () => ({
   gmAddStyle: vi.fn(),
-  gmGetValue: () => '',
+  gmGetValue: vi.fn(() => ''),
   gmSetValue: vi.fn(),
   gmFetch: vi.fn(),
 }));
 
-import { gmFetch } from '../src/shared/gm';
+import { gmFetch, gmGetValue } from '../src/shared/gm';
 
 import { clearFailedUrls, markUrlFailed, isUrlFailed } from '../src/core/next-page-loader';
 
@@ -430,11 +430,22 @@ describe('标题同步', () => {
     document.head.innerHTML = '<title>原始标题</title>';
   });
 
-  it('appendChapter 后 document.title 应更新为新章标题', () => {
+  it('appendChapter 后 document.title 应保持当前章标题不变', () => {
+    const ch1 = makeChapter({ chapterTitle: '第一章', bookTitle: '测试书' });
+    const ch2 = makeChapter({ chapterTitle: '第二章', bookTitle: '测试书' });
+    renderReaderView(ch1, baseRule, [], {});
+    expect(document.title).toContain('第一章');
+    appendChapter(ch2);
+    expect(document.title).toContain('第一章');
+  });
+
+  it('scrollToChapter 后 document.title 应更新为目标章标题', () => {
     const ch1 = makeChapter({ chapterTitle: '第一章', bookTitle: '测试书' });
     const ch2 = makeChapter({ chapterTitle: '第二章', bookTitle: '测试书' });
     renderReaderView(ch1, baseRule, [], {});
     appendChapter(ch2);
+
+    scrollToChapter(1);
     expect(document.title).toContain('第二章');
   });
 });
@@ -456,6 +467,22 @@ describe('历史记录', () => {
     const pushStateSpy = vi.spyOn(history, 'pushState');
     scrollToChapter(1);
     expect(pushStateSpy).toHaveBeenCalled();
+  });
+
+  it('addNextPageToHistory 关闭时 scrollToChapter 不应调用 pushState', () => {
+    vi.mocked(gmGetValue).mockImplementation((key: string, def: string) => {
+      if (key === 'addNextPageToHistory') return 'false';
+      return '';
+    });
+
+    const ch1 = makeChapter({ chapterTitle: '第一章' });
+    const ch2 = makeChapter({ chapterTitle: '第二章' });
+    renderReaderView(ch1, baseRule, [], {});
+    appendChapter(ch2);
+
+    const pushStateSpy = vi.spyOn(history, 'pushState');
+    scrollToChapter(1);
+    expect(pushStateSpy).not.toHaveBeenCalled();
   });
 });
 
