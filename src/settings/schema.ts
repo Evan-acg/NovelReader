@@ -28,16 +28,9 @@ export const KEYS = {
   fontSize: 'fontSize',
   lineHeight: 'lineHeight',
   contentWidth: 'contentWidth',
-  skinName: 'skinName',
   extraCss: 'extraCss',
   keybindings: 'keybindings',
-  disableAutoLaunch: 'disableAutoLaunch',
-  booklinkEnable: 'booklinkEnable',
   debug: 'debug',
-  language: 'language',
-  copyCurrentTitle: 'copyCurrentTitle',
-  addNextPageToHistory: 'addNextPageToHistory',
-  doubleClickPause: 'doubleClickPause',
 } as const;
 
 export interface Settings {
@@ -66,16 +59,9 @@ export interface Settings {
   fontSize: number;
   lineHeight: number;
   contentWidth: number;
-  skinName: string;
   extraCss: string;
   keybindings: Record<string, string>;
-  disableAutoLaunch: boolean;
-  booklinkEnable: boolean;
   debug: boolean;
-  language: string;
-  copyCurrentTitle: boolean;
-  addNextPageToHistory: boolean;
-  doubleClickPause: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -104,14 +90,7 @@ export const DEFAULT_SETTINGS: Settings = {
   fontSize: 18,
   lineHeight: 1.8,
   contentWidth: 800,
-  skinName: 'default',
   extraCss: '',
   keybindings: {},
-  disableAutoLaunch: false,
-  booklinkEnable: true,
   debug: false,
-  language: 'zh-CN',
-  copyCurrentTitle: false,
-  addNextPageToHistory: true,
-  doubleClickPause: true,
 };
