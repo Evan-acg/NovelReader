@@ -1,4 +1,5 @@
 import type { SiteRule, SiteRuleSet } from './rule-types';
+import { validateTextRule } from '../text-rules/text-rule-validator';
 import { failure, success, type Result } from '../shared/result';
 
 const MAX_RULES = 500;
@@ -45,6 +46,19 @@ export function validateSiteRule(rule: unknown): Result<SiteRule> {
     const value = r[key];
     if (value !== undefined && (typeof value !== 'string' || !hasSafeChars(value, SAFE_SELECTOR_REGEX))) {
       return failure(new Error(`规则 "${url}" 的 ${key} 包含不安全字符`));
+    }
+  }
+
+  if (r.contentReplaceRules !== undefined) {
+    if (!Array.isArray(r.contentReplaceRules)) {
+      return failure(new Error(`规则 "${url}" 的 contentReplaceRules 必须是数组`));
+    }
+    const replaceRules = r.contentReplaceRules as unknown[];
+    for (let i = 0; i < replaceRules.length; i++) {
+      const result = validateTextRule(replaceRules[i]);
+      if (!result.success) {
+        return failure(new Error(`规则 "${url}" 的 contentReplaceRules[${i}]: ${result.error.message}`));
+      }
     }
   }
 
