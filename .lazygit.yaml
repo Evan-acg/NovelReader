@@ -1,0 +1,46 @@
+type:
+  - name: Feat
+    docs: 新功能
+  - name: Fix
+    docs: 缺陷修复
+  - name: Docs
+    docs: 文档变更
+  - name: Style
+    docs: 样式/皮肤变更
+  - name: Refactor
+    docs: 重构(既不是新增功能也不是修复bug的代码变动)
+  - name: Perf
+    docs: 性能优化
+  - name: Test
+    docs: 增加测试
+  - name: Chore
+    docs: 构建过程或辅助工具的变动(构建配置、依赖、CI等)
+  - name: Revert
+    docs: 回滚
+scope:
+  - name: Core
+    docs: 核心逻辑(app、解析器、导航、连续加载、内容清洗等)
+  - name: Rules
+    docs: 站点规则(远程/本地规则源、规则注册、校验)
+  - name: TextRules
+    docs: 文本规则(清洗规则、替换规则、简繁转换等)
+  - name: UI
+    docs: 用户界面(阅读视图、侧栏、设置面板、快捷键等)
+  - name: Settings
+    docs: 设置与持久化(GM存储、配置管理)
+  - name: Userscript
+    docs: 用户脚本入口与元数据
+  - name: Shared
+    docs: 共享工具(DOM操作、日志等)
+  - name: Booklink
+    docs: booklink.me 辅助功能
+  - name: Legacy
+    docs: 遗留代码迁移与兼容
+  - name: Build
+    docs: 构建与配置(Vite、TypeScript、依赖等)
+  - name: Tests
+    docs: 测试
+  - name: Styles
+    docs: 皮肤/主题/CSS样式
+  - name: Other
+    docs: 其它
