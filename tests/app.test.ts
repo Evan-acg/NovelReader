@@ -142,6 +142,105 @@ describe('initApp 集成流程', () => {
     expect(rule?.id).toBe('test-site');
   });
 
+  it('规则包含 waitDelay 时应等待指定时间后解析', async () => {
+    const start = Date.now();
+    const DELAY = 100;
+
+    vi.mocked(gmFetch)
+      .mockResolvedValueOnce(JSON.stringify({
+        version: 1,
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        rules: [{ ...mockSiteRules.rules[0], waitDelay: DELAY }],
+      }))
+      .mockResolvedValueOnce(JSON.stringify(mockTextRules))
+      .mockResolvedValueOnce(JSON.stringify({}));
+
+    const dom = new JSDOM(`
+      <html><body>
+        <span class="book">测试书</span>
+        <h1 class="title">第一章 开端</h1>
+        <div id="content">
+          <p>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+        </div>
+        <a class="next" href="/novel/1/3.html">下一章</a>
+      </body></html>
+    `, { url: 'https://www.example.com/novel/1/2.html' });
+
+    await initApp({
+      doc: dom.window.document,
+      url: 'https://www.example.com/novel/1/2.html',
+    });
+
+    expect(Date.now() - start).toBeGreaterThanOrEqual(DELAY);
+    expect(gmFetch).toHaveBeenCalledTimes(3);
+  });
+
+  it('规则包含 waitSelector 时应等待元素出现', async () => {
+    vi.mocked(gmFetch)
+      .mockResolvedValueOnce(JSON.stringify({
+        version: 1,
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        rules: [{ ...mockSiteRules.rules[0], waitSelector: '#dynamic-content' }],
+      }))
+      .mockResolvedValueOnce(JSON.stringify(mockTextRules))
+      .mockResolvedValueOnce(JSON.stringify({}));
+
+    const dom = new JSDOM(`
+      <html><body>
+        <span class="book">测试书</span>
+        <h1 class="title">第一章 开端</h1>
+        <div id="content">
+          <p>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+        </div>
+        <a class="next" href="/novel/1/3.html">下一章</a>
+      </body></html>
+    `, { url: 'https://www.example.com/novel/1/2.html' });
+
+    // Add the element dynamically after a small delay
+    setTimeout(() => {
+      const el = dom.window.document.createElement('div');
+      el.id = 'dynamic-content';
+      el.textContent = 'dynamic';
+      dom.window.document.body.appendChild(el);
+    }, 50);
+
+    await initApp({
+      doc: dom.window.document,
+      url: 'https://www.example.com/novel/1/2.html',
+    });
+
+    expect(gmFetch).toHaveBeenCalledTimes(3);
+  });
+
+  it('规则包含 disableAuto 时应跳过自动启动', async () => {
+    vi.mocked(gmFetch)
+      .mockResolvedValueOnce(JSON.stringify({
+        version: 1,
+        updatedAt: '2026-01-01T00:00:00.000Z',
+        rules: [{ ...mockSiteRules.rules[0], disableAuto: true }],
+      }))
+      .mockResolvedValueOnce(JSON.stringify(mockTextRules));
+
+    const dom = new JSDOM(`
+      <html><body>
+        <span class="book">测试书</span>
+        <h1 class="title">第一章 开端</h1>
+        <div id="content">
+          <p>正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容正文内容。</p>
+        </div>
+      </body></html>
+    `, { url: 'https://www.example.com/novel/1/2.html' });
+
+    await initApp({
+      doc: dom.window.document,
+      url: 'https://www.example.com/novel/1/2.html',
+    });
+
+    // Should have loaded rules but not rendered reader view
+    expect(gmFetch).toHaveBeenCalledTimes(2);
+    expect(dom.window.document.querySelector('.nr-reader-container')).toBeNull();
+  });
+
   it('应加载简繁映射并缓存，convertToTraditional 开启时传递给解析器', async () => {
     mockStorage[KEYS.convertToTraditional] = 'true';
 

@@ -7,6 +7,29 @@ import { loadS2TMapping, type CleanOptions } from './content-cleaner';
 import { renderReaderView } from '../ui/reader-view';
 import { clearLoadedUrls } from './next-page-loader';
 
+function waitForSelector(selector: string, doc: Document, timeout = 10000): Promise<void> {
+  return new Promise((resolve) => {
+    if (doc.querySelector(selector)) {
+      resolve();
+      return;
+    }
+    const observer = new MutationObserver(() => {
+      if (doc.querySelector(selector)) {
+        observer.disconnect();
+        resolve();
+      }
+    });
+    const root = doc.body || doc.documentElement;
+    if (root) {
+      observer.observe(root, { childList: true, subtree: true });
+    }
+    setTimeout(() => {
+      observer.disconnect();
+      resolve();
+    }, timeout);
+  });
+}
+
 export async function initApp(options?: { doc?: Document; url?: string }): Promise<void> {
   const doc = options?.doc ?? document;
   const url = options?.url ?? location.href;
@@ -24,6 +47,21 @@ export async function initApp(options?: { doc?: Document; url?: string }): Promi
   if (!rule) {
     logger.info('当前页面未匹配任何站点规则，跳过');
     return;
+  }
+
+  if (rule.disableAuto) {
+    logger.info('站点规则设置 disableAuto，跳过自动启动');
+    return;
+  }
+
+  if (rule.waitDelay && rule.waitDelay > 0) {
+    logger.info(`等待 ${rule.waitDelay}ms 后启动...`);
+    await new Promise((resolve) => setTimeout(resolve, rule.waitDelay));
+  }
+
+  if (rule.waitSelector) {
+    logger.info(`等待选择器 "${rule.waitSelector}" 出现...`);
+    await waitForSelector(rule.waitSelector, doc);
   }
 
   const textRules = getCombinedTextRules();
