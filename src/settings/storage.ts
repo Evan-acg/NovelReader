@@ -49,7 +49,8 @@ export function loadAllSettings(): Settings {
     if (type === 'boolean') {
       result[key] = raw === 'true';
     } else if (type === 'number') {
-      result[key] = Number(raw);
+      const n = Number(raw);
+      result[key] = Number.isFinite(n) ? n : (defaultValue as number);
     } else if (type === 'object') {
       try {
         result[key] = JSON.parse(raw);
