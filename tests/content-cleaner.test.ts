@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { cleanContent } from '../src/core/content-cleaner';
+import { cleanContent, convertS2T } from '../src/core/content-cleaner';
 import type { TextRule } from '../src/text-rules/text-rule-types';
+
+const TEST_S2T: Record<string, string> = {
+  '个': '個', '们': '們', '门': '門', '为': '為', '国': '國', '学': '學',
+  '这': '這', '体': '體', '转': '轉', '运': '運', '试': '試', '测': '測',
+  '简': '簡',
+};
 
 describe('节点移除', () => {
   it('应移除 script 元素', () => {
@@ -178,19 +184,19 @@ describe('强制分段', () => {
 describe('简繁转换', () => {
   it('关闭时不转换', () => {
     const html = '<p>中国文学</p>';
-    const result = cleanContent(html, [], { convertToTraditional: false });
+    const result = cleanContent(html, [], { convertToTraditional: false, s2tMapping: TEST_S2T });
     expect(result.html).toContain('中国文学');
   });
 
   it('开启时应转换为繁体', () => {
     const html = '<p>中国文学</p>';
-    const result = cleanContent(html, [], { convertToTraditional: true });
+    const result = cleanContent(html, [], { convertToTraditional: true, s2tMapping: TEST_S2T });
     expect(result.html).toContain('中國文學');
   });
 
-  it('应转换标题和正文中的常见简体字', () => {
+  it('应转换正文中的常见简体字', () => {
     const html = '<p>这是一个测试，看看简体转繁体是否正常运作。</p>';
-    const result = cleanContent(html, [], { convertToTraditional: true });
+    const result = cleanContent(html, [], { convertToTraditional: true, s2tMapping: TEST_S2T });
     expect(result.html).toContain('這');
     expect(result.html).toContain('個');
     expect(result.html).toContain('測試');
@@ -201,7 +207,7 @@ describe('简繁转换', () => {
 
   it('原文为繁体时保持不变', () => {
     const html = '<p>這是繁體中文</p>';
-    const result = cleanContent(html, [], { convertToTraditional: true });
+    const result = cleanContent(html, [], { convertToTraditional: true, s2tMapping: TEST_S2T });
     expect(result.html).toContain('這是繁體中文');
   });
 });
@@ -261,5 +267,17 @@ describe('cleanContent 集成', () => {
     expect(result.html).toContain('[过滤]');
     expect(result.html).toContain('敏感词B');
     expect(result.html).not.toContain('敏感词A');
+  });
+});
+
+describe('convertS2T', () => {
+  it('应转换中文文本', () => {
+    const result = convertS2T('中国文学', TEST_S2T);
+    expect(result).toContain('國');
+    expect(result).toContain('學');
+  });
+
+  it('无映射字符保持不变', () => {
+    expect(convertS2T('abc123', TEST_S2T)).toBe('abc123');
   });
 });
