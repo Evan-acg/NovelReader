@@ -10,6 +10,11 @@ export interface KeyboardHandlers {
 }
 
 const DEFAULT_KEYBINDINGS: Record<string, string> = {
+  openIndex: 'enter',
+  prevChapter: 'arrowleft',
+  nextChapter: 'arrowright',
+  pageUp: ',',
+  pageDown: '.',
   openSettings: 'ctrl+,',
   toggleSidebar: 'ctrl+b',
   toggleQuietMode: 'ctrl+q',
@@ -64,25 +69,25 @@ export function initKeyboard(handlers: KeyboardHandlers, keybindings?: Record<st
 
     if (isPanelOpen()) return;
 
-    if (e.key === 'Enter') {
+    if (matchesBinding(e, customBindings.openIndex)) {
       e.preventDefault();
       handlers.onOpenIndex?.();
       return;
     }
 
-    if (e.key === 'ArrowLeft') {
+    if (matchesBinding(e, customBindings.prevChapter)) {
       e.preventDefault();
       handlers.onPrevChapter?.();
       return;
     }
 
-    if (e.key === 'ArrowRight') {
+    if (matchesBinding(e, customBindings.nextChapter)) {
       e.preventDefault();
       handlers.onNextChapter?.();
       return;
     }
 
-    if (e.key === ',' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    if (matchesBinding(e, customBindings.pageUp)) {
       e.preventDefault();
       const container = getScrollContainer();
       if (container) {
@@ -91,7 +96,7 @@ export function initKeyboard(handlers: KeyboardHandlers, keybindings?: Record<st
       return;
     }
 
-    if (e.key === '.' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    if (matchesBinding(e, customBindings.pageDown)) {
       e.preventDefault();
       const container = getScrollContainer();
       if (container) {
