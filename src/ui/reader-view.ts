@@ -110,9 +110,16 @@ function updateHistory(index: number): void {
   const title = chapter.bookTitle
     ? `${chapter.chapterTitle || ''} - ${chapter.bookTitle}`
     : chapter.chapterTitle || '';
+  let url: string | undefined;
+  try {
+    url = chapter.url && new URL(chapter.url).origin === location.origin ? chapter.url : undefined;
+  } catch {
+    url = undefined;
+  }
   history.pushState(
     { chapterIndex: index, chapterTitle: chapter.chapterTitle, bookTitle: chapter.bookTitle },
     title,
+    url,
   );
 }
 
@@ -185,6 +192,7 @@ function setupScrollLoad(): void {
 
   scrollHandler = () => {
     if (!contentAreaEl || isLoadingNext || !state) return;
+    if (state.autoLoadPaused) return;
     const lastChapter = state.chapters[state.chapters.length - 1];
     if (!lastChapter?.nextUrl) return;
 
@@ -334,6 +342,7 @@ export function renderReaderView(
     activeIndex: 0,
     sidebarVisible: !settings.hideSidebar,
     quietMode: false,
+    autoLoadPaused: false,
   };
 
   createSidebar(containerEl, state.chapters, 0, (index) => {
@@ -356,6 +365,13 @@ export function renderReaderView(
   applyTitleUpdate(0);
   setupScrollLoad();
   setupKeyboard();
+
+  if (settings.doubleClickPause && contentAreaEl) {
+    contentAreaEl.addEventListener('dblclick', () => {
+      if (!state) return;
+      state.autoLoadPaused = !state.autoLoadPaused;
+    });
+  }
 
   logger.info('阅读视图渲染完成', {
     bookTitle: initialChapter.bookTitle,
@@ -395,9 +411,10 @@ export function appendChapter(chapter: ParsedChapter): void {
 export function scrollToChapter(index: number): void {
   if (!contentAreaEl) return;
 
+  const st = loadAllSettings();
   const target = contentAreaEl.querySelector(`[data-chapter-index="${index}"]`);
   if (target && typeof target.scrollIntoView === 'function') {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.scrollIntoView({ behavior: st.scrollAnimate ? 'smooth' : 'auto', block: 'start' });
   }
 
   if (state) {

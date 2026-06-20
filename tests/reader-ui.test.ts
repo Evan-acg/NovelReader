@@ -32,15 +32,17 @@ const baseRule: SiteRule = {
 };
 
 function makeChapter(overrides: Partial<ParsedChapter> = {}): ParsedChapter {
+  const origin = location.origin;
   return {
+    url: `${origin}/novel/2`,
     bookTitle: '测试书',
     chapterTitle: '第一章 开端',
     documentTitle: '第一章 开端 - 测试书',
     contentHtml: '<p>这是第一段正文内容。</p><p>这是第二段正文内容。</p>',
     contentText: '这是第一段正文内容。这是第二段正文内容。',
-    prevUrl: 'https://example.com/novel/1',
-    nextUrl: 'https://example.com/novel/3',
-    indexUrl: 'https://example.com/novel/index',
+    prevUrl: `${origin}/novel/1`,
+    nextUrl: `${origin}/novel/3`,
+    indexUrl: `${origin}/novel/index`,
     ...overrides,
   };
 }
@@ -458,15 +460,19 @@ describe('历史记录', () => {
     vi.restoreAllMocks();
   });
 
-  it('scrollToChapter 后应调用 history.pushState', () => {
+  it('scrollToChapter 后应调用 history.pushState 并传入章节 URL', () => {
     const ch1 = makeChapter({ chapterTitle: '第一章' });
-    const ch2 = makeChapter({ chapterTitle: '第二章' });
+    const ch2 = makeChapter({ chapterTitle: '第二章', url: location.href });
     renderReaderView(ch1, baseRule, [], {});
     appendChapter(ch2);
 
     const pushStateSpy = vi.spyOn(history, 'pushState');
     scrollToChapter(1);
-    expect(pushStateSpy).toHaveBeenCalled();
+    expect(pushStateSpy).toHaveBeenCalledWith(
+      { chapterIndex: 1, chapterTitle: '第二章', bookTitle: '测试书' },
+      '第二章 - 测试书',
+      location.href,
+    );
   });
 
   it('addNextPageToHistory 关闭时 scrollToChapter 不应调用 pushState', () => {
@@ -483,6 +489,84 @@ describe('历史记录', () => {
     const pushStateSpy = vi.spyOn(history, 'pushState');
     scrollToChapter(1);
     expect(pushStateSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('scrollAnimate 设置', () => {
+  beforeEach(() => {
+    destroyReaderView();
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '';
+    vi.restoreAllMocks();
+  });
+
+  it('scrollAnimate=true 时 scrollToChapter 正常执行并更新状态', () => {
+    vi.mocked(gmGetValue).mockImplementation((key: string, def: string) => {
+      if (key === 'scrollAnimate') return 'true';
+      return '';
+    });
+
+    const ch1 = makeChapter({ chapterTitle: '第一章' });
+    const ch2 = makeChapter({ chapterTitle: '第二章' });
+    renderReaderView(ch1, baseRule, [], {});
+    appendChapter(ch2);
+
+    scrollToChapter(1);
+
+    const state = getReaderState();
+    expect(state?.activeIndex).toBe(1);
+    const items = document.querySelectorAll('.nr-sidebar-item');
+    expect(items[0].classList.contains('active')).toBe(false);
+    expect(items[1].classList.contains('active')).toBe(true);
+  });
+
+  it('scrollAnimate=false 时 scrollToChapter 正常执行并更新状态', () => {
+    vi.mocked(gmGetValue).mockImplementation((key: string, def: string) => {
+      if (key === 'scrollAnimate') return 'false';
+      return '';
+    });
+
+    const ch1 = makeChapter({ chapterTitle: '第一章' });
+    const ch2 = makeChapter({ chapterTitle: '第二章' });
+    renderReaderView(ch1, baseRule, [], {});
+    appendChapter(ch2);
+
+    scrollToChapter(1);
+
+    const state = getReaderState();
+    expect(state?.activeIndex).toBe(1);
+    const items = document.querySelectorAll('.nr-sidebar-item');
+    expect(items[0].classList.contains('active')).toBe(false);
+    expect(items[1].classList.contains('active')).toBe(true);
+  });
+});
+
+describe('doubleClickPause 设置', () => {
+  beforeEach(() => {
+    destroyReaderView();
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '';
+    vi.restoreAllMocks();
+  });
+
+  it('双击内容区应切换 autoLoadPaused 状态', () => {
+    vi.mocked(gmGetValue).mockImplementation((key: string, def: string) => {
+      if (key === 'doubleClickPause') return 'true';
+      return '';
+    });
+
+    const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/3' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    const state = getReaderState()!;
+    expect(state.autoLoadPaused).toBe(false);
+
+    const contentArea = document.querySelector('.nr-content-area')!;
+    contentArea.dispatchEvent(new MouseEvent('dblclick'));
+    expect(getReaderState()!.autoLoadPaused).toBe(true);
+
+    contentArea.dispatchEvent(new MouseEvent('dblclick'));
+    expect(getReaderState()!.autoLoadPaused).toBe(false);
   });
 });
 

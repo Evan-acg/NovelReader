@@ -113,6 +113,8 @@ const READER_CSS = `
   text-indent: 2em;
 }
 .nr-chapter-body img {
+  display: block;
+  margin: 1em auto;
   max-width: 100%;
   height: auto;
 }

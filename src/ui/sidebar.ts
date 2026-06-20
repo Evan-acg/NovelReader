@@ -59,6 +59,13 @@ function createSidebarItem(
   item.className = 'nr-sidebar-item' + (isActive ? ' active' : '');
   item.textContent = chapter.chapterTitle || `第 ${index + 1} 章`;
   item.addEventListener('click', (e) => {
+    if (e.button === 1 || e.ctrlKey || e.metaKey) {
+      if (chapter.url) {
+        e.preventDefault();
+        window.open(chapter.url, '_blank');
+        return;
+      }
+    }
     e.preventDefault();
     onChapterClick(index);
   });
