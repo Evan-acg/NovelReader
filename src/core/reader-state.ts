@@ -10,3 +10,19 @@ export interface ParsedChapter {
   isVip?: boolean;
   isSection?: boolean;
 }
+
+export interface ReaderState {
+  chapters: ParsedChapter[];
+  activeIndex: number;
+  sidebarVisible: boolean;
+  quietMode: boolean;
+}
+
+export function createInitialState(): ReaderState {
+  return {
+    chapters: [],
+    activeIndex: 0,
+    sidebarVisible: true,
+    quietMode: false,
+  };
+}
