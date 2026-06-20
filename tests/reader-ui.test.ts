@@ -423,6 +423,42 @@ describe('连续加载', () => {
   });
 });
 
+describe('标题同步', () => {
+  beforeEach(() => {
+    destroyReaderView();
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '<title>原始标题</title>';
+  });
+
+  it('appendChapter 后 document.title 应更新为新章标题', () => {
+    const ch1 = makeChapter({ chapterTitle: '第一章', bookTitle: '测试书' });
+    const ch2 = makeChapter({ chapterTitle: '第二章', bookTitle: '测试书' });
+    renderReaderView(ch1, baseRule, [], {});
+    appendChapter(ch2);
+    expect(document.title).toContain('第二章');
+  });
+});
+
+describe('历史记录', () => {
+  beforeEach(() => {
+    destroyReaderView();
+    document.body.innerHTML = '<div id="original">原始页面内容</div>';
+    document.head.innerHTML = '<title>原始标题</title>';
+    vi.restoreAllMocks();
+  });
+
+  it('scrollToChapter 后应调用 history.pushState', () => {
+    const ch1 = makeChapter({ chapterTitle: '第一章' });
+    const ch2 = makeChapter({ chapterTitle: '第二章' });
+    renderReaderView(ch1, baseRule, [], {});
+    appendChapter(ch2);
+
+    const pushStateSpy = vi.spyOn(history, 'pushState');
+    scrollToChapter(1);
+    expect(pushStateSpy).toHaveBeenCalled();
+  });
+});
+
 describe('销毁视图清理', () => {
   beforeEach(() => {
     clearFailedUrls();
