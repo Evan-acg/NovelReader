@@ -26,8 +26,9 @@ export async function initApp(options?: { doc?: Document; url?: string }): Promi
 
   const textRules = getCombinedTextRules();
   const cleanOptions: CleanOptions = {
-    convertToTraditional: false,
-    splitContent: false,
+    convertToTraditional: getSetting(KEYS.convertToTraditional) === 'true',
+    splitContent: getSetting(KEYS.splitContent) === 'true',
+    s2tMapping: {},
   };
 
   const chapter = parseChapter(doc, url, rule, textRules, cleanOptions);
