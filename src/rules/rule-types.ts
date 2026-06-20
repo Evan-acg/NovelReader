@@ -1,3 +1,5 @@
+import type { TextRule } from '../text-rules/text-rule-types';
+
 export interface SiteRule {
   id: string;
   name: string;
@@ -10,6 +12,7 @@ export interface SiteRule {
   nextSelector?: string;
   indexSelector?: string;
   removeSelectors?: string[];
+  contentReplaceRules?: TextRule[];
   insertBefore?: string;
   excludeUrl?: string;
   bookTitleRegex?: string;
