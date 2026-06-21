@@ -1,5 +1,4116 @@
 {
   "version": 1,
   "updatedAt": "2026-06-21T00:00:00.000Z",
-  "groups": []
+  "groups": [
+    {
+      "id": "legacy-replace",
+      "name": "Legacy replace",
+      "enabledByDefault": true,
+      "rules": [
+        {
+          "pattern": ",",
+          "replacement": "，",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\*|＊",
+          "replacement": "*",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[wWｗＷ]{3}",
+          "replacement": "www",
+          "flags": "gi"
+        },
+        {
+          "pattern": "w{3}(、|。)",
+          "replacement": "www.",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[cCｃＣ][oOｏＯ][mMｍＭ]",
+          "replacement": "com",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[nNｎＮ][eｅEＥ][tｔTＴ]",
+          "replacement": "net",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[cCｃＣ][nNｎＮ]",
+          "replacement": "cn",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\.|、|。)com",
+          "replacement": ".com",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\.|、|。)net",
+          "replacement": ".net",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\.|、|。)cn",
+          "replacement": ".cn",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[pPｐＰ][sSｓＳ][:：]",
+          "replacement": "ps:",
+          "flags": "gi"
+        },
+        {
+          "pattern": "。{5,7}",
+          "replacement": "……",
+          "flags": "gi"
+        },
+        {
+          "pattern": "~{2,50}",
+          "replacement": "——",
+          "flags": "gi"
+        },
+        {
+          "pattern": "…{3,40}",
+          "replacement": "……",
+          "flags": "gi"
+        },
+        {
+          "pattern": "－{3,20}",
+          "replacement": "——",
+          "flags": "gi"
+        },
+        {
+          "pattern": "@{3,}",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\\\r<br>",
+          "replacement": "<br>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[+CP.*(http://file.*\\.jpg)\\]+",
+          "replacement": "<img src='$1'>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "『(.)』",
+          "replacement": "$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[搜索最新更新尽在[a-z\\.]+\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<a>手机用户请到m.qidian.com阅读。</a>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ".{2,4}中文网欢迎广大书友",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "访问下载txt小说|◎雲來閣免费万本m.yunlaige.com◎",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "〖∷更新快∷无弹窗∷纯文字∷.*?〗",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "超快稳定更新小说[,，]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本文由　。。　首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "”小说“小说章节更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如果觉得好看，请把本站网址推荐给您的朋友吧！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本站手机网址：&nbsp;&nbsp;请互相通知向您QQ群【微博/微信】论坛贴吧推荐宣传介绍!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fqXSw\\.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\.5ｄｕ|\\.５du５\\.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如果您觉得网不错就多多分享本站谢谢各位读者的支持",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "全文字无广告|\\(看书窝&nbsp;看书窝&nbsp;无弹窗全文阅读\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "。。+[\\s　]*看最新最全小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "水印广告测试",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(平南文学网\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "讀蕶蕶尐說網",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "比奇提示：如何快速搜自己要找的书籍",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《百度书名\\+比奇》即可快速直达",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "~无~错~小~说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(一秒记住小说界\\）|\\*一秒记住\\*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "uutxt\\.org|3vbook\\.cn|www\\.qbwx\\.com|WWw\\.YaNkuai\\.com|www\\.btzw\\.com|www\\.23uS\\.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "txt53712/",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": " {4,12}",
+          "replacement": "       ",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[wｗＷ]{1,3}[．\\.]２３ｕＳ[．\\.](?:ｃｏＭ|com)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "十有(\\*{2})",
+          "replacement": "十有八九",
+          "flags": "gi"
+        },
+        {
+          "pattern": "十有bā'九",
+          "replacement": "十有八九",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})不离十",
+          "replacement": "八九不离十",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})点",
+          "replacement": "八九点",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})个",
+          "replacement": "八九个",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})岁",
+          "replacement": "八九岁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})成",
+          "replacement": "八九成",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})年",
+          "replacement": "八九年",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一八(\\*{2})",
+          "replacement": "一八八九",
+          "flags": "gi"
+        },
+        {
+          "pattern": "G(\\*{2})",
+          "replacement": "GSM",
+          "flags": "gi"
+        },
+        {
+          "pattern": "感(\\*{2})彩",
+          "replacement": "感情色彩",
+          "flags": "gi"
+        },
+        {
+          "pattern": "强(\\*{2})u5B9D",
+          "replacement": "强大法宝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "强(\\*{2})宝",
+          "replacement": "强大法宝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "种魔(\\*{2})",
+          "replacement": "种魔大法",
+          "flags": "gi"
+        },
+        {
+          "pattern": "巨(\\*{2})",
+          "replacement": "巨大法",
+          "flags": "gi"
+        },
+        {
+          "pattern": "强(\\*{2})术",
+          "replacement": "强大法术",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})师",
+          "replacement": "大法师",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})凡胎",
+          "replacement": "肉体凡胎",
+          "flags": "gi"
+        },
+        {
+          "pattern": "夺取她的(\\*{2})",
+          "replacement": "夺取她的肉体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "夺取他的(\\*{2})",
+          "replacement": "夺取他的肉体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})与精神",
+          "replacement": "肉体与精神",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})素材",
+          "replacement": "肉体素材",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})材料",
+          "replacement": "肉体材料",
+          "flags": "gi"
+        },
+        {
+          "pattern": "在(\\*{2})上",
+          "replacement": "在肉体上",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{4})着",
+          "replacement": "赤裸着",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})裸",
+          "replacement": "赤裸裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "浑身(\\*{2})",
+          "replacement": "浑身赤裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "枪(\\*{4})",
+          "replacement": "枪发射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{4})而出",
+          "replacement": "喷射而出",
+          "flags": "gi"
+        },
+        {
+          "pattern": "光(\\*{2})",
+          "replacement": "光四射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})之欢",
+          "replacement": "鱼水之欢",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})队",
+          "replacement": "国军队",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})舰",
+          "replacement": "国军舰",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})方",
+          "replacement": "国军方",
+          "flags": "gi"
+        },
+        {
+          "pattern": "暴(\\*{2})谋",
+          "replacement": "暴露阴谋",
+          "flags": "gi"
+        },
+        {
+          "pattern": "的(\\*{2})是无止境的",
+          "replacement": "的欲望是无止境的",
+          "flags": "gi"
+        },
+        {
+          "pattern": "邪恶的(\\*{2})",
+          "replacement": "邪恶的欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "被(\\*{2})支配",
+          "replacement": "被欲望支配",
+          "flags": "gi"
+        },
+        {
+          "pattern": "掀桌的(\\*{2})",
+          "replacement": "掀桌的欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "控制不住(\\*{2})",
+          "replacement": "控制不住欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "求生的(\\*{2})",
+          "replacement": "求生的欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "求生(\\*{2})",
+          "replacement": "求生欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "购买(\\*{2})",
+          "replacement": "购买欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "永无止境的(\\*{2})",
+          "replacement": "永无止境的欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})的发泄",
+          "replacement": "欲望的发泄",
+          "flags": "gi"
+        },
+        {
+          "pattern": "发泄(\\*{2})",
+          "replacement": "发泄欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "杀戮(\\*{2})",
+          "replacement": "杀戮欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})和本能",
+          "replacement": "欲望和本能",
+          "flags": "gi"
+        },
+        {
+          "pattern": "不堪重负的(\\*{2})",
+          "replacement": "不堪重负的呻吟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})声",
+          "replacement": "呻吟声",
+          "flags": "gi"
+        },
+        {
+          "pattern": "颤抖(\\*{2})",
+          "replacement": "颤抖呻吟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})颤抖",
+          "replacement": "呻吟颤抖",
+          "flags": "gi"
+        },
+        {
+          "pattern": "宣布(\\*{2})",
+          "replacement": "宣布独立",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})空间",
+          "replacement": "独立空间",
+          "flags": "gi"
+        },
+        {
+          "pattern": "波纹(\\*{2})",
+          "replacement": "波纹荡漾",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})之机",
+          "replacement": "喘息之机",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一(\\*{2})",
+          "replacement": "一大波",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})奉",
+          "replacement": "上供奉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})掳掠",
+          "replacement": "奸淫掳掠",
+          "flags": "gi"
+        },
+        {
+          "pattern": "有(\\*{2})份",
+          "replacement": "有失身份",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})八荒",
+          "replacement": "六合八荒",
+          "flags": "gi"
+        },
+        {
+          "pattern": "天灾(\\*{2})",
+          "replacement": "天灾人祸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一(\\*{2})日",
+          "replacement": "一轮红日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "东躲(\\*{2})",
+          "replacement": "东躲西藏",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})纵",
+          "replacement": "被操纵",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})丝",
+          "replacement": "穷屌丝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(\\*{2})滋味",
+          "replacement": "销魂滋味",
+          "flags": "gi"
+        },
+        {
+          "pattern": "血(\\*{2})晶",
+          "replacement": "血色水晶",
+          "flags": "gi"
+        },
+        {
+          "pattern": "偷(\\*{2})",
+          "replacement": "偷偷用",
+          "flags": "gi"
+        },
+        {
+          "pattern": "水(\\*{2})融",
+          "replacement": "水乳交融",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cao之过急",
+          "replacement": "操之过急",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chunguang大泄",
+          "replacement": "春光大泄",
+          "flags": "gi"
+        },
+        {
+          "pattern": "大公无si",
+          "replacement": "大公无私",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fu道人家",
+          "replacement": "妇道人家",
+          "flags": "gi"
+        },
+        {
+          "pattern": "放sōng'xià来",
+          "replacement": "放松下来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "奸yin掳掠",
+          "replacement": "奸淫掳掠",
+          "flags": "gi"
+        },
+        {
+          "pattern": "空dangdang",
+          "replacement": "空荡荡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "突发qing况",
+          "replacement": "突发情况",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yin奉阳违",
+          "replacement": "阴奉阳违",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一yin一阳",
+          "replacement": "一阴一阳",
+          "flags": "gi"
+        },
+        {
+          "pattern": "暧m[eè][iì]",
+          "replacement": "暧昧",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bàn\\s*fǎ",
+          "replacement": "办法",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bucuo",
+          "replacement": "不错",
+          "flags": "gi"
+        },
+        {
+          "pattern": "不liáng",
+          "replacement": "不良",
+          "flags": "gi"
+        },
+        {
+          "pattern": "b[ěe]i(\\s|&nbsp;)*j[īi]ng",
+          "replacement": "北京",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bǐ\\s*shǒu",
+          "replacement": "匕首",
+          "flags": "gi"
+        },
+        {
+          "pattern": "半shen",
+          "replacement": "半身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "b[ìi]j[ìi]ng",
+          "replacement": "毕竟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "报(了?)jing",
+          "replacement": "报$1警",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bèi'pò",
+          "replacement": "被迫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "包yǎng",
+          "replacement": "包养",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:biǎo|婊\\\\?)子",
+          "replacement": "婊子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "biǎo\\s*xiàn\\s*",
+          "replacement": "表现",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chifan",
+          "replacement": "吃饭",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ch[oō]ngd[oò]ng",
+          "replacement": "冲动",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chong物",
+          "replacement": "宠物",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cao(练|作)",
+          "replacement": "操$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "出gui",
+          "replacement": "出轨",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chu\\s*xian",
+          "replacement": "出现",
+          "flags": "gi"
+        },
+        {
+          "pattern": "缠mian",
+          "replacement": "缠绵",
+          "flags": "gi"
+        },
+        {
+          "pattern": "成shu",
+          "replacement": "成熟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:赤|chi)\\s*lu[oǒ]",
+          "replacement": "赤裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "春guang",
+          "replacement": "春光",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chun风",
+          "replacement": "春风",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chuang伴",
+          "replacement": "床伴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "沉mi",
+          "replacement": "沉迷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "沉lun",
+          "replacement": "沉沦",
+          "flags": "gi"
+        },
+        {
+          "pattern": "刺ji",
+          "replacement": "刺激",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chao红",
+          "replacement": "潮红",
+          "flags": "gi"
+        },
+        {
+          "pattern": "初chun",
+          "replacement": "初春",
+          "flags": "gi"
+        },
+        {
+          "pattern": "＂ｃｈｉ\\s*ｌｕｏ＂",
+          "replacement": "赤裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cí\\s*zhí",
+          "replacement": "辞职",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dān\\s*xīn",
+          "replacement": "当心",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dang校",
+          "replacement": "党校",
+          "flags": "gi"
+        },
+        {
+          "pattern": "da子",
+          "replacement": "鞑子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "大tui",
+          "replacement": "大腿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dǎ\\s*suàn",
+          "replacement": "打算",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dá\\s*àn",
+          "replacement": "答案",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dài\\s*lǐ",
+          "replacement": "代理",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dengdai",
+          "replacement": "等待",
+          "flags": "gi"
+        },
+        {
+          "pattern": "电huà",
+          "replacement": "电话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "diàn\\s*huà",
+          "replacement": "电话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "diàn\\s*yǐng",
+          "replacement": "电影",
+          "flags": "gi"
+        },
+        {
+          "pattern": "diao丝",
+          "replacement": "屌丝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "d[úu](?:\\s|&nbsp;|<br/>)*l[ìi]",
+          "replacement": "独立",
+          "flags": "gi"
+        },
+        {
+          "pattern": "d[uú]\\s{0,2}c[áa]i",
+          "replacement": "独裁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "d?[iì]f[āa]ng",
+          "replacement": "地方",
+          "flags": "gi"
+        },
+        {
+          "pattern": "d[ìi]\\s*d[ūu]",
+          "replacement": "帝都",
+          "flags": "gi"
+        },
+        {
+          "pattern": "di国|帝guo",
+          "replacement": "帝国",
+          "flags": "gi"
+        },
+        {
+          "pattern": "du[oò]落",
+          "replacement": "堕落",
+          "flags": "gi"
+        },
+        {
+          "pattern": "坠luò",
+          "replacement": "坠落",
+          "flags": "gi"
+        },
+        {
+          "pattern": "f[ǎa]ngf[óo]",
+          "replacement": "仿佛",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fei踢",
+          "replacement": "飞踢",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fēi\\s*wén",
+          "replacement": "飞吻",
+          "flags": "gi"
+        },
+        {
+          "pattern": "feng流",
+          "replacement": "风流",
+          "flags": "gi"
+        },
+        {
+          "pattern": "风liu",
+          "replacement": "风流",
+          "flags": "gi"
+        },
+        {
+          "pattern": "f[èe]nn[ùu]",
+          "replacement": "愤怒",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fǎn\\s*yīng",
+          "replacement": "反应",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fú\\s*wù",
+          "replacement": "服务",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fù\\s*chóu",
+          "replacement": "复仇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "gao潮",
+          "replacement": "高潮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "高氵朝",
+          "replacement": "高潮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "gāo\\s*xìng\\s*",
+          "replacement": "高兴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "干chai",
+          "replacement": "干柴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "勾yin",
+          "replacement": "勾引",
+          "flags": "gi"
+        },
+        {
+          "pattern": "gu[oò]ch[ée]ng",
+          "replacement": "过程",
+          "flags": "gi"
+        },
+        {
+          "pattern": "gu[āa]n\\s*x[iì]",
+          "replacement": "关系",
+          "flags": "gi"
+        },
+        {
+          "pattern": "官\\s*fāng",
+          "replacement": "官方",
+          "flags": "gi"
+        },
+        {
+          "pattern": "g[ǎa]nji[àa]o",
+          "replacement": "感觉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "国wu院",
+          "replacement": "国务院",
+          "flags": "gi"
+        },
+        {
+          "pattern": "gù\\s*yì\\s*",
+          "replacement": "故意",
+          "flags": "gi"
+        },
+        {
+          "pattern": "guofen",
+          "replacement": "过分",
+          "flags": "gi"
+        },
+        {
+          "pattern": "guān\\s*fāng",
+          "replacement": "官方",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hā\\s*hā\\s*",
+          "replacement": "哈哈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "h[aǎ]ode",
+          "replacement": "好的",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hù士",
+          "replacement": "护士",
+          "flags": "gi"
+        },
+        {
+          "pattern": "火qiang",
+          "replacement": "火枪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "huó\\s*dòng",
+          "replacement": "活动",
+          "flags": "gi"
+        },
+        {
+          "pattern": "há'guó",
+          "replacement": "韩国",
+          "flags": "gi"
+        },
+        {
+          "pattern": "han住",
+          "replacement": "含住",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hai洛因",
+          "replacement": "海洛因",
+          "flags": "gi"
+        },
+        {
+          "pattern": "红fen",
+          "replacement": "红粉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "火yao",
+          "replacement": "火药",
+          "flags": "gi"
+        },
+        {
+          "pattern": "h[ǎa]oxi[àa]ng",
+          "replacement": "好像",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hu[áa]ngs[èe]",
+          "replacement": "黄色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "皇d[ìi]",
+          "replacement": "皇帝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "昏昏yu睡",
+          "replacement": "昏昏欲睡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "回dang",
+          "replacement": "回荡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "huí\\s*qù\\s*",
+          "replacement": "回去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hé\\s*shì\\s*",
+          "replacement": "合适",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hàn\\s*jiān",
+          "replacement": "汉奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jian(臣|细)",
+          "replacement": "奸$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "奸yin",
+          "replacement": "奸淫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiànmiàn",
+          "replacement": "见面",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jian货",
+          "replacement": "贱货",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jing察",
+          "replacement": "警察",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jǐng\\s*chá",
+          "replacement": "警察",
+          "flags": "gi"
+        },
+        {
+          "pattern": "j[ìi]nháng",
+          "replacement": "进行",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jīng\\s*guò",
+          "replacement": "经过",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ji烈",
+          "replacement": "激烈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "j[iì](nv|女)",
+          "replacement": "妓女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jirou",
+          "replacement": "鸡肉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ji者",
+          "replacement": "记者",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jì\\s*xù\\s*",
+          "replacement": "继续",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ju花",
+          "replacement": "菊花",
+          "flags": "gi"
+        },
+        {
+          "pattern": "j[īi]动",
+          "replacement": "激动",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jili[èe]",
+          "replacement": "激烈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "肌r[òo]u",
+          "replacement": "肌肉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ji射",
+          "replacement": "激射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ji[ēe]ch[uù]",
+          "replacement": "接触",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiù\\s*shì",
+          "replacement": "就是",
+          "flags": "gi"
+        },
+        {
+          "pattern": "j[ùu]li[èe]",
+          "replacement": "剧烈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jǐng惕",
+          "replacement": "警惕",
+          "flags": "gi"
+        },
+        {
+          "pattern": "节cao",
+          "replacement": "节操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "浸yin",
+          "replacement": "浸淫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jù\\s*jué\\s*",
+          "replacement": "拒绝",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jue色",
+          "replacement": "角色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "k[ěe]n[ée]ng",
+          "replacement": "可能",
+          "flags": "gi"
+        },
+        {
+          "pattern": "开bao",
+          "replacement": "开苞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "k[àa]o近",
+          "replacement": "靠近",
+          "flags": "gi"
+        },
+        {
+          "pattern": "口wen",
+          "replacement": "口吻",
+          "flags": "gi"
+        },
+        {
+          "pattern": "kankan",
+          "replacement": "看看",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ling辱",
+          "replacement": "凌辱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "luan蛋",
+          "replacement": "卵蛋",
+          "flags": "gi"
+        },
+        {
+          "pattern": "脸sè",
+          "replacement": "脸色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lu出",
+          "replacement": "露出",
+          "flags": "gi"
+        },
+        {
+          "pattern": "流máng",
+          "replacement": "流氓",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lun理",
+          "replacement": "伦理",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lì\\s*qì",
+          "replacement": "力气",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lán\\s*jié",
+          "replacement": "拦截",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lìng\\s*lèi",
+          "replacement": "另类",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lè\\s*suǒ",
+          "replacement": "勒索",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lòudòng",
+          "replacement": "漏洞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m[ǎa]ny[ìi]",
+          "replacement": "满意",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m[ǎa]sh[àa]ng",
+          "replacement": "马上",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m[ée]iy[oǒ]u",
+          "replacement": "没有",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mei国",
+          "replacement": "美国",
+          "flags": "gi"
+        },
+        {
+          "pattern": "měi\\s*nǚ",
+          "replacement": "美女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mèi\\s*mèi",
+          "replacement": "妹妹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m[íi]ngb[áa]i",
+          "replacement": "明白",
+          "flags": "gi"
+        },
+        {
+          "pattern": "迷huan",
+          "replacement": "迷幻",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mi茫",
+          "replacement": "迷茫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mó\\s*yàng",
+          "replacement": "模样",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m[íi]n\\s{0,2}zh[ǔu]",
+          "replacement": "民主",
+          "flags": "gi"
+        },
+        {
+          "pattern": "迷jian",
+          "replacement": "迷奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mimi糊糊",
+          "replacement": "迷迷糊糊",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mì\\s*shū",
+          "replacement": "秘书",
+          "flags": "gi"
+        },
+        {
+          "pattern": "末(?:\\s|<br/?>)*ì",
+          "replacement": "末日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "面se",
+          "replacement": "面色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mengmeng",
+          "replacement": "蒙蒙",
+          "flags": "gi"
+        },
+        {
+          "pattern": "màn\\s*huà",
+          "replacement": "漫画",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nàme",
+          "replacement": "那么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "n[ǎa]o\\s*d[àa]i",
+          "replacement": "脑袋",
+          "flags": "gi"
+        },
+        {
+          "pattern": "n[ée]ngg[oò]u",
+          "replacement": "能够",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nán\\s{0,2}hǎi",
+          "replacement": "那会",
+          "flags": "gi"
+        },
+        {
+          "pattern": "内jian",
+          "replacement": "内奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[内內]y[iī]",
+          "replacement": "内衣",
+          "flags": "gi"
+        },
+        {
+          "pattern": "内ku",
+          "replacement": "内裤",
+          "flags": "gi"
+        },
+        {
+          "pattern": "pi[áa]o客",
+          "replacement": "嫖客",
+          "flags": "gi"
+        },
+        {
+          "pattern": "p[áa]ngbi[āa]n",
+          "replacement": "旁边",
+          "flags": "gi"
+        },
+        {
+          "pattern": "q[íi]gu[àa]i",
+          "replacement": "奇怪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qì\\s*chē",
+          "replacement": "汽车",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qing\\s*(ren|人)",
+          "replacement": "情人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qin兽",
+          "replacement": "禽兽",
+          "flags": "gi"
+        },
+        {
+          "pattern": "q[iī]ngch[uǔ]",
+          "replacement": "清楚",
+          "flags": "gi"
+        },
+        {
+          "pattern": "què\\s*dìng",
+          "replacement": "确定",
+          "flags": "gi"
+        },
+        {
+          "pattern": "球mi",
+          "replacement": "球迷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "青chun",
+          "replacement": "青春",
+          "flags": "gi"
+        },
+        {
+          "pattern": "青lou",
+          "replacement": "青楼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qingkuang",
+          "replacement": "情况",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qiang[　\\s]*jian",
+          "replacement": "强奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "re\\s*nao",
+          "replacement": "热闹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "r[úu]gu[oǒ]",
+          "replacement": "如果",
+          "flags": "gi"
+        },
+        {
+          "pattern": "r[oó]ngy[ìi]",
+          "replacement": "容易",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ru(房|白色)",
+          "replacement": "乳$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "rén员",
+          "replacement": "人员",
+          "flags": "gi"
+        },
+        {
+          "pattern": "rén形",
+          "replacement": "人形",
+          "flags": "gi"
+        },
+        {
+          "pattern": "人chao",
+          "replacement": "人潮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "renmen",
+          "replacement": "人名",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ruǎn\\s*jiàn",
+          "replacement": "软件",
+          "flags": "gi"
+        },
+        {
+          "pattern": "rì\\s*běn",
+          "replacement": "日本",
+          "flags": "gi"
+        },
+        {
+          "pattern": "日\\s*běn",
+          "replacement": "日本",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shàng\\s*mén",
+          "replacement": "上门",
+          "flags": "gi"
+        },
+        {
+          "pattern": "上jiang",
+          "replacement": "上将",
+          "flags": "gi"
+        },
+        {
+          "pattern": "she(门|术|手|程|击)",
+          "replacement": "射$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sudu",
+          "replacement": "速度",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shú\\s*nǚ",
+          "replacement": "熟女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shuijue",
+          "replacement": "睡觉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shide",
+          "replacement": "是的",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[iì]ji[eè]",
+          "replacement": "世界",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[ií]ji[aā]n",
+          "replacement": "时间",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[ií]h[oò]u",
+          "replacement": "时候",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[ií]me",
+          "replacement": "什么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "si人",
+          "replacement": "私人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shi女",
+          "replacement": "侍女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shi身",
+          "replacement": "失身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[ūu]j[ìi]",
+          "replacement": "书记",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shu女",
+          "replacement": "熟女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shu[　\\s]?xiong",
+          "replacement": "酥胸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:上|shang)chuang",
+          "replacement": "上床",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shǒu\\s*jī",
+          "replacement": "手机",
+          "flags": "gi"
+        },
+        {
+          "pattern": "呻y[íi]n",
+          "replacement": "呻吟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sh[ēe]ngzh[íi]",
+          "replacement": "生殖",
+          "flags": "gi"
+        },
+        {
+          "pattern": "深gu",
+          "replacement": "深谷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "双xiu",
+          "replacement": "双修",
+          "flags": "gi"
+        },
+        {
+          "pattern": "生r[ìi]",
+          "replacement": "生日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "si盐",
+          "replacement": "私盐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shi卫",
+          "replacement": "侍卫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "si下",
+          "replacement": "私下",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sao扰",
+          "replacement": "骚扰",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｓｈｕａｎｇ\\s*ｆｅｎｇ",
+          "replacement": "双峰",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shǎo\\s*fù",
+          "replacement": "少妇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shì\\s*pín",
+          "replacement": "视频",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shè\\s*xiàng",
+          "replacement": "摄像",
+          "flags": "gi"
+        },
+        {
+          "pattern": "t[uū]r[áa]n",
+          "replacement": "突然",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tiaojiao",
+          "replacement": "调教",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tí\\s*gòng",
+          "replacement": "提供",
+          "flags": "gi"
+        },
+        {
+          "pattern": "偷qing",
+          "replacement": "偷情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "推dao",
+          "replacement": "推倒",
+          "flags": "gi"
+        },
+        {
+          "pattern": "脱guang",
+          "replacement": "脱光",
+          "flags": "gi"
+        },
+        {
+          "pattern": "t[èe]bi[ée]",
+          "replacement": "特别",
+          "flags": "gi"
+        },
+        {
+          "pattern": "t[ōo]nggu[òo]",
+          "replacement": "通过",
+          "flags": "gi"
+        },
+        {
+          "pattern": "同ju",
+          "replacement": "同居",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tian来tian去",
+          "replacement": "舔来舔去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "w[ēe]ixi[ée]",
+          "replacement": "威胁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wèizh[ìi]",
+          "replacement": "位置",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wei员",
+          "replacement": "委员",
+          "flags": "gi"
+        },
+        {
+          "pattern": "w[èe]nti",
+          "replacement": "问题",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wèi\\s*dào\\s*",
+          "replacement": "味道",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wú\\s*nài",
+          "replacement": "无奈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wǔ\\s*qì",
+          "replacement": "武器",
+          "flags": "gi"
+        },
+        {
+          "pattern": "weilai",
+          "replacement": "未来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiu长",
+          "replacement": "修长",
+          "flags": "gi"
+        },
+        {
+          "pattern": "亵du",
+          "replacement": "亵渎",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xing福",
+          "replacement": "幸福",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìng\\s*yùn",
+          "replacement": "幸运",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小bo",
+          "replacement": "小波",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小niū",
+          "replacement": "小妞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiong([^a-z])",
+          "replacement": "胸$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小tui",
+          "replacement": "小腿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiang港",
+          "replacement": "香港",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiàohuà",
+          "replacement": "笑话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiāo\\s*shòu",
+          "replacement": "销售",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiàn\\'zhì",
+          "replacement": "限制",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiàn\\s*jīn",
+          "replacement": "现金",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiāng\\s*zǐ",
+          "replacement": "箱子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiōng\\s*dì",
+          "replacement": "兄弟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "选zé",
+          "replacement": "选择",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìn\\s*hào",
+          "replacement": "信号",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìng\\s*gǎn",
+          "replacement": "性感",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiǎo\\s*jiě",
+          "replacement": "小姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìn\\s*hào",
+          "replacement": "信号",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xià\\s*zhù",
+          "replacement": "下注",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yì\\s*wài\\s*",
+          "replacement": "意外",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yin(冷|暗|谋|险|沉|沟|癸派|后)",
+          "replacement": "阴$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "y[iī]y[àa]ng",
+          "replacement": "一样",
+          "flags": "gi"
+        },
+        {
+          "pattern": "y[īi]di[ǎa]n",
+          "replacement": "一点",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yī\\s*zhèn",
+          "replacement": "一阵",
+          "flags": "gi"
+        },
+        {
+          "pattern": "y[ǐi]j[īi]ng",
+          "replacement": "已经",
+          "flags": "gi"
+        },
+        {
+          "pattern": "疑huo",
+          "replacement": "疑惑",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yí\\s*huò",
+          "replacement": "疑惑",
+          "flags": "gi"
+        },
+        {
+          "pattern": "影mi",
+          "replacement": "影迷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yin荡",
+          "replacement": "淫荡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yin贼",
+          "replacement": "淫贼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "阳w[ěe]i",
+          "replacement": "阳痿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yao头",
+          "replacement": "摇头",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yaotou",
+          "replacement": "摇头",
+          "flags": "gi"
+        },
+        {
+          "pattern": "摇tou",
+          "replacement": "摇头",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yezhan",
+          "replacement": "野战",
+          "flags": "gi"
+        },
+        {
+          "pattern": "you饵",
+          "replacement": "诱饵",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:you|诱)(?:惑|huo)",
+          "replacement": "诱惑",
+          "flags": "gi"
+        },
+        {
+          "pattern": "you导",
+          "replacement": "诱导",
+          "flags": "gi"
+        },
+        {
+          "pattern": "引you",
+          "replacement": "引诱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "you人",
+          "replacement": "诱人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "youshi",
+          "replacement": "有事",
+          "flags": "gi"
+        },
+        {
+          "pattern": "you\\s*xiu",
+          "replacement": "优秀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "御yòng",
+          "replacement": "御用",
+          "flags": "gi"
+        },
+        {
+          "pattern": "旖ni",
+          "replacement": "旖旎",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yu念",
+          "replacement": "欲念",
+          "flags": "gi"
+        },
+        {
+          "pattern": "you敌深入",
+          "replacement": "诱敌深入",
+          "flags": "gi"
+        },
+        {
+          "pattern": "影she",
+          "replacement": "影射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "牙qian",
+          "replacement": "牙签",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一yè情",
+          "replacement": "一夜情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yīng\\s*yǔ",
+          "replacement": "英语",
+          "flags": "gi"
+        },
+        {
+          "pattern": "z[iì]j[iǐ]",
+          "replacement": "自己",
+          "flags": "gi"
+        },
+        {
+          "pattern": "z[ìi](?:\\s|<br/?>|&nbsp;)*y[oó]u",
+          "replacement": "自由",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zh[iī]d?[àa]u?o",
+          "replacement": "知道",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zixin",
+          "replacement": "自信",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhì'fú",
+          "replacement": "制服",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhì\\s*fú",
+          "replacement": "制服",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zha药",
+          "replacement": "炸药",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhan有",
+          "replacement": "占有",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhào\\s*piàn",
+          "replacement": "照片",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhè\\s*gè",
+          "replacement": "这个",
+          "flags": "gi"
+        },
+        {
+          "pattern": "政f[ǔu]|zheng府",
+          "replacement": "政府",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zh[èe]ng\\s{0,2}f[uǔ]",
+          "replacement": "政府",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zong理",
+          "replacement": "总理",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zh[ōo]ngy[āa]ng",
+          "replacement": "中央",
+          "flags": "gi"
+        },
+        {
+          "pattern": "中yang",
+          "replacement": "中央",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zu[oǒ]\\s*y[oò]u",
+          "replacement": "左右",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhǔ\\s*dòng",
+          "replacement": "主动",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zh[oō]uw[ée]i",
+          "replacement": "周围",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhōu\\s*nián",
+          "replacement": "周年",
+          "flags": "gi"
+        },
+        {
+          "pattern": "中nan海",
+          "replacement": "中南海",
+          "flags": "gi"
+        },
+        {
+          "pattern": "中j委",
+          "replacement": "中纪委",
+          "flags": "gi"
+        },
+        {
+          "pattern": "中zu部",
+          "replacement": "中组部",
+          "flags": "gi"
+        },
+        {
+          "pattern": "政zhi局",
+          "replacement": "政治局",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(昨|一|时|余)(?:<br/?>|&nbsp;|\\s)*ì",
+          "replacement": "$1日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "照she",
+          "replacement": "照射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhǔn\\s*bèi\\s*",
+          "replacement": "准备",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhu义",
+          "replacement": "主义",
+          "flags": "gi"
+        },
+        {
+          "pattern": "</p>\\n<p>\\s*ì",
+          "replacement": "日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "曹艹",
+          "replacement": "曹操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "JI昂",
+          "replacement": "激昂",
+          "flags": "gi"
+        },
+        {
+          "pattern": "□□无暇",
+          "replacement": "自顾无暇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "法律/界",
+          "replacement": "法律界",
+          "flags": "gi"
+        },
+        {
+          "pattern": "人/类",
+          "replacement": "人类",
+          "flags": "gi"
+        },
+        {
+          "pattern": "恐怖/主义",
+          "replacement": "恐怖主义",
+          "flags": "gi"
+        },
+        {
+          "pattern": "颠/覆",
+          "replacement": "颠覆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "民.事.司.法.裁.判",
+          "replacement": "民事司法裁判",
+          "flags": "gi"
+        },
+        {
+          "pattern": "南海/问题",
+          "replacement": "南海问题",
+          "flags": "gi"
+        },
+        {
+          "pattern": "圈圈/功",
+          "replacement": "法轮功",
+          "flags": "gi"
+        },
+        {
+          "pattern": "镇/压",
+          "replacement": "镇压",
+          "flags": "gi"
+        },
+        {
+          "pattern": "赤.裸",
+          "replacement": "赤裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "欲·望",
+          "replacement": "欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nv真",
+          "replacement": "女真",
+          "flags": "gi"
+        },
+        {
+          "pattern": "土gai",
+          "replacement": "土改",
+          "flags": "gi"
+        },
+        {
+          "pattern": "狗·屎",
+          "replacement": "狗屎",
+          "flags": "gi"
+        },
+        {
+          "pattern": "du立",
+          "replacement": "独立",
+          "flags": "gi"
+        },
+        {
+          "pattern": "发sao",
+          "replacement": "发骚",
+          "flags": "gi"
+        },
+        {
+          "pattern": "奸/夫/淫/妇",
+          "replacement": "奸夫淫妇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "爱qing",
+          "replacement": "爱情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "抚mo",
+          "replacement": "抚摸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "神qing",
+          "replacement": "神情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "公~务~员",
+          "replacement": "公务员",
+          "flags": "gi"
+        },
+        {
+          "pattern": "原着",
+          "replacement": "原著",
+          "flags": "gi"
+        },
+        {
+          "pattern": "□□部分",
+          "replacement": "高潮部分",
+          "flags": "gi"
+        },
+        {
+          "pattern": "角□□面",
+          "replacement": "角色情面",
+          "flags": "gi"
+        },
+        {
+          "pattern": "艹",
+          "replacement": "操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "淫/靡/香/艳",
+          "replacement": "淫靡香艳",
+          "flags": "gi"
+        },
+        {
+          "pattern": "毒丨药",
+          "replacement": "毒药",
+          "flags": "gi"
+        },
+        {
+          "pattern": "登6",
+          "replacement": "登陆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "天□□美",
+          "replacement": "天性爱美",
+          "flags": "gi"
+        },
+        {
+          "pattern": "双丨飞",
+          "replacement": "双飞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "高chao",
+          "replacement": "高潮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "pi股",
+          "replacement": "屁股",
+          "flags": "gi"
+        },
+        {
+          "pattern": "情/趣",
+          "replacement": "情趣",
+          "flags": "gi"
+        },
+        {
+          "pattern": "情/欲",
+          "replacement": "情欲",
+          "flags": "gi"
+        },
+        {
+          "pattern": "炸/弹",
+          "replacement": "炸弹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "赤/身",
+          "replacement": "赤身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "果/体",
+          "replacement": "裸体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhong国",
+          "replacement": "中国",
+          "flags": "gi"
+        },
+        {
+          "pattern": "帝国#主义",
+          "replacement": "帝国主义",
+          "flags": "gi"
+        },
+        {
+          "pattern": "形形□□",
+          "replacement": "形形色色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yuwang",
+          "replacement": "欲望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shuangtui",
+          "replacement": "双腿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "城／管",
+          "replacement": "城管",
+          "flags": "gi"
+        },
+        {
+          "pattern": "调丨教",
+          "replacement": "调教",
+          "flags": "gi"
+        },
+        {
+          "pattern": "银/行/卡",
+          "replacement": "银行卡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "裸/体",
+          "replacement": "裸体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "光/裸",
+          "replacement": "光裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "嫩/女",
+          "replacement": "嫩女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "维/谷",
+          "replacement": "维谷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "开□□谈",
+          "replacement": "开始交谈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "破碎的□□",
+          "replacement": "破碎的呻吟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "pi霜",
+          "replacement": "砒霜",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ma醉",
+          "replacement": "麻醉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "麻zui",
+          "replacement": "麻醉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nue杀",
+          "replacement": "虐杀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "后gong",
+          "replacement": "后宫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "林荫dao",
+          "replacement": "林荫道",
+          "flags": "gi"
+        },
+        {
+          "pattern": "分/身",
+          "replacement": "分身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "克/隆",
+          "replacement": "克隆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "性/需要",
+          "replacement": "性需要",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-replace-2",
+      "name": "Legacy replace 2",
+      "enabledByDefault": true,
+      "rules": [
+        {
+          "pattern": "黑/帮",
+          "replacement": "黑帮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "政-府",
+          "replacement": "政府",
+          "flags": "gi"
+        },
+        {
+          "pattern": "八/九",
+          "replacement": "八九",
+          "flags": "gi"
+        },
+        {
+          "pattern": "不～着~寸～缕",
+          "replacement": "不着寸缕",
+          "flags": "gi"
+        },
+        {
+          "pattern": "肉~体",
+          "replacement": "肉体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "蹲□子",
+          "replacement": "蹲下身子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ji情",
+          "replacement": "激情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xie恶",
+          "replacement": "邪恶",
+          "flags": "gi"
+        },
+        {
+          "pattern": "Z国",
+          "replacement": "中国",
+          "flags": "gi"
+        },
+        {
+          "pattern": "创/世",
+          "replacement": "创世",
+          "flags": "gi"
+        },
+        {
+          "pattern": "紫jin城",
+          "replacement": "紫禁城",
+          "flags": "gi"
+        },
+        {
+          "pattern": "□□在外",
+          "replacement": "裸露在外",
+          "flags": "gi"
+        },
+        {
+          "pattern": "光怪6离",
+          "replacement": "光怪陆离",
+          "flags": "gi"
+        },
+        {
+          "pattern": "邪/教",
+          "replacement": "邪教",
+          "flags": "gi"
+        },
+        {
+          "pattern": "粗bao",
+          "replacement": "粗暴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yin邪",
+          "replacement": "淫邪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小biao砸",
+          "replacement": "小婊砸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "牛1b",
+          "replacement": "牛b",
+          "flags": "gi"
+        },
+        {
+          "pattern": "微1博",
+          "replacement": "微博",
+          "flags": "gi"
+        },
+        {
+          "pattern": "内1衣",
+          "replacement": "内衣",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-replace-all",
+      "name": "Legacy remove lines",
+      "enabledByDefault": true,
+      "rules": [
+        {
+          "pattern": "本站域名已经更换为，老域名已经停用，请大家重新收藏，并使用新域名访问。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(跪求订阅、打赏、催更票、月票、鲜花的支持!\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(?未完待续请搜索飄天文學，小说更好更新更快!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(跪求订阅、打赏、催更票、月票、鲜花的支持!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "狂沙文学网 www.kuangsha.net",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(看小说到网\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(未完待续。\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(本章完\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "16977小游戏每天更新好玩的小游戏，等你来发现！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（800小说网 www.800Book.net 提供Txt免费下载）最新章节全文阅读-..-",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（800小说网 www.800Book.net 提供Txt免费下载）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[800\\]\\[站页面清爽，广告少，",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[看本书最新章节请到求书 .\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（\\s*君子聚义堂）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "readx;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "txt电子书下载/",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "txt全集下载",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "txt小说下载",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\|优\\|优\\|小\\|说\\|更\\|新\\|最\\|快\\|www.uuxs.cc\\|",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\|每两个看言情的人当中，就有一个注册过可°乐°小°说°网的账号。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "思ˊ路ˋ客，更新最快的！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "恋上你看书网 630bookla ，最快更新.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "，举报后维护人员会在两分钟内校正章节内容，请耐心等待，并刷新页面。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "追书必备",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-优－优－小－说－更－新－最－快-www.ＵＵＸＳ.ＣＣ-",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-优－优－小－说－更－新－最－快x",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "来可乐网看小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "纯文字在线阅读本站域名手机同步阅读请访问",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本文由　　首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "樂文小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最快更新无错小说阅读，请访问 请收藏本站阅读最新小说!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最新章节全文阅读看书神器\\.yankuai\\.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最新章节全文阅读（..首发）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最新章节全文阅读【首发】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最新章节全文阅读",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看本书最新章节请到800小说网（www.800book.net）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（本章未完，请翻页）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机用户请浏览m.biqugezw.com阅读，更优质的阅读体验。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机用户请浏览阅读，更优质的阅读体验。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "阅读，更优质的阅读体验。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机最省流量无广告的站点。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机看小说哪家强手机阅",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如果你喜欢本站[〖]?一定要记住[】]?(?:网址|地址)哦",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看清爽的小说就到",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请用搜索引擎(?:搜索关键词)?.*?完美破防盗章节，各种小说任你观看",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "完美破防盗章节，请用搜索引擎各种小说任你观看",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "破防盗章节，请用搜索引擎各种小说任你观看",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:搜索引擎)?各种小说任你观看，破防盗章节",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "章节错误，点此举报\\(免注册\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "热门小说最新章节全文阅读.。 更新好快。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【阅读本书最新章节，请搜索800】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "亲，百度搜索眼&amp;快，大量小说免费看。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "亲，眼&快，大量小说免费看。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "下载免费阅读器!!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "笔趣阁&nbsp;.，最快更新.*最新章节！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请大家搜索（书迷楼）看最全！更新最快的小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更新快无广告。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【鳳.{1,2}凰.{1,2}小说网 更新快 无弹窗 请搜索f.h.xiao.shuo.c.o.m】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【可换源APP看书软件：书掌柜APP或直接访问官方网站shuzh.net】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[●★▲]手机下载APP看书神器.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m.?手机最省流量的站点。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "m.?手机最省流量.无广告的站点。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "底部字链推广位",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "us最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "APPapp",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "久看中文网首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "顶点小说 ２３ＵＳ．com更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(看小说到|爱玩爱看就来|就爱上|喜欢)?(\\s|<|>|&| |[+@＠=:;｀`%？》《〈︾-])?[乐樂](\\s|&lt;|&gt;|&amp;|&nbsp;|[+@＠=:;｀`%？》《〈︾-])?[文].*?[说說][网]?[|]?(.*(3w|[ｗωＷw]{1,3}|[Ｍm]).*[ｍＭm])?[}。\\s]?(乐文小说)?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(本文由|小说)?(\\s| )?((3w|[wＷｗ]{1,3}|[Ｍm]).)?\\s?[lしｌL][ｗωＷw][ｘχＸx][ｓＳs][５5][２2][０0].*[ｍＭm][|\\s]?(首发(哦亲)?)?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "([『【↑△↓＠︾]+[一-龥]){2,6}[】|]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[ＵｕUu]+看书\\s*www.[ＵｕUu]+[kｋ][aａ][nｎ][ｓs][hｈ][ＵｕUu].[cｃ][oｏ][mｍ]",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]{1,2}[顶頂].{1,3}[点小].*?o?[mw，]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF].?长.{1,2}风.{1,2}文.{1,2}学.*?[tx]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]无.错.*?[cＣ][oＯ][mＭ]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[;\\(]顶.{0,2}点.小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "2长2风2文2学，w￠＄",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "》长>风》",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看无防盗章节的小说，请用搜索引擎搜索关键词.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:完美)?破防盗章节，请用搜索引擎搜索关键词.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "搜索引擎搜索关键词，各种任你观看，破防盗章节",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "破防盗完美章节，请用搜索引擎.*各种小说任你观看",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如您已(?:閱讀|阅读)到此章节.*?敬请记住我们新的网址\\s*。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "↗百度搜：.*?直达网址.*?↖",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[:《〈｜~∨∟∑]{1,2}长.{1,2}风.*?et",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[限时抢购\\].*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "支持网站发展.逛淘宝买东西就从这里进.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ps[：:]想听到更多你们的声音，想收到更多你们的建议，现在就搜索微信公众号“qdread”并加关注，给.*?更多支持！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:ps[:：])?看《.*?》背后的独家故事.*?告诉我吧！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（?天上掉馅饼的好活动.*?微信公众号！）?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（微信添加.*qdread微信公众号！）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiemei如您已阅读到此章节，请移步到.*?\\[ads:本站换新网址啦，速记方法：，.\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "先给自己定个小目标：比如收藏笔趣阁.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请记住本书首发域名.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "记住手机版网址.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ".*关注微信公众号.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一秒记住.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[txt全集下载\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[\\s*超多好看小说\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "⊙四⊙五⊙中⊙文☆→",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[ads:本站换新网址啦，速记方法：.*?\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[》《｜～]无(?:.|&gt;)错(?:.|&gt;)小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "`无`错`小说`www.``com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "＋无＋错＋小说＋3w＋＋",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\|优\\|优\\|小\\|说\\|更\\|新\\|最\\|快Ｘ",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "▲∴",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "8，ww←",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.23＋?[Ｗw][Ｘx].[Ｃc]om",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "热门推荐:、+",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "h2&gt;",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "[《〈》>\\+｜～［\\]]无\\1错\\1",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "》无>错》",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "女凤免费小说抢先看",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "女凤小说网全文字 无广告",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乐文小说网?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《乐〈文《小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乐文移动网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "頂点小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "頂點小說",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "追小说哪里快去眼快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[书库\\].\\[774\\]\\[buy\\].kuai",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.938xs.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小說，.biquge5200.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "'ads_wz_txt;',|百度搜索|无弹窗小说网|更新快无弹窗纯文字|高品质更新|小说章节更新最快|\\(百度搜.\\)|全文字手打|“”&nbsp;看|无.弹.窗.小.说.网|追书网|〖∷∷无弹窗∷纯文字∷ 〗",
+          "replacement": "",
+          "flags": "g"
+        }
+      ]
+    },
+    {
+      "id": "legacy-one-word-replace",
+      "name": "Legacy one word replace",
+      "enabledByDefault": false,
+      "rules": [
+        {
+          "pattern": "b[āà]ng",
+          "replacement": "棒",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bào",
+          "replacement": "爆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bà",
+          "replacement": "吧",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bī",
+          "replacement": "逼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bō",
+          "replacement": "波",
+          "flags": "gi"
+        },
+        {
+          "pattern": "biàn",
+          "replacement": "便",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cāo",
+          "replacement": "操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cǎo",
+          "replacement": "草",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cào",
+          "replacement": "操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chāng",
+          "replacement": "娼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chang",
+          "replacement": "娼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cháo",
+          "replacement": "潮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chā",
+          "replacement": "插",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chéng",
+          "replacement": "成",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chōu",
+          "replacement": "抽",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chuáng",
+          "replacement": "床",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chún",
+          "replacement": "唇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "chūn",
+          "replacement": "春",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cuō",
+          "replacement": "搓",
+          "flags": "gi"
+        },
+        {
+          "pattern": "cū",
+          "replacement": "粗",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dǎng",
+          "replacement": "党",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dàng",
+          "replacement": "荡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dāo",
+          "replacement": "刀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "dòng",
+          "replacement": "洞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "diao",
+          "replacement": "屌",
+          "flags": "gi"
+        },
+        {
+          "pattern": "diǎn",
+          "replacement": "点",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fǎ",
+          "replacement": "法",
+          "flags": "gi"
+        },
+        {
+          "pattern": "féi",
+          "replacement": "肥",
+          "flags": "gi"
+        },
+        {
+          "pattern": "fù",
+          "replacement": "妇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "guān",
+          "replacement": "官",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hán",
+          "replacement": "含",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hóu",
+          "replacement": "喉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hòu",
+          "replacement": "后",
+          "flags": "gi"
+        },
+        {
+          "pattern": "h(u)?ā",
+          "replacement": "花",
+          "flags": "gi"
+        },
+        {
+          "pattern": "huá",
+          "replacement": "华",
+          "flags": "gi"
+        },
+        {
+          "pattern": "huì",
+          "replacement": "会",
+          "flags": "gi"
+        },
+        {
+          "pattern": "huò",
+          "replacement": "惑",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hùn",
+          "replacement": "混",
+          "flags": "gi"
+        },
+        {
+          "pattern": "hún",
+          "replacement": "魂",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiǔ",
+          "replacement": "九",
+          "flags": "gi"
+        },
+        {
+          "pattern": "j[īi]ng",
+          "replacement": "精",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jìn",
+          "replacement": "禁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jǐng",
+          "replacement": "警",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiāng",
+          "replacement": "江",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiān",
+          "replacement": "奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jiāo",
+          "replacement": "交",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jūn",
+          "replacement": "军",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jū",
+          "replacement": "拘",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jú",
+          "replacement": "局",
+          "flags": "gi"
+        },
+        {
+          "pattern": "jī",
+          "replacement": "激",
+          "flags": "gi"
+        },
+        {
+          "pattern": "激ān",
+          "replacement": "奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "kù",
+          "replacement": "裤",
+          "flags": "gi"
+        },
+        {
+          "pattern": "kàn",
+          "replacement": "看",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[1l]àng",
+          "replacement": "浪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "liáo",
+          "replacement": "撩",
+          "flags": "gi"
+        },
+        {
+          "pattern": "liú",
+          "replacement": "流",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lì",
+          "replacement": "莉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "liè",
+          "replacement": "烈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[1l]uàn",
+          "replacement": "乱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lún",
+          "replacement": "伦",
+          "flags": "gi"
+        },
+        {
+          "pattern": "luǒ",
+          "replacement": "裸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lòu",
+          "replacement": "露",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[l1]ù",
+          "replacement": "露",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lǜ",
+          "replacement": "绿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "liàn",
+          "replacement": "练",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mǎi",
+          "replacement": "买",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mài",
+          "replacement": "卖",
+          "flags": "gi"
+        },
+        {
+          "pattern": "máo",
+          "replacement": "毛",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mā",
+          "replacement": "妈",
+          "flags": "gi"
+        },
+        {
+          "pattern": "méng",
+          "replacement": "蒙",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mén",
+          "replacement": "门",
+          "flags": "gi"
+        },
+        {
+          "pattern": "miè",
+          "replacement": "灭",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mí",
+          "replacement": "迷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mì",
+          "replacement": "蜜",
+          "flags": "gi"
+        },
+        {
+          "pattern": "mō",
+          "replacement": "摸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "miàn",
+          "replacement": "面",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nǎi",
+          "replacement": "奶",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nèn",
+          "replacement": "嫩",
+          "flags": "gi"
+        },
+        {
+          "pattern": "niào",
+          "replacement": "尿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "niē",
+          "replacement": "捏",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nòng",
+          "replacement": "弄",
+          "flags": "gi"
+        },
+        {
+          "pattern": "nǚ",
+          "replacement": "女",
+          "flags": "gi"
+        },
+        {
+          "pattern": "pào",
+          "replacement": "炮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "piàn",
+          "replacement": "片",
+          "flags": "gi"
+        },
+        {
+          "pattern": "pò",
+          "replacement": "破",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qi[āa]ng",
+          "replacement": "枪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qíng",
+          "replacement": "情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qīn",
+          "replacement": "亲",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qiú",
+          "replacement": "求",
+          "flags": "gi"
+        },
+        {
+          "pattern": "quán",
+          "replacement": "全",
+          "flags": "gi"
+        },
+        {
+          "pattern": "qù",
+          "replacement": "去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "rén",
+          "replacement": "人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "r[ìi]",
+          "replacement": "日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "rǔ",
+          "replacement": "乳",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sǎ",
+          "replacement": "洒",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sāo",
+          "replacement": "骚",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sǎo",
+          "replacement": "骚",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sè",
+          "replacement": "色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "se",
+          "replacement": "色",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shā",
+          "replacement": "杀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shēn",
+          "replacement": "身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shēn",
+          "replacement": "呻",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shén",
+          "replacement": "神",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shè",
+          "replacement": "射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shǐ",
+          "replacement": "屎",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shì",
+          "replacement": "侍",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sǐ",
+          "replacement": "死",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sī",
+          "replacement": "私",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shǔn",
+          "replacement": "吮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sǔn",
+          "replacement": "吮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "sū",
+          "replacement": "酥",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shào",
+          "replacement": "绍",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tān",
+          "replacement": "贪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tiǎn",
+          "replacement": "舔",
+          "flags": "gi"
+        },
+        {
+          "pattern": "t[ǐi]ng",
+          "replacement": "挺",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tǐ",
+          "replacement": "体",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tǒng",
+          "replacement": "捅",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tōu",
+          "replacement": "偷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tou",
+          "replacement": "偷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tuǐ",
+          "replacement": "腿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tūn",
+          "replacement": "吞",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tún",
+          "replacement": "臀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tiáo",
+          "replacement": "调",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tài",
+          "replacement": "态",
+          "flags": "gi"
+        },
+        {
+          "pattern": "tào",
+          "replacement": "套",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wēn",
+          "replacement": "温",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wěn",
+          "replacement": "吻",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiǎo",
+          "replacement": "小",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiào",
+          "replacement": "笑",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìng",
+          "replacement": "性",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xing",
+          "replacement": "性",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiōng",
+          "replacement": "胸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xī",
+          "replacement": "吸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xí",
+          "replacement": "习",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xì",
+          "replacement": "系",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xìn",
+          "replacement": "信",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xué",
+          "replacement": "穴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xuè",
+          "replacement": "穴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xùe",
+          "replacement": "穴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xuan",
+          "replacement": "宣",
+          "flags": "gi"
+        },
+        {
+          "pattern": "xiàng",
+          "replacement": "象",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yāng",
+          "replacement": "央",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yàn",
+          "replacement": "艳",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yīn",
+          "replacement": "阴",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yào",
+          "replacement": "药",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yé",
+          "replacement": "爷",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yòu",
+          "replacement": "诱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zàng",
+          "replacement": "脏",
+          "flags": "gi"
+        },
+        {
+          "pattern": "y[ùu]",
+          "replacement": "欲",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yín",
+          "replacement": "淫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yì",
+          "replacement": "意",
+          "flags": "gi"
+        },
+        {
+          "pattern": "yà",
+          "replacement": "讶",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhēn",
+          "replacement": "针",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zēn",
+          "replacement": "针",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhà",
+          "replacement": "炸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhèng",
+          "replacement": "政",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zǒu",
+          "replacement": "走",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zuì",
+          "replacement": "罪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zuò",
+          "replacement": "做",
+          "flags": "gi"
+        },
+        {
+          "pattern": "zhōng",
+          "replacement": "中",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-replace-fix",
+      "name": "Legacy replace fix",
+      "enabledByDefault": true,
+      "rules": [
+        {
+          "pattern": "碧欲",
+          "replacement": "碧玉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "美欲",
+          "replacement": "美玉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "欲石",
+          "replacement": "玉石",
+          "flags": "gi"
+        },
+        {
+          "pattern": "惜欲",
+          "replacement": "惜玉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "宝欲",
+          "replacement": "宝玉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "品性",
+          "replacement": "品行",
+          "flags": "gi"
+        },
+        {
+          "pattern": "德性",
+          "replacement": "德行",
+          "flags": "gi"
+        },
+        {
+          "pattern": "波ok",
+          "replacement": "book",
+          "flags": "gi"
+        },
+        {
+          "pattern": "波SS",
+          "replacement": "BOSS",
+          "flags": "gi"
+        },
+        {
+          "pattern": "弥俩",
+          "replacement": "你俩",
+          "flags": "gi"
+        },
+        {
+          "pattern": "妳",
+          "replacement": "你",
+          "flags": "gi"
+        },
+        {
+          "pattern": "大6",
+          "replacement": "大陆",
+          "flags": "gi"
+        }
+      ]
+    }
+  ]
 }
