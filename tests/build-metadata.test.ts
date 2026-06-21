@@ -47,4 +47,11 @@ describe('构建产物 userscript metadata', () => {
     expect(content).toContain('*://booklink.me/*');
     expect(content).toContain('*://*.booklink.me/*');
   });
+
+  it('should include remote rule raw URLs', () => {
+    const content = readFileSync(distPath, 'utf-8');
+    expect(content).toContain('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/site/site-rules.json');
+    expect(content).toContain('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/replace/text-rules.json');
+    expect(content).toContain('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/s2t/s2t-rules.json');
+  });
 });

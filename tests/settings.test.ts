@@ -137,11 +137,11 @@ describe('设置保存', () => {
     expect(s2.lineHeight).toBe(DEFAULT_SETTINGS.lineHeight);
   });
 
-  it('远程地址默认使用占位符', () => {
+  it('远程地址默认使用 GitHub raw 链接', () => {
     const s = loadAllSettings();
-    expect(s.siteRulesUrl).toContain('__SITE_RULES_RAW_URL__');
-    expect(s.textRulesUrl).toContain('__TEXT_RULES_RAW_URL__');
-    expect(s.s2tRulesUrl).toContain('__S2T_RULES_RAW_URL__');
+    expect(s.siteRulesUrl).toBe('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/site/site-rules.json');
+    expect(s.textRulesUrl).toBe('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/replace/text-rules.json');
+    expect(s.s2tRulesUrl).toBe('https://raw.githubusercontent.com/Evan-acg/NovelReader/rules/s2t/s2t-rules.json');
   });
 
   it('远程地址可通过 saveSetting 覆盖', () => {

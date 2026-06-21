@@ -1,6 +1,8 @@
-export const SITE_RULES_URL = '__SITE_RULES_RAW_URL__';
-export const TEXT_RULES_URL = '__TEXT_RULES_RAW_URL__';
-export const S2T_RULES_URL = '__S2T_RULES_RAW_URL__';
+import { RULE_URLS } from './rule-url-config';
+
+export const SITE_RULES_URL = RULE_URLS.site;
+export const TEXT_RULES_URL = RULE_URLS.text;
+export const S2T_RULES_URL = RULE_URLS.s2t;
 
 export const KEYS = {
   siteRulesUrl: 'siteRulesUrl',
