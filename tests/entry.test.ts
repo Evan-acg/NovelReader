@@ -17,6 +17,13 @@ vi.mock('../src/core/app', () => ({
 import { initApp } from '../src/core/app';
 import { loadAllSettings } from '../src/settings/storage';
 
+function setReadyState(value: DocumentReadyState): void {
+  Object.defineProperty(document, 'readyState', {
+    configurable: true,
+    value,
+  });
+}
+
 describe('disableAutoLaunch 入口行为', () => {
   beforeEach(() => {
     Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
@@ -64,5 +71,32 @@ describe('disableAutoLaunch 入口行为', () => {
     const btn = createManualStartButton();
     expect(btn).toBeNull();
     expect(document.querySelector('.nr-manual-start')).toBeNull();
+  });
+});
+
+describe('userscript 入口启动时机', () => {
+  beforeEach(() => {
+    Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
+    document.body.innerHTML = '';
+    vi.clearAllMocks();
+    vi.resetModules();
+  });
+
+  it('document 已完成加载时应立即启动', async () => {
+    setReadyState('complete');
+
+    await import('../src/userscript/entry');
+
+    expect(initApp).toHaveBeenCalledTimes(1);
+  });
+
+  it('document 仍在 loading 时应等待 DOMContentLoaded 后启动', async () => {
+    setReadyState('loading');
+
+    await import('../src/userscript/entry');
+    expect(initApp).not.toHaveBeenCalled();
+
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+    expect(initApp).toHaveBeenCalledTimes(1);
   });
 });

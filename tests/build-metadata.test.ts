@@ -42,10 +42,9 @@ describe('构建产物 userscript metadata', () => {
     }
   });
 
-  it('应包含 booklink.me 裸域和子域名的 match', () => {
+  it('应使用全网页 match，由入口规则决定是否启动', () => {
     const content = readFileSync(distPath, 'utf-8');
-    expect(content).toContain('*://booklink.me/*');
-    expect(content).toContain('*://*.booklink.me/*');
+    expect(content).toContain('// @match              *://*/*');
   });
 
   it('should include remote rule raw URLs', () => {

@@ -395,10 +395,9 @@ describe('init', () => {
 });
 
 describe('booklink userscript metadata', () => {
-  it('vite.config.ts 应声明 booklink.me 裸域和子域名的 match', () => {
+  it('vite.config.ts 应使用全网页 match，使 booklink 入口可被注入后自行判断', () => {
     const configPath = resolve(__dirname, '../vite.config.ts');
     const config = readFileSync(configPath, 'utf-8');
-    expect(config).toContain('*://booklink.me/*');
-    expect(config).toContain('*://*.booklink.me/*');
+    expect(config).toContain('*://*/*');
   });
 });

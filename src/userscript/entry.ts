@@ -10,7 +10,7 @@ declare const unsafeWindow: Window & { startNovelReader?: () => Promise<void> };
     return;
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  const start = () => {
     logger.info('小说阅读脚本初始化中...');
 
     if (isBooklinkHost()) {
@@ -52,5 +52,11 @@ declare const unsafeWindow: Window & { startNovelReader?: () => Promise<void> };
     }
 
     initApp();
-  });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
 })();
