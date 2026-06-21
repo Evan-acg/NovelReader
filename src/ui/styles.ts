@@ -1,5 +1,6 @@
 import { gmAddStyle } from '../shared/gm';
 import type { Settings } from '../settings/schema';
+import { SKIN_PRESETS } from './skin-presets';
 
 const READER_CSS = `
 .nr-reader-container {
@@ -15,27 +16,40 @@ const READER_CSS = `
   overflow: hidden;
 }
 .nr-sidebar {
+  order: 0;
+  position: relative;
   width: 220px;
   min-width: 220px;
   height: 100%;
-  background: #fff;
-  border-right: 1px solid #ddd;
+  background: inherit;
+  border-right: 1px solid rgba(0,0,0,0.14);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   transition: margin-left 0.25s ease, width 0.25s ease;
+}
+.nr-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.08);
+  pointer-events: none;
 }
 .nr-sidebar-hidden .nr-sidebar {
   margin-left: -220px;
 }
 .nr-sidebar-header {
+  position: relative;
+  z-index: 1;
   padding: 12px 14px;
   font-weight: 700;
   font-size: 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0,0,0,0.12);
   flex-shrink: 0;
 }
 .nr-sidebar-list {
+  position: relative;
+  z-index: 1;
   flex: 1;
   overflow-y: auto;
   padding: 6px 0;
@@ -63,8 +77,8 @@ const READER_CSS = `
   font-weight: 600;
 }
 .nr-sidebar-toggle {
-  position: fixed;
-  left: 0;
+  position: absolute;
+  right: -24px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 2147483648;
@@ -77,15 +91,12 @@ const READER_CSS = `
   font-size: 14px;
   color: #666;
   padding: 0;
-  transition: left 0.25s ease;
-}
-.nr-sidebar-hidden .nr-sidebar-toggle {
-  left: 0;
 }
 .nr-sidebar-toggle:hover {
   background: #ccc;
 }
 .nr-content-area {
+  order: 1;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -93,6 +104,7 @@ const READER_CSS = `
   max-width: var(--nr-content-max-width);
   margin: 0 auto;
   scroll-behavior: smooth;
+  text-align: left;
 }
 .nr-chapter {
   margin-bottom: 48px;
@@ -107,6 +119,7 @@ const READER_CSS = `
 }
 .nr-chapter-body {
   word-break: break-word;
+  text-align: left;
 }
 .nr-chapter-body p {
   margin: 0 0 1em;
@@ -216,6 +229,7 @@ const READER_CSS = `
 `;
 
 let extraCssEl: HTMLStyleElement | null = null;
+let skinCssEl: HTMLStyleElement | null = null;
 
 export function injectReaderStyles(): void {
   gmAddStyle(READER_CSS);
@@ -228,6 +242,16 @@ export function updateReaderStyleVars(settings: Settings): void {
   container.style.setProperty('--nr-font-size', settings.fontSize + 'px');
   container.style.setProperty('--nr-line-height', String(settings.lineHeight));
   container.style.setProperty('--nr-content-max-width', settings.contentWidth + 'px');
+}
+
+export function updateSkinCss(skinName: string): void {
+  const css = SKIN_PRESETS[skinName]?.css ?? '';
+  if (!skinCssEl) {
+    skinCssEl = document.createElement('style');
+    skinCssEl.id = 'nr-skin-css';
+    document.head.appendChild(skinCssEl);
+  }
+  skinCssEl.textContent = css;
 }
 
 export function updateExtraCss(css: string): void {
@@ -243,5 +267,12 @@ export function removeExtraCss(): void {
   if (extraCssEl) {
     extraCssEl.remove();
     extraCssEl = null;
+  }
+}
+
+export function removeSkinCss(): void {
+  if (skinCssEl) {
+    skinCssEl.remove();
+    skinCssEl = null;
   }
 }
