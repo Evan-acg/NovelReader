@@ -7,12 +7,12 @@ export default defineConfig({
       entry: 'src/userscript/entry.ts',
       userscript: {
         name: {
-          '': 'My Novel Reader',
-          'zh-CN': '小说阅读脚本',
-          'zh-TW': '小說閱讀腳本',
+          '': 'Universal Novel Reader',
+          'zh-CN': '通用小说阅读',
+          'zh-TW': '通用小說閱讀',
         },
-        namespace: 'https://github.com/ywzhaiqi',
-        author: 'ywzhaiqi',
+        namespace: 'https://github.com/Evan-acg/NovelReader',
+        author: 'EvanstonLaw',
         description: {
           '': '小说阅读脚本，统一阅读样式，内容去广告、修正拼音字、段落整理，自动下一页',
           'zh-CN': '小说阅读脚本，统一阅读样式，内容去广告、修正拼音字、段落整理，自动下一页',
