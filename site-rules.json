@@ -1,5 +1,4399 @@
 {
   "version": 1,
   "updatedAt": "2026-06-21T00:00:00.000Z",
-  "rules": []
+  "rules": [
+    {
+      "id": "legacy-site-001",
+      "name": "泡书吧",
+      "url": "^https?://www\\.paoshu8\\.net/Html/\\S+\\.shtm$",
+      "titleSelector": "#title h1",
+      "contentSelector": "#BookText",
+      "loadWithIframe": false,
+      "contentReplaceRules": [
+        {
+          "pattern": "(\\*W|（w|\\(w).{10,25}(吧\\*|）|\\))|看小说就上|本书首发|泡.{1,6}吧|百度搜索阅读最新最全的小说|http:\\/\\/www.paoshu8.com\\/|无弹窗",
+          "replacement": "",
+          "flags": "g"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-002",
+      "name": "起点(2023-08)",
+      "url": "^https://www\\.qidian\\.com/chapter/\\d+/\\d+/",
+      "contentSelector": ".content"
+    },
+    {
+      "id": "legacy-site-003",
+      "name": "起点新版-阅文",
+      "url": "^https?://(?:read|vipreader)\\.qidian\\.com/chapter/.*",
+      "titleSelector": "h3.j_chapterName",
+      "bookTitleSelector": "#bookImg",
+      "contentSelector": ".read-content.j_readContent",
+      "prevSelector": "#j_chapterPrev",
+      "nextSelector": "#j_chapterNext",
+      "excludeUrl": " /lastpage/",
+      "contentReplaceRules": [
+        {
+          "pattern": "手机用户请到m.qidian.com阅读。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "起点中文网www.qidian.com欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-004",
+      "name": "起点新版",
+      "url": "^https?://read\\.qidian\\.com/BookReader/.*\\.aspx",
+      "titleSelector": ".story_title h1",
+      "bookTitleSelector": ".story_title .textinfo a:nth-child(1)",
+      "contentSelector": "#content, .bookreadercontent",
+      "prevSelector": "#pagePrevRightBtn",
+      "nextSelector": "#pageNextRightBtn",
+      "waitSelector": "#chaptercontainer",
+      "removeSelectors": [
+        "a[href=\"http://www.qidian.com\"]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "手机用户请到m.qidian.com阅读。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-005",
+      "name": "起点中文、起点女生、起点文学",
+      "url": "^https?://(www|read|readbook|wwwploy|cga|big5ploy)\\.(qidian|qdmm|qdwenxue)\\.com/BookReader/.*",
+      "titleSelector": "#lbChapterName",
+      "bookTitleSelector": ".page_site > a:last",
+      "removeSelectors": [
+        "span[id^='ad_'], .read_ma"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "\\[img=(.*)\\]",
+          "replacement": "<p><img src='$1'></p><p>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[+CP.*(http://file.*\\.jpg)\\]+",
+          "replacement": "<p><img src='$1'></p><p>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[bookid=(\\d+)，bookname=(.*?)\\]",
+          "replacement": "<a href='http://www.qidian.com/Book/$1.aspx'>$2</a>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.cmfu.com发布|起点中文网www.qidian.com欢迎广大书友光临阅读.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(<p>\\s+)?<a href=\"?http://www.(?:qidian|cmfu).com\"?>起点中文网.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "([\\u4e00-\\u9fa5])[%￥]+([\\u4e00-\\u9fa5])",
+          "replacement": "$1$2",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-006",
+      "name": "起点中文网免费频道",
+      "url": "^https?://free\\.qidian\\.com/Free/ReadChapter\\.aspx",
+      "titleSelector": ".title > h3",
+      "bookTitleSelector": ".site_rect > a:last",
+      "contentSelector": "#chapter_cont, #content",
+      "removeSelectors": [
+        ".nice_books"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "\\[img=(.*)\\]",
+          "replacement": "<p><img src='$1'></p><p>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[+CP.*(http://file.*\\.jpg)\\]+",
+          "replacement": "<p><img src='$1'></p><p>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[bookid=(\\d+)，bookname=(.*?)\\]",
+          "replacement": "<a href='http://www.qidian.com/Book/$1.aspx'>$2</a>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.cmfu.com发布|起点中文网www.qidian.com欢迎广大书友光临阅读.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(<p>\\s+)?<a href=\"?http://www.(?:qidian|cmfu).com\"?>起点中文网.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-007",
+      "name": "创世中文网",
+      "url": "^https?://(?:chuangshi|yunqi)\\.qq\\.com/|^http://dushu\\.qq\\.com/read.html\\?bid=",
+      "titleSelector": ".story_title > h1",
+      "bookTitleSelector": ".bookNav > a:last()",
+      "contentSelector": ".bookreadercontent",
+      "prevSelector": "#rightFloatBar_preChapterBtn",
+      "nextSelector": "#rightFloatBar_nextChapterBtn",
+      "waitSelector": "#chaptercontainer"
+    },
+    {
+      "id": "legacy-site-008",
+      "name": "纵横中文网",
+      "url": "^https?://book\\.zongheng\\.com/\\S+\\/\\d+\\.html$",
+      "titleSelector": "em[itemprop='headline']",
+      "bookTitleSelector": ".tc h2",
+      "contentSelector": "#readerFt"
+    },
+    {
+      "id": "legacy-site-009",
+      "name": "晋江文学网",
+      "url": "^https?:\\/\\/(www|my)\\.jjwxc\\.net\\/onebook(|_vip)\\.php\\S*",
+      "titleSelector": "#chapter_list > option:first",
+      "contentSelector": ".noveltext",
+      "indexSelector": ".noveltitle > h1 > a",
+      "removeSelectors": [
+        "font[color], hr"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "@无限好文，尽在晋江文学城",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-010",
+      "name": "晋江文学城_手机版",
+      "url": "^https?://(?:wap|m)\\.jjwxc\\.(?:net|com)/(?:book2|vip)/\\d+/\\d+",
+      "titleSelector": "h2",
+      "contentSelector": "div.grid-c > div > .b.module > div:first"
+    },
+    {
+      "id": "legacy-site-011",
+      "name": "潇湘书院",
+      "url": "^https?://www\\.xxsy\\.net/chapter/.*\\.html",
+      "contentSelector": "#auto-chapter",
+      "nextSelector": ".chapter-next",
+      "indexSelector": ".bread > a:last()",
+      "contentReplaceRules": [
+        {
+          "pattern": "本书由潇湘书院首发，请勿转载！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-012",
+      "name": "逐浪",
+      "url": "^https?:\\/\\/book\\.zhulang\\.com\\/.*\\.html",
+      "contentSelector": "#readpage_leftntxt"
+    },
+    {
+      "id": "legacy-site-013",
+      "name": "小说阅读网",
+      "url": "^https?://www\\.readnovel\\.com/novel/.*\\.html",
+      "titleSelector": ".bgtop > h1",
+      "bookTitleSelector": ".nownav > a:eq(4)",
+      "contentSelector": "#article, .zhangjie",
+      "removeSelectors": [
+        "div[style], .miaoshu, .zhichi, .bottomAdbanner"
+      ]
+    },
+    {
+      "id": "legacy-site-014",
+      "name": "百度贴吧（手动启用）",
+      "url": "^https?:\\/\\/tieba\\.baidu.com\\/p\\/",
+      "titleSelector": "h1.core_title_txt",
+      "bookTitleSelector": ".card_title_fname",
+      "contentSelector": "#j_p_postlist",
+      "indexSelector": "a.card_title_fname",
+      "disableAuto": true,
+      "removeSelectors": [
+        "#sofa_post, .d_author, .share_btn_wrapper, .core_reply, .j_user_sign"
+      ]
+    },
+    {
+      "id": "legacy-site-015",
+      "name": "天涯书库",
+      "url": "www\\.ty2016\\.com\\/.+\\.html$",
+      "titleSelector": "h1",
+      "contentSelector": "#main",
+      "removeSelectors": [
+        ".crumb, table"
+      ]
+    },
+    {
+      "id": "legacy-site-016",
+      "name": "燃文",
+      "url": "^https?:\\/\\/www\\.(?:ranwena?\\.(cc|net|com)|64mi\\.com)\\/.*\\.html$",
+      "contentSelector": "#oldtext, #contents",
+      "removeSelectors": [
+        "div[style], script"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "\\((&nbsp;)*\\)",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "最快更新78小说|\\(?百度搜.\\)|访问下载tXt小说|百度搜\\|索|文\\|学|文学全文.字手打|\\((&nbsp;)+|牛过中文..hjsm..首发.转载请保留|\\[本文来自\\]|♠思♥路♣客レ|※五月中文网 5y ※|无错不跳字|最快阅读小说大主宰.*|跟我读Ｈ－u－n 请牢记|非常文学|关闭&lt;广告&gt;|w w.*|”娱乐秀”|更多精彩小[说說].*|高速更新",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "[\\(\\*◎]*(百度搜)?文.?[學学].?[馆館][\\)\\*）]*|\\(百度搜\\)",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "提供无弹窗全文字在线阅读.*|高速首发.*如果你觉的本章节还不错的话.*",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "书网∷更新快∷无弹窗∷纯文字∷.t！。",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "一秒记住，本站为您提供热门小说免费阅读。",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "\\(更新速度最快记住即可找到\\)|芒果直播网|.mgzhibo .|去 读 读|看小说就到",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "火然\\?\\?\\? \\?文&nbsp;&nbsp;ｗ\\?ｗｗ.ｒａｎｗｅｎａ.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-017",
+      "name": "燃文小说网",
+      "url": "^https?://www\\.ranwenxiaoshuo\\.com/files/article/html/\\d+/\\d+/\\d+\\.html|http://www\\.ranwenxiaoshuo\\.com/\\w+/\\w+-\\d+-\\d+\\.html",
+      "contentSelector": "#fontsize",
+      "contentReplaceRules": [
+        {
+          "pattern": "天才一秒记住[\\s\\S]+为您提供精彩小说阅读。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-018",
+      "name": "燃文小说",
+      "url": "^https?://www\\.ranwen\\.net/files/article/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(.*燃文小说.*\\)|【 注册会员可获私人书架，看书更方便！永久地址： 】 ",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-019",
+      "name": "无错小说网",
+      "url": "^https?:\\/\\/www\\.(?:wcxiaoshuo|xiaoshuoz|quledu)\\.com\\/wcxs[-\\d]+\\/",
+      "prevSelector": "a#htmlshangzhang",
+      "nextSelector": "a#htmlxiazhang",
+      "indexSelector": "a#htmlmulu",
+      "contentReplaceRules": [
+        {
+          "pattern": "ilo-full-src=\"\\S+\\.jpg\" ",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(<center>)?<?img src..(http://www.wcxiaoshuo.com)?(/sss/\\S+\\.jpg).(>| alt.\"\\d+_\\d+_\\d*\\.jpg\" />)(</center>)?",
+          "replacement": "$3",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/da.jpg",
+          "replacement": "打",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/maws.jpg",
+          "replacement": "吗？",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/baw.jpg",
+          "replacement": "吧？",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/wuc.jpg",
+          "replacement": "无",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/maosu.jpg",
+          "replacement": "：“",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/cuow.jpg",
+          "replacement": "错",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/ziji.jpg",
+          "replacement": "自己",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/shenme.jpg",
+          "replacement": "什么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/huiqub.jpg",
+          "replacement": "回去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/sjian.jpg",
+          "replacement": "时间",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zome.jpg",
+          "replacement": "怎么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zhido.jpg",
+          "replacement": "知道",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiaxin.jpg",
+          "replacement": "相信",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/faxian.jpg",
+          "replacement": "发现",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/shhua.jpg",
+          "replacement": "说话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/dajiex.jpg",
+          "replacement": "大姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/dongxi.jpg",
+          "replacement": "东西",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/erzib.jpg",
+          "replacement": "儿子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/guolair.jpg",
+          "replacement": "过来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiabang.jpg",
+          "replacement": "下班",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zangfl.jpg",
+          "replacement": "丈夫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/dianhua.jpg",
+          "replacement": "电话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/huilaim.jpg",
+          "replacement": "回来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiawu.jpg",
+          "replacement": "下午",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/guoquu.jpg",
+          "replacement": "过去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/shangba.jpg",
+          "replacement": "上班",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/mingtn.jpg",
+          "replacement": "明天",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/nvrenjj.jpg",
+          "replacement": "女人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/shangwo.jpg",
+          "replacement": "上午",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/shji.jpg",
+          "replacement": "手机",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiaoxinyy.jpg",
+          "replacement": "小心",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/furene.jpg",
+          "replacement": "夫人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gongzih.jpg",
+          "replacement": "公子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiansg.jpg",
+          "replacement": "先生",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/penyouxi.jpg",
+          "replacement": "朋友",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xiaoje.jpg",
+          "replacement": "小姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xifup.jpg",
+          "replacement": "媳妇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/nvxudjj.jpg",
+          "replacement": "女婿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xondi.jpg",
+          "replacement": "兄弟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/lagong.jpg",
+          "replacement": "老公",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/lapo.jpg",
+          "replacement": "老婆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/meimeid.jpg",
+          "replacement": "妹妹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/jiejiev.jpg",
+          "replacement": "姐姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/jiemeiv.jpg",
+          "replacement": "姐妹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xianggx.jpg",
+          "replacement": "相公",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/6shenumev.jpg",
+          "replacement": "什么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/cuoaw.jpg",
+          "replacement": "错",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/fpefnyoturxi.jpg",
+          "replacement": "朋友",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/vfsjgigarn.jpg",
+          "replacement": "时间",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zzhiedo3.jpg",
+          "replacement": "知道",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zibjib.jpg",
+          "replacement": "自己",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/qdonglxi.jpg",
+          "replacement": "东西",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/hxiapxint.jpg",
+          "replacement": "相信",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/fezrormre.jpg",
+          "replacement": "怎么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/nvdrfenfjfj.jpg",
+          "replacement": "女人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/jhiheejeieev.jpg",
+          "replacement": "姐姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xdifagojge.jpg",
+          "replacement": "小姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gggugolgair.jpg",
+          "replacement": "过来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/maoashu.jpg",
+          "replacement": "：“",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gnxnifawhu.jpg",
+          "replacement": "下午",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/rgtugoqgugu.jpg",
+          "replacement": "过去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/khjukilkaim.jpg",
+          "replacement": "回来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gxhigfadnoxihnyy.jpg",
+          "replacement": "小心",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/bkbskhhuka.jpg",
+          "replacement": "说话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xeieavnfsg.jpg",
+          "replacement": "先生",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/yuhhfuiuqub.jpg",
+          "replacement": "回去",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/pdianphua.jpg",
+          "replacement": "电话",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/fabxianr.jpg",
+          "replacement": "发现",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/feilrpto.jpg",
+          "replacement": "老婆",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gxronfdri.jpg",
+          "replacement": "兄弟",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/flfaggofng.jpg",
+          "replacement": "老公",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/tymyigngtyn.jpg",
+          "replacement": "明天",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/dfshfhhfjfi.jpg",
+          "replacement": "手机",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gstjhranjgwjo.jpg",
+          "replacement": "上午",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/fmgeyimehid.jpg",
+          "replacement": "妹妹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gxgihftutp.jpg",
+          "replacement": "媳妇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/cerztifb.jpg",
+          "replacement": "儿子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gfxgigagbfadng.jpg",
+          "replacement": "下班",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gstjhranjg.jpg",
+          "replacement": "下午",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/hjeirerm6eihv.jpg",
+          "replacement": "姐妹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/edajihexr.jpg",
+          "replacement": "大姐",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/wesfhranrrgba.jpg",
+          "replacement": "上班",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gfognggzigh.jpg",
+          "replacement": "公子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/frurtefne.jpg",
+          "replacement": "夫人",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/fzagnggfbl.jpg",
+          "replacement": "丈夫",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/nvdxfudfjfj.jpg",
+          "replacement": "女婿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/xdidafnggx.jpg",
+          "replacement": "相公",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/zenme.jpg",
+          "replacement": "怎么",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/gongzi.jpg",
+          "replacement": "公子",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/sss/ddefr.jpg",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ".*ddefr\\.jpg.*|无(?:错|.*cuoa?w\\.jpg.*)小说网不[少跳]字|w[a-z\\.]*om?|.*由[【无*错】].*会员手打[\\s\\S]*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "是 由",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "无错不跳字|无广告看着就是爽!|一秒记住.*|全文免费阅读.*|8 9 阅阅 读 网|看小说最快更新|“小#说看本书无广告更新最快”",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[\\x20-\\x7e》]?无(?:.|&gt;)错.小说.{1,2}[Ｗw]+.*?[cＣ][oＯ][mＭ]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<无-错>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "—无—错—小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\+无\\+错\\+",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&amp;无&amp;错&amp;小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "无错小说 www.quled[Ｕu].com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-020",
+      "name": "凤舞文学网",
+      "url": "^https?://www\\.wenxue8\\.org/html/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "<img src=\"/keywd/R43.gif\">",
+          "replacement": "爱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/A13.gif\">",
+          "replacement": "情",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/D10.gif\">",
+          "replacement": "床",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/Y19.gif\">",
+          "replacement": "奸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/H21.gif\">",
+          "replacement": "屁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/Z23.gif\">",
+          "replacement": "逼",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/G42.gif\">",
+          "replacement": "身",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/Y2.gif\">",
+          "replacement": "性",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/D32.gif\">",
+          "replacement": "热",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/I44.gif\">",
+          "replacement": "挺",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/H30.gif\">",
+          "replacement": "贱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/H25.gif\">",
+          "replacement": "荡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/V7.gif\">",
+          "replacement": "肉",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/O22.gif\">",
+          "replacement": "吮",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/H9.gif\">",
+          "replacement": "春",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/K36.gif\">",
+          "replacement": "日",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/O15.gif\">",
+          "replacement": "胸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/S31.gif\">",
+          "replacement": "欲",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/F20.gif\">",
+          "replacement": "射",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/N12.gif\">",
+          "replacement": "禁",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/R26.gif\">",
+          "replacement": "殿",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/X6.gif\">",
+          "replacement": "诱",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/U46.gif\">",
+          "replacement": "娇",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/M24.gif\">",
+          "replacement": "操",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/B4.gif\">",
+          "replacement": "骚",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<img src=\"/keywd/O3.gif\">",
+          "replacement": "阴",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-021",
+      "name": "书迷楼",
+      "url": "^https?:\\/\\/www\\.shumil\\.(?:co|us|com)\\/.*html$",
+      "contentSelector": "#content",
+      "removeSelectors": [
+        "a, center"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "div lign=\"ener\"&gt;|.*更多章节请到网址隆重推荐去除广告全文字小说阅读器",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "起点中文网www.qidian.com欢迎广大书.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "书迷楼最快更新.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更新最快最稳定",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(\\.\\)R?U",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<p>\\?\\?",
+          "replacement": "<p>",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(www.\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "章节更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-乐-读-小-说--乐读x-",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《乐》《读》小说.乐读.Com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "纯文字在线阅读本站域名手机同步阅读请访问",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-优－优－小－说－更－新－最－快-www.uuxs.cc-",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(本章免费\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请大家搜索（书迷楼）看最全！更新最快的小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "书迷楼www.shumilou.co",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "shumil.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "书迷楼 （）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "书迷楼",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-022",
+      "name": "冰火中文",
+      "url": "^https?:\\/\\/www\\.binhuo\\.com\\/html\\/[\\d\\/]+\\.html$",
+      "removeSelectors": [
+        "font[color=\"red\"]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "&lt;冰火#中文.*|冰火中文&nbsp;(www.)?binhuo.com(?:【首发】|)|冰.火.中文|绿色小说|lvsexs|冰火中文",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "LU5.ｃｏM|lU５.com|LU5.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "([^/])www\\.binhuo\\.com(?:\\.com|)",
+          "replacement": "$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(.*?平南文学网\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-023",
+      "name": "百晓生",
+      "url": "^https?:\\/\\/www\\.bxs\\.cc\\/\\d+\\/\\d+\\.html",
+      "removeSelectors": [
+        "a, #txtright"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "一秒记住【】www.zaidu.cc，本站为您提供热门小说免费阅读。",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "（文&nbsp;學馆w&nbsp;ww.w&nbsp;xguan.c&nbsp;om）",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "（百晓生更新最快最稳定\\)",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "\\((?:&nbsp;)*(?:无弹窗)?全文阅读\\)",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "\\[<a.*?首发\\[百晓生\\] \\S+",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "高速首发.*本章节是地址为",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "\\/\\/(?:&nbsp;|访问下载txt小说|高速更新)+\\/\\/",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "(www\\.)?bxs\\.cc|www\\.bxs(\\.com)?",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "百晓生.不跳字|不跳字。|更新快纯文字",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "\\.\\[，！\\]",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "（未完待续&nbsp;http:\\/\\/www.Bxs.cc&nbsp;89免费小说阅《百晓生文学网》）",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "〖百晓生∷.*〗|《?百晓生文学网》?|最快阅读小说大主宰，尽在百晓生文学网.*|ww.x.om|欢迎大家来到.*?bxs\\.cc|百晓生阅读最新最全的小说.*|百晓生网不少字|站长推荐.*|文字首发|百.晓.生.|关闭.*广告.*|飘天文学|本站域名就是.*|\\(.{0,5}小说更快更好.{0,5}\\)|(请在)?百度搜索.*|一秒记住.*为您提供精彩小说阅读.|百晓生|¤本站网址：¤|\\/\\/&nbsp;访问下载txt小说\\/\\/◎◎|纯站点\\\\\".*值得收藏的",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "文[学學][馆館]|www\\.biquge\\.cc|(http:\\/\\/)?www\\.Bxs\\.cc|(请牢记)?soudu．org",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "请搜索，小说更好更新更快!|最快文字更新无弹窗无广|\\(即可找到本站\\)|无广告看着就是爽!|更多全本txt小说请到下载|∷更新快∷∷纯文字∷",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "永久网址，请牢记！",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "&nbsp;&gt;<\\/p>",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-024",
+      "name": "浩奇文学网",
+      "url": "^https?:\\/\\/www\\.haoqi99\\.com\\/.*\\.shtml$"
+    },
+    {
+      "id": "legacy-site-025",
+      "name": "书河小说网",
+      "url": "^https?:\\/\\/www\\.shuhe\\.cc\\/\\d+\\/\\d+",
+      "contentSelector": "#TXT",
+      "contentReplaceRules": [
+        {
+          "pattern": "一秒记住.*为您提供精彩小说阅读.|\\{请在百度搜索.*首发阅读\\}|（书河小说网.*?无弹窗）|wxs.o|ww.x.om|[\\[【\\(].{1,30}[\\]\\)】]|ff37;.*|书河小说网高速首发.*|TXT下载|全文阅读|第一书河小说网|百书斋.*|首发来自书河小说网|本书最新章节|书河小说网",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-026",
+      "name": "爱收藏",
+      "url": "^https?:\\/\\/www\\.aishoucang\\.com\\/\\w+\\/\\d+\\.html",
+      "contentSelector": "#zhutone",
+      "contentReplaceRules": [
+        {
+          "pattern": "<a[^>]*>(.*?)</a>",
+          "replacement": "$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": ".爱收藏[^<]*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-027",
+      "name": "木鱼哥",
+      "url": "^https?:\\/\\/(www\\.)?muyuge\\.(com|net)\\/\\w+\\/\\d+\\.html",
+      "titleSelector": "#yueduye h1",
+      "bookTitleSelector": ".readerNav > li > a:last",
+      "removeSelectors": [
+        ".vote"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "<a[^>]*>(.*?)</a>",
+          "replacement": "$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看更新最快的小说就搜索—— 木鱼哥——无弹窗，全文字",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【看最新小说就搜索.*全文字首发】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<p>.*?无弹窗</p>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "bb\\.king|【木&nbsp;鱼&nbsp;哥&nbsp;.*?】|【一秒钟记住本站：muyuge.com.*木鱼哥】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "——推荐阅读——[\\s\\S]+",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【\\s*木\\s*鱼\\s*哥.*?】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "div&gt;|&lt;－》",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(.pn. 平南\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-028",
+      "name": "追书网",
+      "url": "^https?://www\\.zhuishu\\.net/files/article/html/.*\\.html",
+      "contentSelector": "#content",
+      "contentReplaceRules": [
+        {
+          "pattern": "([^/])www\\.ZhuisHu\\.net",
+          "replacement": "$1",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-029",
+      "name": "猪猪岛小说",
+      "url": "^https?://www\\.zhuzhudao\\.(?:com|cc)/txt/",
+      "contentReplaceRules": [
+        {
+          "pattern": "[“\"”]?猪猪岛小说.*|<\\/?a[^>]+>|w+\\.zhuZhuDao\\.com|看更新最快的.*",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-030",
+      "name": "逸名文学屋",
+      "url": "^https?://(bbs\\.vyming|www\\.9imw)\\.com/novel-read-\\d+-\\d+\\.html",
+      "bookTitleSelector": ".headinfo a:first",
+      "contentSelector": "#showcontent",
+      "contentReplaceRules": [
+        {
+          "pattern": "逸名文学屋：",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-031",
+      "name": "奇书屋",
+      "url": "^https?://www.qishuwu.com/\\w+/\\d+/"
+    },
+    {
+      "id": "legacy-site-032",
+      "name": "17k小说网",
+      "url": "^https?:\\/\\/\\S+\\.17k\\.com\\/chapter\\/\\S+\\/\\d+\\.html$",
+      "contentSelector": "#chapterContent",
+      "removeSelectors": [
+        ".chapter_update_time, h1, .qrcode, #authorSpenk, .like_box, #hotRecommend, .ct0416, .recent_read, #miniVoteBox"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "本书首发来自17K小说网，第一时间看正版内容！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-033",
+      "name": "看下文学",
+      "url": "^https?://www\\.kanxia\\.net/k/\\d*/\\d+/\\d+\\.html$",
+      "contentReplaceRules": [
+        {
+          "pattern": "看下文学",
+          "replacement": "",
+          "flags": "g"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-034",
+      "name": "青帝文学网",
+      "url": "^https?:\\/\\/www\\.qingdi\\.com\\/files\\/article\\/html\\/\\d+\\/\\d+\\/\\d+\\.html$"
+    },
+    {
+      "id": "legacy-site-035",
+      "name": "侠客中文网",
+      "url": "^https?:\\/\\/www\\.xkzw\\.org\\/\\w+\\/\\d+\\.html",
+      "contentSelector": ".readmain_inner .cont"
+    },
+    {
+      "id": "legacy-site-036",
+      "name": "ChinaUnix.net",
+      "url": "^https?:\\/\\/bbs\\.chinaunix\\.net\\/thread-.*\\.html",
+      "contentSelector": ".t_f:first"
+    },
+    {
+      "id": "legacy-site-037",
+      "name": "123du 小说",
+      "url": "^https?:\\/\\/www\\.123du\\.(?:net|cc)\\/",
+      "contentSelector": "#content, #contents",
+      "removeSelectors": [
+        "a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "一秒记住.www.*|小说最新更新，来123读书www.123du.net",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-038",
+      "name": "动力中文",
+      "url": "^https?://dlzw\\.cc/article.*\\.html",
+      "indexSelector": "#pt a[href^='http']"
+    },
+    {
+      "id": "legacy-site-039",
+      "name": "塔读文学",
+      "url": "^https?://www\\.tadu\\.com/book/\\d+/\\d+/",
+      "bookTitleSelector": ".book-name_ a:first",
+      "contentSelector": "#partContent",
+      "waitDelay": 2000
+    },
+    {
+      "id": "legacy-site-040",
+      "name": "第一中文",
+      "url": "^https?://www\\.dyzww\\.com/cn/\\d+/\\d+/\\d+\\.html$",
+      "contentReplaceRules": [
+        {
+          "pattern": "<img.*?ait=\"(.*?)\".*?>",
+          "replacement": "$1",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www\\.dyzww\\.com.*|♂|шШщ.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-041",
+      "name": "来书屋",
+      "url": "^https?://www.laishuwu.com/html/\\d+/\\d+/\\d+.html",
+      "titleSelector": ".chaptertitle h2",
+      "bookTitleSelector": ".chaptertitle h1",
+      "contentReplaceRules": [
+        {
+          "pattern": "txt\\d+/",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-042",
+      "name": "万书吧",
+      "url": "^https?://www\\.wanshuba\\.com/Html/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": ".yd_text2",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\[www.*?\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(&nbsp;&nbsp;\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "提供无弹窗全文字在线阅读，更新速度更快文章质量更好，如果您觉得不错就多多分享本站!谢谢各位读者的支持!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "高速首发.*?，本章节是.*?地址为如果你觉的本章节还不错的话请不要忘记向您qq群和微博里的朋友推荐哦！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-043",
+      "name": "大文学",
+      "url": "^https?://www\\.dawenxue\\.net/html/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": "#clickeye_content",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(?大文学\\s*www\\.dawenxue\\.net\\)?|\\(\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-044",
+      "name": "奇热",
+      "url": "^https?://www\\.qirexs\\.com/read-\\d+-chapter-\\d+\\.html",
+      "contentSelector": "div.page-content .note",
+      "removeSelectors": [
+        "a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "”奇热小说小说“更新最快|首发,/.奇热小说网阅读网!|奇热小说网提供.*|\\(手机用户请直接访问.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-045",
+      "name": "热点",
+      "url": "^https?://www\\.hotsk\\.com/Html/Book/\\d+/\\d+/\\d+\\.shtml",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(热点书库首发:www.hotsk.com\\)|www.zhuZhuDao.com .猪猪岛小说.",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-046",
+      "name": "落秋中文",
+      "url": "^https?://www\\.luoqiu\\.(com|net)/html/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "&lt;/p&gt;",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-047",
+      "name": "全本小说网",
+      "url": "^https?://www\\.qb5\\.com/xiaoshuo/\\d+/\\d+/\\d+\\.html",
+      "removeSelectors": [
+        "div[class]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "全.{0,2}本.{0,2}小.{0,2}说.{0,2}网.{0,2}|[ｗWw ]+.{1,10}[CｃcǒOｍMМ ]+",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-048",
+      "name": "手牵手小说网",
+      "url": "^https?://www\\.sqsxs\\.com/.*\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": "#sitebar a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "◆免费◆",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "★百度搜索，免费阅读万本★|访问下载txt小说.百度搜.|免费电子书下载|\\(百度搜\\)|『文學吧x吧.』|¤本站网址：¤",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[☆★◆〓『【◎◇].*?(?:yunlaige|云 来 阁|ｙｕｎｌａｉｇｅ|免费看).*?[☆◆★〓』】◎◇]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【手机小说阅读&nbsp;m.】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "BAIDU_CLB_fillSlot.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&nbsp;关闭</p>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&nbsp;&nbsp;&nbsp;&nbsp;\\?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[☆更.新.最.快☆无.弹.窗☆全.免.费\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(.*?平南文学网\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "｛首发｝|【首发】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "=长=风",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-优－优－小－说－更－新－最－快-\\.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "发现一家非常好吃的手工曲奇店铺，可搜索淘宝.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "强烈推荐一家手工曲奇店，在淘宝搜索.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "。\\.",
+          "replacement": "。",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-049",
+      "name": "六月中文网，盗梦人小说网",
+      "url": "^https?://www\\.(?:6yzw\\.org|6yzw\\.com|daomengren\\.com)/.*\\.html",
+      "bookTitleSelector": ".con_top>a:last",
+      "removeSelectors": [
+        "a[href]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "纯文字在线阅读本站域名 520xs.Com 手机同步阅读请访问 M.520xs.Com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "{飘天文学[\\s\\S]*您的支持就是我们最大的动力}",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(（未完待续），|精彩推荐：，)?最新最快更新热门小说，享受无弹窗阅读就在：",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一秒记住【】，本站为您提供热门小说免费阅读。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "百度搜索 本书名.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "欢迎您的光临，任何搜索引擎搜索.*给大家带来的不便深感抱歉!！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(?&nbsp;&nbsp; ?提供』。如果您喜欢这部作品，欢迎您来创世中文网[\\s\\S]+",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[\\(（]未完待续.{1,2}本文字由.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "//添加开头|会员特权抢先体验",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更新最快|更新快纯文字|看最新章节|六月中文网|78小说|h﹒c﹒d|穿越小说吧 sj131|\\*五月中文网5.c om\\*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\d楼[\\d\\-: ]+(?:&nbsp;)+ \\|(?:&nbsp;)+|吧主\\d+(?:&nbsp;)+|支持威武，嘎嘎！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www，|&nbsp;\\\\|“梦”(&nbsp;| )*“小”(&nbsp;| )*(“说” )?“网”|“岛”(&nbsp;| )+“说”",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(百度搜索 )?本书名 \\+ 盗梦人 看最快更新",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "520xs.com ”520小说“小说章节更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看最新最全小说|最快更新，(?:无弹窗)?阅读请。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "纯文字在线阅读本站域名  手机同步阅读请访问",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本文由　……　首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（首发）|【首发】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&amp;nbsp",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-050",
+      "name": "飞卢小说网",
+      "url": "^https?://b\\.faloo\\.com/p/\\d+/\\d+\\.html",
+      "titleSelector": "#title h1",
+      "bookTitleSelector": "div.nav > a:last",
+      "contentSelector": "#main > .main0",
+      "prevSelector": "a#pre_page",
+      "nextSelector": "a#next_page",
+      "indexSelector": "a#huimulu",
+      "contentReplaceRules": [
+        {
+          "pattern": "飞卢小说网 b.faloo.com 欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在飞卢小说网！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-051",
+      "name": "顶点小说",
+      "url": "^https?://www\\.(?:23us|x23us|23wx|xs222)\\.(?:com|cc)/html/\\d+/\\d+/\\d+\\.html$",
+      "bookTitleSelector": ".crumbs > div > a:last, #amain > dl > dt > a:last",
+      "contentSelector": "#contents",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(看小说到顶点小说网.*\\)|\\(\\)|【记住本站只需一秒钟.*】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一秒记住【.*读及下载。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.xstxt.org",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "wenxuemi.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "23us．com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "顶点小说 Ｘ２３ＵＳ．com更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www．23us．cc更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "免费小说门户",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\|顶\\|点\\|小\\|說\\|網更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\\\\\|顶\\\\\\|点\\\\\\|小\\\\\\|说\\\\\\|2\\|3\\|u\\|s\\|.\\|c\\|c\\|",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-052",
+      "name": "23中文",
+      "url": "^https?://www\\.23zw\\.(com|me)/.*\\.html",
+      "contentSelector": "#chapter_content",
+      "removeSelectors": [
+        "h1"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "的朋友，你可以即可第一时间找到本站哦。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机看小说哪家强\\?手机阅读网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "，最快更新.*?最新章节！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看.*?最新章节到长风文学",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本文由首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "章节更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "顶点小说.23us.。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(顶点小说\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看最新最全",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "R1152",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\.n√et",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "中文网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&amp;aaaa",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更多精彩小说请访问",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-053",
+      "name": "笔下阁",
+      "url": "^https?://www\\.bixiage\\.com/\\w+/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "本书最新免费章节请访问|请记住本站的网址|请使用访问本站",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看更新最快的.*www.bixiage.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "笔下阁为您提供全文字小说.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如果你觉得笔下阁不错.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本篇是小说.*章节内容，如果你发现内容错误.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-054",
+      "name": "双德小说网",
+      "url": "^https?://www\\.shuangde\\.cc/.*\\.html",
+      "bookTitleSelector": ".title > h2 > a",
+      "removeSelectors": [
+        ".title, div[align=\"center\"]"
+      ]
+    },
+    {
+      "id": "legacy-site-055",
+      "name": "爱尚小说网",
+      "url": "^https?://www.a240.com/read/\\d+/\\d+.html",
+      "removeSelectors": [
+        ".bottem, center"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "<!--章节内容开始-->",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-056",
+      "name": "Ｅ度文学网",
+      "url": "^https?://www.173ed.com/read/\\d+/\\d+.html",
+      "removeSelectors": [
+        "a[href*=\"173e\"]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "全文字小说W.*?\\.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "E度文学网更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www\\.♀173ed.com♀",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-057",
+      "name": "3Z中文网",
+      "url": "^https?://www\\.zzzcn\\.com\\/(3z\\d+/\\d+\\/|modules\\/article\\/App\\.php\\?aid=\\d+&cid=\\d+){1}$",
+      "contentSelector": "#content3zcn",
+      "contentReplaceRules": [
+        {
+          "pattern": "[{(][a-z\\/.]+(?:首发文字|更新超快)[})]",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "手机小说站点（wap.zzzcn.com）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一秒记住.*为您提供精彩小说阅读。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-058",
+      "name": "比奇中文网",
+      "url": "^https?://www\\.biqi\\.me/files/article/html/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": "#lbChapterName",
+      "bookTitleSelector": "#TOPNAV td:first > a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "http://www.biqi.me比奇中文网永久网址，请牢记！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.biqi.me比奇中文网一直在为提高阅读体验而努力，喜欢请与好友分享！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[｛【]比奇中文网首发www.biqi.me[｝】]",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-059",
+      "name": "书哈哈小说网",
+      "url": "^https?://(?:read|www)\\.shuhaha\\.com/Html/Book/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": "#htmltimu",
+      "contentSelector": "#BookText",
+      "removeSelectors": [
+        "a[href*=\"www.shuhaha.com\"]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "‘‘",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "’’",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（\\.shuh&amp;n）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<p[^>]*>(&nbsp;){4}网<\\/p>",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-060",
+      "name": "SF 轻小说",
+      "url": "^https?://book.sfacg.com/Novel/\\d+/\\d+/\\d+/",
+      "contentSelector": "#ChapterBody"
+    },
+    {
+      "id": "legacy-site-061",
+      "name": "武林中文网",
+      "url": "^https?://www\\.50zw\\.(com|co|la)/book_\\d+/\\d+\\.html",
+      "bookTitleSelector": ".srcbox > a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "更新最快【】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;/dd&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;center&gt; &lt;fon color=red&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "一秒记住【武林中文网.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "武林中文网 www.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-062",
+      "name": "乡村小说网",
+      "url": "^https?://www\\.xiangcunxiaoshuo\\.com/shu/\\d+/\\d+\\.html",
+      "contentSelector": ".yd_text2",
+      "contentReplaceRules": [
+        {
+          "pattern": "[ｗＷw]+．２３ｕＳ．(?:ｃｏＭ|com)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乡&amp;村&amp;.*?\\.co[mＭ]",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-063",
+      "name": "杂书网",
+      "url": "^https?://www\\.zashu\\.net/books/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "吋煜牝咱.*?杂书网(?:杠杠的)?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "吋煜牝咱看书神器",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "(?:吋煜牝咱|飝现洅咱|茇阺畱匝).*?[Ｃc]om",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "吋煜牝咱",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "飝现洅咱",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "殢萾嘎匝",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看小说“杂书网zashu.net”",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机站：m.zashu.net 电脑站：www.zashu.net",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-064",
+      "name": "小说巴士",
+      "url": "^https?://www\\.xs84\\.com/\\d+_\\d+/",
+      "bookTitleSelector": ".con_top a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "§推荐一个无广告的小说站.*? §",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "☆本站最快更新.*?☆",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "纯文字在线阅读.*?</br>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.X S 8 4.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《》 www.obr />",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "。。 w.2.obr",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[w w w.x s.*?.c o m 小说.*?\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "╂上.*?╂",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\*\\*顶\\*\\*点.{0,3}小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "___小.说.巴.士 www.xS84.com___",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-065",
+      "name": "123言情",
+      "url": "^https?://www\\.123yq\\.(com|org)/read/\\d+/\\d+/\\d+\\.shtml",
+      "bookTitleSelector": ".con_top > a:last",
+      "contentSelector": "#TXT",
+      "removeSelectors": [
+        ".bottem, .red, .contads, a"
+      ]
+    },
+    {
+      "id": "legacy-site-066",
+      "name": "热门小说网",
+      "url": "^https?://www.remenxs.com/du_\\d+/\\d+/",
+      "bookTitleSelector": "section.readhead > div.read_t > div.lf > a:nth-child(2)",
+      "contentSelector": ".yd_text2",
+      "removeSelectors": [
+        ".adrs, .con_w, a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "您可以在百度里搜索“.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "为了方便下次阅读，你可以点击下方的.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-067",
+      "name": "落霞小说",
+      "url": "^https://www\\.luoxia\\.com/hch/\\d+\\.htm",
+      "bookTitleSelector": "#bcrumb a[rel=\"category tag\"]",
+      "contentSelector": "#nr1",
+      "contentReplaceRules": [
+        {
+          "pattern": "-落[-~\\*]霞-小-说w ww ^ lu ox i a^ c o m. 🍌",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "🌽 落~霞~小~说~w w w - l u ox i a - co m",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "🍋 落*霞*小*说ww w_L uo x ia_c o m _",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "🌵 落+霞-小+說 L U ox i a - c o m +",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "🐕 落·霞*小·说· L u ox i a · c om",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-068",
+      "name": "联合阅读",
+      "url": "https?://xrzww\\.com/module/novel/read.php*",
+      "titleSelector": "#content h2",
+      "bookTitleSelector": ".title-wrap .percent",
+      "contentSelector": "#content #contentInner"
+    },
+    {
+      "id": "legacy-site-069",
+      "name": "完本神站",
+      "url": "^https?://www\\.wanbentxt\\.com/\\d+/.*?\\.html",
+      "bookTitleSelector": ".search > a > span",
+      "contentSelector": ".readerCon",
+      "contentReplaceRules": [
+        {
+          "pattern": "--&gt;&gt;本章未完，点击下一页继续阅读",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "提示：浏览器搜索（书名）.*?可以快速找到你在本站看的书！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-070",
+      "name": "九桃小说网",
+      "url": "^https?://www\\.9txs\\.com/book/\\d+/\\d+\\.html",
+      "bookTitleSelector": "#bookname",
+      "contentReplaceRules": [
+        {
+          "pattern": "您可以在百度里搜索“.*?九桃小说\\(9txs.com\\)”查找最新章节！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-071",
+      "name": "闪舞小说网",
+      "url": "^https://www\\.35xs\\.co/book/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".bookNav > a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "小说网..org，最快更新.*?最新章节！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "闪舞小说网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www\\.35xss\\.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www\\.35xs\\.co",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-072",
+      "name": "给力文学小说阅读网",
+      "url": "^https?://www\\.geiliwx\\.com/.*\\.shtml",
+      "removeSelectors": [
+        "h1, font[color], center"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "网站升级完毕！感谢对给力文学网的支持！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（百度搜索给力文学网更新最快最稳定\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【sogou,360,soso搜免费下载小说】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[乐\\]\\[读\\]小说.２3.[Ｃc]m",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "给力文学网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看最快更新",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小说网不跳字",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "BAIDU_CLB_fillSlot\\(.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "--小-说-www-23wx-com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&nbsp;&nbsp;，请",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\.www\\.GEILIWX开心阅读每一天",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-073",
+      "name": "16K小说网",
+      "url": "^https?://www\\.16kbook\\.org/Html/Book/\\d+/\\d+/\\d+\\.shtml$",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        ".bdlikebutton"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "(<center>)?<?img src..(http://www.16kbook.org)?(/tu/\\S+\\.jpg).(>| alt.\"\\d+_\\d+_\\d*\\.jpg\" />)(</center>)?",
+          "replacement": "$3",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/shijie.jpg",
+          "replacement": "世界",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/xiangdao.jpg",
+          "replacement": "想到",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/danshi.jpg",
+          "replacement": "但是",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/huilai.jpg",
+          "replacement": "回来",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/yijing.jpg",
+          "replacement": "已经",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/zhende.jpg",
+          "replacement": "真的",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/liliang.jpg",
+          "replacement": "力量",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/le.jpg",
+          "replacement": "了",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/da.jpg",
+          "replacement": "大",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/shengli.jpg",
+          "replacement": "胜利",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/xiwang.jpg",
+          "replacement": "希望",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/wandan.jpg",
+          "replacement": "完蛋",
+          "flags": "gi"
+        },
+        {
+          "pattern": "/tu/de.jpg",
+          "replacement": "的",
+          "flags": "gi"
+        },
+        {
+          "pattern": "16kbook\\s*(首发更新|小说网)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-074",
+      "name": "读读看",
+      "url": "^https?://www\\.dudukan\\.net/html/.*\\.html$",
+      "waitSelector": "#main",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "看小说“就爱读书”|binhuo|www\\.92to\\.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-075",
+      "name": "读零零（有问题，只显示一半内容）",
+      "url": "https?://www\\.du00\\.(?:com|cc)/read/\\d+/\\d+/[\\d_]+\\.html",
+      "contentSelector": "#pagecontent, .divimage",
+      "removeSelectors": [
+        "font"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "读零零小说网欢迎您的光临.*?txt格式下载服务",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "，好看的小说:|本书最新免费章节请访问。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\*文學馆\\*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(未完待续请搜索，小说更好更新更快!",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www\\.DU00\\.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-076",
+      "name": "卡夜阁",
+      "url": "https://www\\.kayege\\.com/book/\\d+/\\d+(?:_\\d+)?\\.html",
+      "bookTitleSelector": ".box-head h2",
+      "contentSelector": "#read",
+      "contentReplaceRules": [
+        {
+          "pattern": "--&gt;&gt;\\(第1/2页\\)，请点击下一页继续阅读。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-077",
+      "name": "78小说网",
+      "url": "^https?://www\\.78xs\\.com/article/\\d+/\\d+/\\d+.shtml$",
+      "contentSelector": "#content",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "//.*?78xs.*?//",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(全文字小说更新最快\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-078",
+      "name": "151看书网",
+      "url": "^https?://www\\.151kan\\.com/kan/.*\\.html",
+      "contentSelector": "#msg",
+      "waitSelector": "#msg",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "[\\/|]?www\\.151(?:看|kan)\\.com[\\/|]?",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "151看书网(?:纯文字)?",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-079",
+      "name": "就爱读书",
+      "url": "^https?://www\\.92to\\.com/\\w+/\\w+/\\d+\\.html$",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "看小说.就爱.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-080",
+      "name": "书书网",
+      "url": "^https?://www\\.shushuw\\.cn/shu/\\d+/\\d+\\.html",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "！~！[\\s\\S]*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-081",
+      "name": "找小说网",
+      "url": "^https?://www\\.zhaoxiaoshuo\\.com/chapter-\\d+-\\d+-\\w+/",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "div[style]"
+      ]
+    },
+    {
+      "id": "legacy-site-082",
+      "name": "ABC小说网",
+      "url": "^https?://www\\.bookabc\\.net/.*\\.html",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-083",
+      "name": "全本小说网",
+      "url": "^https?://www\\.quanben\\.io/.*?/.*?/\\d+\\.html",
+      "bookTitleSelector": ".name",
+      "waitSelector": "#content",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-084",
+      "name": "刺猬猫",
+      "url": "^https?://www\\.ciweimao\\.com/chapter/\\d+",
+      "bookTitleSelector": ".breadcrumb > a:last()",
+      "contentSelector": "#J_BookRead",
+      "waitSelector": "#J_BookRead",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "i.J_Num, .chapter span"
+      ]
+    },
+    {
+      "id": "legacy-site-085",
+      "name": "斋书苑 | 次元猫",
+      "url": "^https?://www\\.(?:zhaishuyuan|ciymao)\\.com/chapter/\\d+/\\d+",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-086",
+      "name": "长佩文学网",
+      "url": "^https?://www\\.gongzicp\\.com/read-\\d+\\.html",
+      "bookTitleSelector": ".cp-read-novel",
+      "contentSelector": "#cpReadContent",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "来源长佩文学网（https://www.gongzicp.com）",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-087",
+      "name": "手打吧",
+      "url": "^https?:\\/\\/shouda8\\.com\\/\\w+\\/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "[w\\s\\[\\/\\\\\\(]*.shouda8.com.*|(\\/\\/)?[全文字]?首发|手打吧|www.shou.*|\\(w\\/w\\/w.shouda8.c\\/o\\/m 手、打。吧更新超快\\)|小说 阅读网 www.xiaoshuoyd .com",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-088",
+      "name": "哈哈文学",
+      "url": "^https?:\\/\\/www\\.hahawx\\.com\\/.*htm",
+      "contentSelector": "#chapter_content",
+      "contentReplaceRules": [
+        {
+          "pattern": "(?:好书推荐|书友在看|其他书友正在看|好看的小说|推荐阅读)：。|(?:www|ｗｗｗ|ｂｏｏｋ).*(?:com|net|org|ｃｏｍ|ｎｅｔ)|全文字阅读|无弹窗广告小说网|哈哈文学\\(www.hahawx.com\\)|souDU.org|Ｓｏｕｄｕ．ｏｒｇ|jīng彩推荐：",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-089",
+      "name": "天天中文",
+      "url": "^https?://www\\.ttzw\\.com/book/\\d+/\\d+\\.html",
+      "titleSelector": "#chapter_title",
+      "bookTitleSelector": ".fl.pl20 a:last",
+      "contentSelector": "#text_area",
+      "contentReplaceRules": [
+        {
+          "pattern": "www.ttzw.com|www.c66c.com|手机用户请到阅读。|<p>\\s*a<\\/p>",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-090",
+      "name": "好看小說網",
+      "url": "^https?://tw\\.xiaoshuokan\\.com/haokan/\\d+/\\d+\\.html",
+      "contentSelector": ".bookcontent",
+      "contentReplaceRules": [
+        {
+          "pattern": "[a-z;&]*w.[xｘ]iaoshuokan.com 好看小說網[a-z;&族】）]*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-091",
+      "name": "E品中文网",
+      "url": "^https?://www\\.epzww\\.com/book/\\d+/\\d+",
+      "contentSelector": "#showcontent"
+    },
+    {
+      "id": "legacy-site-092",
+      "name": "飘天文学",
+      "url": "^https?://www\\.ptwxz\\.(net|com)/html/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": "#content > h1 > a",
+      "contentSelector": "#content",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "h1, table, .toplink"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "[{〖]请在百度搜索.*[}〗]|.(?:百度搜索飄天|无弹窗小说网).*\\.Net.|\\[飄天.*无弹窗小说网\\]",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "\\{飘天文学www.piaotian.net感谢各位书友的支持，您的支持就是我们最大的动力\\}",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "章节更新最快",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "支持网站发展，逛淘宝买东西.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "天才壹秒記住，為您提供精彩閱讀。.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-093",
+      "name": "天使小说网",
+      "url": "^https?://www\\.tsxs\\.cc/files/article/html/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": "#content"
+    },
+    {
+      "id": "legacy-site-094",
+      "name": "紫雨阁小说网",
+      "url": "^https?://www\\.ziyuge\\.com/\\w+/\\w+/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": ".reader_content",
+      "prevSelector": "#divPrev a",
+      "nextSelector": "#divNext a",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(.*www.ziyuge.com.*\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-095",
+      "name": "破风中文网",
+      "url": "^https?://www\\.pofeng\\.net/xiaoshuo/\\d+/\\d+\\.html",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-096",
+      "name": "读客吧",
+      "url": "^https?://dukeba\\.com/book/\\d+/\\d+/\\d+\\.shtml",
+      "contentSelector": "#content > div[style]",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "a, div[align]:has(font)"
+      ]
+    },
+    {
+      "id": "legacy-site-097",
+      "name": "一起阅",
+      "url": "^https?://www\\.17yue\\.com/\\w+/\\d+/\\d+\\.html",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-098",
+      "name": "诺秋网",
+      "url": "^https?://www\\.nuoqiu\\.com/static/\\d+/\\d+\\.html",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "┏━━━━━━━━━━━━━━━━━━━━━━━━━┓[\\s\\S]+诺秋网文字更新最快……】@！！",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-099",
+      "name": "言情后花园",
+      "url": "^https?://www\\.yqhhy\\.cc/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": "#content",
+      "removeSelectors": [
+        "a, span[style], script"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "请记住本站： www.yqhhy.cc|更多，尽在言情后花园。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-100",
+      "name": "六九中文",
+      "url": "^https?://www.(?:69zw|kan7).com/\\w+/\\d+/\\d+/\\d+.html",
+      "titleSelector": ".chapter_title",
+      "bookTitleSelector": ".readhead h1",
+      "contentSelector": ".yd_text2",
+      "contentReplaceRules": [
+        {
+          "pattern": "[\\*]+本章节来源六九中文.*请到六九中文阅读最新章节[\\*]+|－\\\\[wＷ]+.*书友上传/－",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\\\请到 www.69zw.com 六\\*九.*?/",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【 注册会员可获私人书架，看书更方便！：】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "首发<br />",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-101",
+      "name": "免费小说阅读网",
+      "url": "^https?://book\\.yayacms\\.com/\\w+/book_\\d+_\\d+.html",
+      "removeSelectors": [
+        "a, div[style]"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "http://book.YaYaCMS.com/.*|ｂｏｏｋ．ｙａｙａｃｍｓ．ｃｏｍ",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-102",
+      "name": "书农在线书库",
+      "url": "^https?://www\\.shunong\\.com/yuedu/\\d+/\\d+/\\d+.html",
+      "contentSelector": ".bookcontent"
+    },
+    {
+      "id": "legacy-site-103",
+      "name": "努努书坊",
+      "url": "^https?://(?:book\\.kanunu\\.org|www\\.kanunu8\\.com)/.*/\\d+\\.html",
+      "contentSelector": "table:eq(4) p"
+    },
+    {
+      "id": "legacy-site-104",
+      "name": "五月中文网",
+      "url": "^https?://5ycn\\.com/\\d+/\\d+/\\d+\\.html",
+      "removeSelectors": [
+        "div[align='center'], a"
+      ]
+    },
+    {
+      "id": "legacy-site-105",
+      "name": "笔下中文",
+      "url": "^https?://www\\.bxzw\\.org/\\w+/\\d+/\\d+/\\d+\\.shtml",
+      "removeSelectors": [
+        "div[align='center'], center, #footlink1"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "www\\.bxzw\\.org|//无弹窗更新快//|\\(看精品小说请上.*\\)|\\(看.*最新更新章节.*\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-106",
+      "name": "着笔中文网",
+      "url": "^https?://.*zbzw\\.com/\\w+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "精彩小说尽在.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-107",
+      "name": "D586小说网",
+      "url": "^https?://www\\.d586\\.com/",
+      "contentSelector": ".yd_text2",
+      "removeSelectors": [
+        "a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "【www.13800100.com文字首发D5８6小说网】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【☆D5８6小说网☆//文字首发】.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-108",
+      "name": "豌豆文学网",
+      "url": "^https?://www.wandoou.com/book/\\d+/\\d+\\.html",
+      "removeSelectors": [
+        "center"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "[{（]<a href.*[}）]|网欢迎广大书友光临阅读，.*",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "[レ★]+.*(?:请支持)?豌(?:.|&amp;)?豆.?文.?学.*[レ★]+",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "[（(【]豌.?豆.?文.?学.*[）)】]",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "∷更新快∷∷纯文字∷|http:永久网址，请牢记！",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "(?:{|\\\\|\\/|\\()*豌.?豆.?文.?学.?网.*?(?:高速更新|\\\\\\/|})+",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "更新最快最稳定|看小说“”",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "&lt;strng&gt;.*?&lt;\\/strng&gt;",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "\\(凤舞文学网\\)|\\( *\\)|「启航文字」|79阅.读.网",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "高速首发.*?本章节是.*",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "百度搜索自从知道用百度搜索，妈妈再也不用担心我追不到最快更新了",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-109",
+      "name": "都来读小说网",
+      "url": "^https?:\\/\\/www\\.doulaidu\\.com\\/[^\\/]+\\/\\d+\\/\\d+\\.html",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "www．.+．(?:com|net)",
+          "replacement": "",
+          "flags": "ig"
+        },
+        {
+          "pattern": "都来读小说网首发|www\\.[a-z0-9]+\\.(?:org|com)",
+          "replacement": "",
+          "flags": "ig"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-110",
+      "name": "小说TXT",
+      "url": "^https?:\\/\\/www\\.xshuotxt\\.com\\/",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(.*无弹窗全文阅读\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-111",
+      "name": "吾读小说网",
+      "url": "^https?://www\\.5du5\\.com/book/.*\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\(吾读小说网 <a.*无弹窗全文阅读\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-112",
+      "name": "UU看书",
+      "url": "^https?://www\\.uukanshu\\.(?:com|net)/.*/\\d+/\\d+.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "[ＵｕUu]+看书\\s*www.[ＵｕUu]+[kｋ][aａ][nｎ][ｓs][hｈ][ＵｕUu].[nｎ][eｅ][tｔ]",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "[UＵ]*看书[（\\(].*?[）\\)]文字首发。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请记住本书首发域名：。笔趣阁手机版阅读网址：",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-113",
+      "name": "长风文学网",
+      "url": "^https?://www\\.cfwx\\.net/files/article/html/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": ".title",
+      "bookTitleSelector": ".linkleft > a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "([^\\u4E00-\\u9FFF]+)长\\1风\\1文\\1学[^\\n]+t",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-114",
+      "name": "云来阁",
+      "url": "^https?://www\\.yunlaige\\.com/html/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": ".ctitle",
+      "bookTitleSelector": "#hlBookName",
+      "contentSelector": "#content",
+      "removeSelectors": [
+        ".bottomlink, a, .cad, .footer, .adbottom"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "[☆★◆〓『【◎◇].*?(?:yunlaige|云 来 阁|ｙｕｎｌａｉｇｅ).*?[☆◆★〓』】◎◇]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《更新最快小说网站：雲来阁http://WWW.YunLaiGe.COM》",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【當你閱讀到此章節，請您移步到雲來閣閱讀最新章節，或者，雲來閣】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【看恐怖小说、玄幻小说、请大家登陆黑岩居http://www.heiyanju.com万本小说免费看】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【本书作者推荐：(?:百度搜索)?云来閣，免费观看本书最快的VIP章节】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "搜索引擎搜索关键词\\s*云.来.阁，各种小说任你观看，破防盗章节",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "搜索关键词 云.来.阁，各种小说任你观看，破防盗章节",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "◢百度搜索雲来阁，最新最快的小说更新◣",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(云来阁小说文学网www.yunlaige.com\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "如您已阅读到此章节，请移步到.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《想看本书最新章节的书友们，百度搜索一下.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "===百!?度搜索.*?新章节===",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【最新更新】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "值得您收藏。。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小说“小说章节",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "纯文字在线阅读本站域名",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机同步阅读请访问",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "±顶±点±小±说，ww",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "■dingddian小说，ww∨23w→■m",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "w∨23w",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｗwｗ23ｗｘｃｏｍ",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "￥℉頂￥℉点￥℉小￥℉",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "￡∝頂￡∝点￡∝小￡∝",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "篮。色。书。巴,",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<!--\\?[\\(<]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看书&nbsp;&nbsp; 要?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "喜欢网就上。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "无弹窗小说，.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本书最快更新网站请：.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "V<!--\\?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【云来阁】小说网站，让你体验更新最新最快的章节小说，所有小说秒更新。",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-115",
+      "name": "乐文小说网",
+      "url": "^https?:\\/\\/(www|m)\\.lwxs520\\.com\\/books\\/\\d+\\/\\d+\\/\\d+.html",
+      "bookTitleSelector": "h2",
+      "removeSelectors": [
+        "#content>:not(p)"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "看小说到乐文小说网www.lwxs520.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "喜欢乐文小说网就上www.*(?:ＣＯＭ|com)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "爱玩爱看就来乐文小说网.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(LＷXＳ５２０。\\)",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "Ｍ.LＷxＳ520.com&nbsp;乐文移动网",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乐文小说网值得.+",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "乐\\+文\\+小说&nbsp;Ｗww.しwＸs520.Ｃom",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乐文s*小说 www.lwxs520.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&乐&文&小说 \\{www\\}.\\{lw\\}\\{xs520\\}.\\{com\\}",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "<乐-文>小说www.しＷＸS520.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "-乐-文-小-说-www-lwxs520-com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "？乐？文？小说 wwＷ.lＷＸs520. ＣＯＭ",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ";乐;文;小说 www.lw＋xs520.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "小说&nbsp;wＷw.Lwxs520.cＯm",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.LＷＸＳ５２０.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.lwxs520.com 首发哦亲",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[wＷｗ]+.[lし]w[xχＸ][sS]520.[cｃ][oｏＯ][mＭ]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lwxs520.com\\|?",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "[しlL][ωＷw][χＸXx][ｓsS]520",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(未完待续.+",
+          "replacement": "",
+          "flags": "g"
+        },
+        {
+          "pattern": "[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]?[樂乐][\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]文[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]小[\\u2000-\\u2FFF\\u3004-\\u303F\\uFE00-\\uFF60\\uFFC0-\\uFFFF]?说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "》乐>文》小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "乐+文+小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "《乐<文《小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "樂文小說",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ":乐:文:小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "`乐`文`小说`",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "=乐=文=小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "＠樂＠文＠小＠说|",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": ";乐;文;小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "︾樂︾文︾小︾说\\|",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "｀乐｀文｀小说｀",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "@乐@文@小说",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lw＋xs520",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "♂！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "3w.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-116",
+      "name": "我爱小说",
+      "url": "^https?://www\\.woaixiaoshuo\\.com/xiaoshuo/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": "#lbox > b",
+      "contentSelector": "#readbox",
+      "removeSelectors": [
+        "#papgbutton, #content"
+      ]
+    },
+    {
+      "id": "legacy-site-117",
+      "name": "米花在线书库",
+      "url": "book\\.mihua\\.net\\/\\w+\\/\\d+\\/\\d+\\/.+\\.html",
+      "titleSelector": "#title",
+      "contentSelector": "#viewbook"
+    },
+    {
+      "id": "legacy-site-118",
+      "name": "58小说网",
+      "url": "^https?:\\/\\/(www|book)\\.(58)?58xs\\.com\\/html\\/\\d+\\/\\d+\\/\\d+\\.html",
+      "titleSelector": "h1",
+      "contentSelector": "#content",
+      "prevSelector": "#footlink > a:eq(0)",
+      "nextSelector": "#footlink > a:eq(2)",
+      "indexSelector": "#footlink > a:eq(1)",
+      "removeSelectors": [
+        ".f1, .c1"
+      ]
+    },
+    {
+      "id": "legacy-site-119",
+      "name": "天天美文网",
+      "url": "www\\.365essay\\.com\\/\\w+\\/.+.htm",
+      "titleSelector": ".title > h1",
+      "contentSelector": "#zoomc td",
+      "removeSelectors": [
+        ".page-bottomc"
+      ]
+    },
+    {
+      "id": "legacy-site-120",
+      "name": "天涯武库",
+      "url": "wx\\.ty2016\\.com\\/.+\\.html$",
+      "titleSelector": "strong>font",
+      "contentSelector": "td[width='760'] p"
+    },
+    {
+      "id": "legacy-site-121",
+      "name": "黄金屋中文网",
+      "url": "www\\.hjwzw\\.com\\/Book\\/Read\\/\\d+[,_]\\d+$",
+      "titleSelector": "h1",
+      "contentSelector": "#AllySite+div",
+      "removeSelectors": [
+        "b, b+p"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "请记住本站域名:",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-122",
+      "name": "梦远书城",
+      "url": "www\\.my285\\.com(?:\\/\\w+){3,5}\\/\\d+\\.htm$",
+      "contentSelector": "table:eq(2) tr:eq(3)",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-123",
+      "name": "更新吧",
+      "url": "^https?://www\\.gengxin8\\.com/read/\\d+/\\d+.html$",
+      "bookTitleSelector": ".left a:last",
+      "contentSelector": "#chaptertxt",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-124",
+      "name": "乐文小说网",
+      "url": "^https?://www\\.365xs\\.org/books/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": ".kfyd h1",
+      "bookTitleSelector": "ul.bread-crumbs a:last",
+      "contentSelector": "#content"
+    },
+    {
+      "id": "legacy-site-125",
+      "name": "舞若小说网",
+      "url": "^https?://www\\.wuruo\\.com/files/article/html/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".text a:eq(1)",
+      "contentSelector": "#zhengwen",
+      "contentReplaceRules": [
+        {
+          "pattern": "【更多精彩小说请访问www.wuruo.com】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "（www.wuruo.com舞若小说网首发）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "【舞若小说网首发】",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-126",
+      "name": "大书包小说网",
+      "url": "^https?://www\\.dashubao\\.com?/book/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".read_t > .lf > a:nth-child(3)",
+      "contentSelector": ".yd_text2"
+    },
+    {
+      "id": "legacy-site-127",
+      "name": "爬书网",
+      "url": "^https?://www\\.pashuw\\.com/BookReader/\\d+-\\d+/\\d+\\.html",
+      "bookTitleSelector": "#paihangbang_select > a:last()",
+      "prevSelector": "#prev2 a",
+      "nextSelector": "#next2 a",
+      "indexSelector": "#fhml2 a",
+      "removeSelectors": [
+        ".novel_bot"
+      ]
+    },
+    {
+      "id": "legacy-site-128",
+      "name": "闪文书库",
+      "url": "^https?://read\\.shanwen\\.com/html/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": ".newstitle",
+      "removeSelectors": [
+        "#titlebottom"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "闪文网址中的.*?注册会员</a>",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-129",
+      "name": "品书网",
+      "url": "^https?://www\\.vodtw\\.com/Html/Book/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".srcbox > a:last()",
+      "removeSelectors": [
+        "a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "品书网 www.voDtw.com◇↓",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "品书网 www.vodtW.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "品 书 网 （w W W  . V o Dtw . c o M）",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "复制网址访问\\s*http://[%\\d\\w]+",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-130",
+      "name": "凤凰小说网",
+      "url": "^https?://www\\.fhxs\\.com/read/\\d+/\\d+/\\d+\\.shtml",
+      "bookTitleSelector": ".con_top > a:last()",
+      "removeSelectors": [
+        ".bottem"
+      ]
+    },
+    {
+      "id": "legacy-site-131",
+      "name": "小说巴士",
+      "url": "^https?://www\\.xsbashi\\.com/\\d+_\\d+/",
+      "contentReplaceRules": [
+        {
+          "pattern": "全文阅读如您已阅读到此章[節节].*?，，，，",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "看小说首发推荐去眼快看书",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "最快更新，阅读请。___小/说/巴/士 Www.XSBASHI.coM___",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "___小/说/巴/士 www.XSBASHI.com___",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lala如您已阅读到此章節，請移步到.*?速记方法：，\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "lala如您已阅读到此章節.*?敬請記住我們新的網址筆-趣-閣",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "起舞电子书访问:. 。",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "≧哈，m\\.",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\[\\s*超多好看\\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "热门【首发】",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "===百度搜索.*?===",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "===\\*\\*小说巴士.*?===",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-132",
+      "name": "思兔阅读",
+      "url": "^https?://\\w+\\.sto\\.cc/book-\\d+-\\d+.html",
+      "contentSelector": "div#BookContent",
+      "removeSelectors": [
+        "span"
+      ]
+    },
+    {
+      "id": "legacy-site-133",
+      "name": "去读读",
+      "url": "^https?://www\\.qududu\\.net/book/\\d+/\\d+/\\d+\\.html",
+      "contentSelector": "#kui-page-read-txt"
+    },
+    {
+      "id": "legacy-site-134",
+      "name": "33言情",
+      "url": "^https?://www\\.33yq\\.com/read/\\d+/\\d+/\\d+\\.shtml",
+      "removeSelectors": [
+        "a, .bottem, .red"
+      ]
+    },
+    {
+      "id": "legacy-site-135",
+      "name": "巫师图书馆.",
+      "url": "^https?://www\\.54tushu\\.com/book_library/chaptershow/theId/\\d+\\.html",
+      "titleSelector": "div.title",
+      "bookTitleSelector": "#m-book-title",
+      "contentSelector": "div#ChapterContent",
+      "prevSelector": "div.pageInfo a:first",
+      "nextSelector": "div.pageInfo a:last",
+      "loadWithIframe": true
+    },
+    {
+      "id": "legacy-site-136",
+      "name": "我文阁小说网",
+      "url": "^https?://www\\.mytxt\\.cc/read/\\d+/\\d+\\.html",
+      "contentSelector": "div[class^=\"detail_con_\"]",
+      "removeSelectors": [
+        "p[style=\"font-size:11.3px;\"]"
+      ]
+    },
+    {
+      "id": "legacy-site-137",
+      "name": "百度阅读",
+      "url": "^https://yd\\.baidu\\.com/view/.*?\\?cn=.*",
+      "titleSelector": ".catHead > p",
+      "bookTitleSelector": ".catHead > h1",
+      "contentSelector": ".r_c"
+    },
+    {
+      "id": "legacy-site-138",
+      "name": "御宅屋",
+      "url": "^https?://m\\.yushuwu\\.com/novel/\\d+/\\d+\\.html",
+      "contentSelector": "#nr"
+    },
+    {
+      "id": "legacy-site-139",
+      "name": "随便看看吧",
+      "url": "^https?://www\\.sbkk88\\.com/.*?/.*?/.*?\\.html",
+      "bookTitleSelector": ".f_place1 > a:last()",
+      "contentSelector": "#f_article",
+      "prevSelector": "a.prevPage",
+      "nextSelector": "a.nextPage",
+      "removeSelectors": [
+        ".mingzhuPage"
+      ]
+    },
+    {
+      "id": "legacy-site-140",
+      "name": "新笔趣阁",
+      "url": "^https?://www\\.3xs\\.cc/\\w+/\\w+\\.html",
+      "bookTitleSelector": ".info a",
+      "contentSelector": ".box_box"
+    },
+    {
+      "id": "legacy-site-141",
+      "name": "看书啦",
+      "url": "^https?://www.kanshu.la/book/\\w+/\\d+\\.shtml"
+    },
+    {
+      "id": "legacy-site-142",
+      "name": "书阁网",
+      "url": "^https?://www\\.bookgew\\.com/Html/Book/\\d+/\\d+/\\d+\\.htm"
+    },
+    {
+      "id": "legacy-site-143",
+      "name": "妙笔阁",
+      "url": "^https?:\\/\\/www\\.miaobige\\.com\\/.*\\.html|^https?:\\/\\/www.(?:52dsm|banfusheng).com\\/chapter\\/\\d+\\/\\d+.html",
+      "waitSelector": "#content",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "妙笔阁，无弹窗，更新快，记住www.miaobige.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-144",
+      "name": "书海小说",
+      "url": "^https?://www\\.shuhai\\.com/read/\\d+/\\d+\\.html",
+      "titleSelector": ".read_top h1",
+      "bookTitleSelector": ".path2 a:nth-of-type(3)",
+      "contentSelector": ".read .txt",
+      "prevSelector": ".read .read_dwn p a:nth-of-type(1)",
+      "nextSelector": ".read .read_dwn p a:nth-of-type(3)",
+      "indexSelector": ".read .read_dwn p a:nth-of-type(2)"
+    },
+    {
+      "id": "legacy-site-145",
+      "name": "欢乐书客",
+      "url": "^https?://www\\.hbooker\\.com/chapter/\\d+",
+      "titleSelector": "#J_BookCnt h3",
+      "bookTitleSelector": ".breakcrumb > a:last",
+      "contentSelector": ".book-read-box .read-bd",
+      "indexSelector": ".book-read-page a.btn-list",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        ".book-read-box .barrage, #J_BtnGuide, .book-read-box .read-bd i.num, .chapter i, .J_Num, .num, .book-read-box .read-hd p:nth-of-type(1) span"
+      ]
+    },
+    {
+      "id": "legacy-site-146",
+      "name": "棉花糖小说网",
+      "url": "^https?://www\\.mht\\.la/\\d+/\\d+/\\d+\\.html",
+      "titleSelector": ".read_title h1",
+      "bookTitleSelector": ".nav > a:nth-of-type(3)",
+      "contentSelector": ".content",
+      "prevSelector": ".pagego a:nth-of-type(1)",
+      "nextSelector": ".pagego a:nth-of-type(3)",
+      "indexSelector": ".pagego a:nth-of-type(2)",
+      "removeSelectors": [
+        "a, .contads"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "下载本书最新的txt电子书请点击：",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "本书手机阅读：",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "发表书评：",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "为了方便下次阅读，你可以在点击下方的.*谢谢您的支持！！",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "手机用户可访问wap.mianhuatang.la观看小说，跟官网同步更新.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-147",
+      "name": "墨缘文学网",
+      "url": "^https?://www\\.moyuanwenxue\\.com/xiaoshuo/\\d+/\\d+/\\d+\\.htm",
+      "contentSelector": "#chapterContent",
+      "contentReplaceRules": [
+        {
+          "pattern": "ＺＨＡＮ",
+          "replacement": "战",
+          "flags": "gi"
+        },
+        {
+          "pattern": "LU",
+          "replacement": "路",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＳＨＯＵ　　ＱＩＡＮＧ",
+          "replacement": "手枪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｓｉ　ｗａｎｇ",
+          "replacement": "死亡",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-148",
+      "name": "格格党",
+      "url": "http://www\\.ggdown\\.com/modules/article/reader\\.php\\?aid=.*",
+      "contentSelector": "#BookText",
+      "contentReplaceRules": [
+        {
+          "pattern": "记住我们的网址噢。百度搜;格！！格！！党.或者直接输域名/g/g/d/o/w/n/./c/o/m",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-149",
+      "name": "233言情",
+      "url": "http://233yq\\.com/xiaoshuo/.*/.*\\.html",
+      "titleSelector": ".bname h1",
+      "bookTitleSelector": ".b21 h3:first()",
+      "contentSelector": ".cn",
+      "removeSelectors": [
+        ".bottem"
+      ]
+    },
+    {
+      "id": "legacy-site-150",
+      "name": "笔趣阁",
+      "url": "^https?:\\/\\/www\\.biquge\\.com\\.tw\\/\\d+_\\d+\\/\\d+.html",
+      "contentSelector": "#content"
+    },
+    {
+      "id": "legacy-site-151",
+      "name": "笔趣看",
+      "url": "^https?:\\/\\/www\\.biqukan\\.com\\/\\d+_\\d+\\/\\d+.html",
+      "bookTitleSelector": ".path .p > a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "http://www.biqukan.com/.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "请记住本书首发域名：www.biqukan.com.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-152",
+      "name": "大主宰小说网",
+      "url": "www\\.daizhuzai\\.com/\\d+/\\d+\\.html",
+      "titleSelector": ".readbox article .title h1 a",
+      "bookTitleSelector": ".readbox article .info span:nth-of-type(1) a",
+      "contentSelector": ".readbox article .content",
+      "prevSelector": ".readbox .operate li:nth-of-type(1) a",
+      "nextSelector": ".readbox .operate li:nth-of-type(3) a",
+      "indexSelector": ".readbox .operate li:nth-of-type(2) a",
+      "waitSelector": "#chaptercontent",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "。&",
+          "replacement": "。",
+          "flags": "gi"
+        },
+        {
+          "pattern": "△番茄小說○網☆",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "☆ 番茄○△小說網",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "番茄小說網☆",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-153",
+      "name": "墨缘文学网",
+      "url": "^http://www\\.mywenxue\\.com/xiaoshuo/\\d+/\\d+/\\d+\\.htm",
+      "titleSelector": "#htmltimu h2 span",
+      "bookTitleSelector": "#htmltimu h1 a",
+      "contentSelector": ".contentbox > .contentbox",
+      "prevSelector": ".papgbutton a:nth-of-type(1)",
+      "nextSelector": ".papgbutton a:nth-of-type(3)",
+      "indexSelector": ".papgbutton a:nth-of-type(2)",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "strong, a"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "ＺＨＡＮ",
+          "replacement": "战",
+          "flags": "gi"
+        },
+        {
+          "pattern": "SI",
+          "replacement": "思",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｓｉ　ｗａｎｇ",
+          "replacement": "死亡",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＤＩＮＧ",
+          "replacement": "订",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＳＨＩ　",
+          "replacement": "式",
+          "flags": "gi"
+        },
+        {
+          "pattern": "LU",
+          "replacement": "路",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｊｉｎ　ｒｕ",
+          "replacement": "进入",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｂａｏ　ｚｈａ",
+          "replacement": "爆炸",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＤＡＯ",
+          "replacement": "刀",
+          "flags": "gi"
+        },
+        {
+          "pattern": "Ｄａｎ",
+          "replacement": "弹",
+          "flags": "gi"
+        },
+        {
+          "pattern": "Ke",
+          "replacement": "客",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＧＯＵ",
+          "replacement": "购",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ｋｕｏ　ｓａｎ",
+          "replacement": "扩散",
+          "flags": "gi"
+        },
+        {
+          "pattern": "Ｂu",
+          "replacement": "步",
+          "flags": "gi"
+        },
+        {
+          "pattern": "ＳＨＯＵ　　ＱＩＡＮＧ",
+          "replacement": "手枪",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更多请登录墨缘文学网.*欢迎您的来访 >>>",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "更多请登录墨缘文学网.*欢迎您的来访\\[ .* \\]",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\( http.*墨缘文学网 \\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-154",
+      "name": "大海中文",
+      "url": "http://www\\.dhzw\\.org/book/\\d+/\\d+/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "恋上你看书网 630bookla.*",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "\\(\\)",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-155",
+      "name": "爱上书屋",
+      "url": "https?://www.23sw.net/\\d+/\\d+/\\d+.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\[www.23sw.net\\]",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-156",
+      "name": "书轩网",
+      "url": "^https?://www.bookxuan.com/\\d+_\\d+/\\d+.html",
+      "bookTitleSelector": ".con_top a:last",
+      "contentReplaceRules": [
+        {
+          "pattern": "&amp;quot;",
+          "replacement": "\"",
+          "flags": "gi"
+        },
+        {
+          "pattern": "getreadset;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;div class=\"divimage\"&gt;&lt;img src=\"",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-157",
+      "name": "大家读书院",
+      "url": "^https?://www.dajiadu.net/files/article/html/\\d+/\\d+/\\d+.html",
+      "contentSelector": "#content, #content1",
+      "removeSelectors": [
+        ".copy"
+      ]
+    },
+    {
+      "id": "legacy-site-158",
+      "name": "2k小说阅读网",
+      "url": "https?://www.2kxs.com/xiaoshuo/\\d+/\\d+/\\d+.html",
+      "contentSelector": ".Text",
+      "removeSelectors": [
+        "a, font, strong"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "2k小说阅读网",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-159",
+      "name": "新笔趣阁",
+      "url": "^http://www.biqu6.com/[0-9_]+/[0-9]+.html$",
+      "titleSelector": "#title h1",
+      "contentSelector": "#content",
+      "contentReplaceRules": [
+        {
+          "pattern": "\\*",
+          "replacement": "",
+          "flags": "g"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-160",
+      "name": "涅破小说网",
+      "url": "^http://www.niepo.net/html/\\d+/\\d+/\\d+.html",
+      "contentReplaceRules": [
+        {
+          "pattern": ".*最新章节.*http://www.niepo.net/.*",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-161",
+      "name": "全本小说网",
+      "url": "http://www.ybdu.com/xiaoshuo/\\d+/\\d+/\\d+.html",
+      "removeSelectors": [
+        ".infos, .chapter_Turnpage"
+      ]
+    },
+    {
+      "id": "legacy-site-162",
+      "name": "连载书",
+      "url": "^https?://www.lianzaishu.com/\\d+_\\d+/\\d+.html",
+      "bookTitleSelector": ".read-top h2 a",
+      "removeSelectors": [
+        "h1, h2, .textinfo, .adbox, .read-page"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "&lt;html&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;/html&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;head&gt;&lt;/head&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;body&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;/body&gt;",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "&lt;div&gt;",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-163",
+      "name": "露西弗俱乐部",
+      "url": "^https:\\/\\/www\\.lucifer\\-club\\.com\\/.*\\.html",
+      "bookTitleSelector": "#luf_local > a:nth-child(3)",
+      "contentSelector": "#luf_news_contents",
+      "contentReplaceRules": [
+        {
+          "pattern": "保护版权 尊重作者 @ 露西弗俱乐部 www.lucifer-club.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-164",
+      "name": "新笔趣阁5200",
+      "url": "^https?://www\\.b5200\\.(?:org|net)/.*?/\\d+\\.html",
+      "contentReplaceRules": [
+        {
+          "pattern": "网首发",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "≈bp;≈bp;≈bp;≈bp;",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-165",
+      "name": "稻草人书屋",
+      "url": "^http://www\\.daocaorenshuwu\\.com/book/.*/\\d+.html",
+      "bookTitleSelector": ".container .t10 span a:last()",
+      "contentSelector": "#cont-body",
+      "contentReplaceRules": [
+        {
+          "pattern": "内容来自[dＤ]ao[cＣ]ao[Ｒr]enshuwu.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "www.daocaorenshuwu.com",
+          "replacement": "",
+          "flags": "gi"
+        },
+        {
+          "pattern": "稻草人书屋",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-166",
+      "name": "小红花阅读网",
+      "url": "^https?://xhhread\\.com/read/read\\w+\\.jhtml\\?chapterid=.*",
+      "titleSelector": ".reading-title",
+      "bookTitleSelector": ".H_book"
+    },
+    {
+      "id": "legacy-site-167",
+      "name": "梧州中文台",
+      "url": "^https?://www\\.gxwztv\\.com/\\d+/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".breadcrumb .active a",
+      "contentSelector": "#txtContent"
+    },
+    {
+      "id": "legacy-site-168",
+      "name": "英文小说网",
+      "url": "^https?://novel\\.tingroom\\.com/.*/\\d+/\\d+\\.html",
+      "titleSelector": "#tt_text p:nth-child(2)",
+      "bookTitleSelector": ".gundong1  a:nth-child(3)",
+      "contentSelector": "#tt_text",
+      "prevSelector": "#zhang_top",
+      "nextSelector": "#zhang_down",
+      "indexSelector": ".book_showtitle",
+      "removeSelectors": [
+        "#tt_text tbody tr"
+      ],
+      "contentReplaceRules": [
+        {
+          "pattern": "欢迎访问英文小说网http://novel.tingroom.com",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-169",
+      "name": "无敌龙书屋",
+      "url": "^http://www\\.fkzww\\.com/Html/Book/\\d+/\\d+/\\d+\\.shtml",
+      "bookTitleSelector": "#SelectInfo > a:eq(1)",
+      "contentSelector": "#BookTextt",
+      "loadWithIframe": true,
+      "contentReplaceRules": [
+        {
+          "pattern": "无敌龙中文网欢迎您来，欢迎您再来，记住我们http://www.wudiun.com，<a target=\"_blank\" href=\"http://www.wudiun.com/User/Regters.aspx\">注册会员</a>",
+          "replacement": "",
+          "flags": "gi"
+        }
+      ]
+    },
+    {
+      "id": "legacy-site-170",
+      "name": "笔趣阁 nuanyuehanxing",
+      "url": "^https?://www\\.nuanyuehanxing\\.com/\\w+/\\d+/\\d+\\.html",
+      "bookTitleSelector": ".bookname",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "a"
+      ]
+    },
+    {
+      "id": "legacy-site-171",
+      "name": "和图书",
+      "url": "^https?://www.hetushu.com/book/\\d+/\\d+.html",
+      "bookTitleSelector": "#left h3",
+      "prevSelector": "a#pre",
+      "nextSelector": "a#next",
+      "indexSelector": "#left h3 a",
+      "loadWithIframe": true,
+      "removeSelectors": [
+        "h2, acronym, bdo, big, cite, code, dfn, kbd, q, s, samp, strike, tt, u, var"
+      ]
+    },
+    {
+      "id": "legacy-site-172",
+      "name": "掌阅手机网",
+      "url": "https?://wap\\.yc\\.ireader\\.com\\.cn/book/\\d+/\\d+/",
+      "titleSelector": "h4",
+      "contentSelector": "div.text"
+    }
+  ]
 }
