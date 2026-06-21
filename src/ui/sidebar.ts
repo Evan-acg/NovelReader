@@ -43,7 +43,7 @@ export function createSidebar(
       hideSidebar();
     }
   });
-  container.parentElement?.appendChild(toggle);
+  sidebar.appendChild(toggle);
 
   sidebarRef = { el: sidebar, listEl: list, toggleEl: toggle };
   return sidebarRef;

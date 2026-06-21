@@ -3,7 +3,14 @@ import type { SiteRule } from '../rules/rule-types';
 import type { TextRule } from '../text-rules/text-rule-types';
 import type { CleanOptions } from '../core/content-cleaner';
 import type { Settings } from '../settings/schema';
-import { injectReaderStyles, updateReaderStyleVars, updateExtraCss, removeExtraCss } from './styles';
+import {
+  injectReaderStyles,
+  updateReaderStyleVars,
+  updateExtraCss,
+  removeExtraCss,
+  updateSkinCss,
+  removeSkinCss,
+} from './styles';
 import { createSidebar, addSidebarItem, setActiveSidebarItem, removeSidebar, toggleSidebarVisibility } from './sidebar';
 import { createBottomNav, updateBottomNav, removeBottomNav } from '../core/navigation';
 import { loadNextChapter, clearLoadedUrls, clearFailedUrls, preloadImages, isUrlFailed } from '../core/next-page-loader';
@@ -215,6 +222,7 @@ function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): 
       updateReaderStyleVars(all);
       break;
     case 'hideSidebar':
+    case 'hideHistoryMenu':
       if (value) {
         containerEl?.classList.add('nr-sidebar-hidden');
       } else {
@@ -236,6 +244,9 @@ function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): 
     }
     case 'extraCss':
       updateExtraCss(value as string);
+      break;
+    case 'skinName':
+      updateSkinCss(value as string);
       break;
     case 'debug':
       logger.setDebug(value as boolean);
@@ -299,6 +310,7 @@ export function renderReaderView(
 
   injectReaderStyles();
   updateReaderStyleVars(settings);
+  updateSkinCss(settings.skinName);
   if (settings.extraCss) {
     updateExtraCss(settings.extraCss);
   }
@@ -309,7 +321,7 @@ export function renderReaderView(
   containerEl = document.createElement('div');
   containerEl.className = 'nr-reader-container';
 
-  if (settings.hideSidebar) {
+  if (settings.hideSidebar || settings.hideHistoryMenu) {
     containerEl.classList.add('nr-sidebar-hidden');
   }
   if (settings.hideFooterNav) {
@@ -340,7 +352,7 @@ export function renderReaderView(
   state = {
     chapters: [initialChapter],
     activeIndex: 0,
-    sidebarVisible: !settings.hideSidebar,
+    sidebarVisible: !(settings.hideSidebar || settings.hideHistoryMenu),
     quietMode: false,
     autoLoadPaused: false,
   };
@@ -481,6 +493,7 @@ export function destroyReaderView(): void {
   hideLoadingIndicator();
   removeErrorIndicator();
   removeExtraCss();
+  removeSkinCss();
   isLoadingNext = false;
   if (containerEl) {
     containerEl.remove();

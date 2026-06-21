@@ -161,6 +161,19 @@ describe('设置面板内容', () => {
     expect(labelTexts.some((t) => t?.includes('滚动动画'))).toBe(true);
   });
 
+  it('面板应包含历史章节菜单开关和皮肤预设', () => {
+    openPreferencesPanel();
+
+    const labels = document.querySelectorAll('.nr-panel-row label');
+    const labelTexts = Array.from(labels).map((l) => l.textContent);
+    expect(labelTexts.some((t) => t?.includes('历史章节菜单'))).toBe(true);
+
+    const skinSelect = document.querySelector('select') as HTMLSelectElement | null;
+    expect(skinSelect).not.toBeNull();
+    const optionTexts = Array.from(skinSelect!.options).map((option) => option.textContent);
+    expect(optionTexts).toContain('起点牛皮纸（深色）');
+  });
+
   it('修改样式设置应触发 onChange 回调', () => {
     const callback = vi.fn();
     openPreferencesPanel(callback);

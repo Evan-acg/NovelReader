@@ -1,6 +1,7 @@
 import { gmAddStyle } from '../shared/gm';
 import { loadAllSettings, saveSetting } from '../settings/storage';
 import { type Settings, DEFAULT_SETTINGS } from '../settings/schema';
+import { SKIN_PRESETS } from './skin-presets';
 
 type ChangeCallback = (key: keyof Settings, value: Settings[keyof Settings]) => void;
 
@@ -86,7 +87,8 @@ const PANEL_CSS = `
   margin-right: 12px;
 }
 .nr-panel-row input[type="text"],
-.nr-panel-row input[type="number"] {
+.nr-panel-row input[type="number"],
+.nr-panel-row select {
   width: 200px;
   padding: 4px 8px;
   border: 1px solid #ddd;
@@ -193,6 +195,22 @@ function createTextarea(key: keyof Settings, value: string): HTMLTextAreaElement
   return textarea;
 }
 
+function createSkinSelect(value: string): HTMLSelectElement {
+  const select = document.createElement('select');
+  for (const [key, preset] of Object.entries(SKIN_PRESETS)) {
+    const option = document.createElement('option');
+    option.value = key;
+    option.textContent = preset.name;
+    select.appendChild(option);
+  }
+  select.value = value;
+  select.addEventListener('change', () => {
+    saveSetting('skinName', select.value);
+    onChangeCallback?.('skinName', select.value);
+  });
+  return select;
+}
+
 function buildPanel(settings: Settings): HTMLElement {
   const panel = document.createElement('div');
   panel.className = 'nr-panel';
@@ -223,6 +241,7 @@ function buildPanel(settings: Settings): HTMLElement {
   }
 
   const styleSection = addSection('阅读样式');
+  styleSection.appendChild(createRow('皮肤预设', createSkinSelect(settings.skinName)));
   styleSection.appendChild(createRow('字体', createTextInput('fontFamily', settings.fontFamily)));
   styleSection.appendChild(createRow('字号(px)', createNumberInput('fontSize', settings.fontSize)));
   styleSection.appendChild(createRow('行高', createNumberInput('lineHeight', settings.lineHeight, 0.1)));
@@ -232,7 +251,7 @@ function buildPanel(settings: Settings): HTMLElement {
   const toggleSection = addSection('功能开关');
   toggleSection.appendChild(createRow('简繁转换', createCheckbox('convertToTraditional', settings.convertToTraditional)));
   toggleSection.appendChild(createRow('强制分段', createCheckbox('splitContent', settings.splitContent)));
-  toggleSection.appendChild(createRow('隐藏侧栏', createCheckbox('hideSidebar', settings.hideSidebar)));
+  toggleSection.appendChild(createRow('隐藏历史章节菜单', createCheckbox('hideHistoryMenu', settings.hideHistoryMenu)));
   toggleSection.appendChild(createRow('隐藏底部导航', createCheckbox('hideFooterNav', settings.hideFooterNav)));
   toggleSection.appendChild(createRow('隐藏设置按钮', createCheckbox('hidePreferencesButton', settings.hidePreferencesButton)));
   toggleSection.appendChild(createRow('图片预加载', createCheckbox('imagePreload', settings.imagePreload)));

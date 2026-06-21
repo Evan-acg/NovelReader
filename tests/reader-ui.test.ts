@@ -20,7 +20,7 @@ vi.mock('../src/shared/gm', () => ({
   gmFetch: vi.fn(),
 }));
 
-import { gmFetch, gmGetValue } from '../src/shared/gm';
+import { gmAddStyle, gmFetch, gmGetValue } from '../src/shared/gm';
 
 import { clearFailedUrls, markUrlFailed, isUrlFailed } from '../src/core/next-page-loader';
 
@@ -104,6 +104,43 @@ describe('阅读容器渲染', () => {
     expect(items.length).toBe(1);
     expect(items[0].textContent).toContain('第一章 开端');
     expect(items[0].classList.contains('active')).toBe(true);
+  });
+
+  it('hideHistoryMenu=true 时应隐藏历史章节菜单', () => {
+    vi.mocked(gmGetValue).mockImplementation((key: string, def: string) => {
+      if (key === 'hideHistoryMenu') return 'true';
+      return def;
+    });
+
+    const chapter = makeChapter();
+    renderReaderView(chapter, baseRule, [], {});
+
+    const container = document.querySelector('.nr-reader-container');
+    expect(container!.classList.contains('nr-sidebar-hidden')).toBe(true);
+  });
+
+  it('基础样式应让历史章节菜单在左侧且正文左对齐', () => {
+    const chapter = makeChapter();
+    renderReaderView(chapter, baseRule, [], {});
+
+    const css = vi.mocked(gmAddStyle).mock.calls.map((call) => call[0]).join('\n');
+    expect(css).toContain('.nr-sidebar');
+    expect(css).toContain('order: 0;');
+    expect(css).toContain('position: relative;');
+    expect(css).toContain('background: inherit;');
+    expect(css).toContain('.nr-content-area');
+    expect(css).toContain('order: 1;');
+    expect(css).toContain('text-align: left;');
+    expect(css).toContain('right: -24px;');
+  });
+
+  it('侧栏切换按钮应挂在侧栏右侧边界', () => {
+    const chapter = makeChapter();
+    renderReaderView(chapter, baseRule, [], {});
+
+    const sidebar = document.querySelector('.nr-sidebar');
+    const toggle = document.querySelector('.nr-sidebar-toggle');
+    expect(toggle?.parentElement).toBe(sidebar);
   });
 
   it('应渲染底部导航', () => {
