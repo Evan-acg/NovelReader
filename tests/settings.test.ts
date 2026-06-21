@@ -32,6 +32,7 @@ describe('设置默认值', () => {
     expect(settings.convertToTraditional).toBe(false);
     expect(settings.splitContent).toBe(false);
     expect(settings.hideSidebar).toBe(false);
+    expect(settings.hideHistoryMenu).toBe(false);
     expect(settings.hideFooterNav).toBe(false);
     expect(settings.hidePreferencesButton).toBe(false);
     expect(settings.remainHeight).toBe(300);
@@ -48,6 +49,7 @@ describe('设置默认值', () => {
     expect(settings.addNextPageToHistory).toBe(true);
     expect(settings.doubleClickPause).toBe(true);
     expect(settings.scrollAnimate).toBe(true);
+    expect(settings.skinName).toBe('default');
   });
 });
 
@@ -60,6 +62,8 @@ describe('设置保存', () => {
     saveSetting('fontSize', 22);
     saveSetting('convertToTraditional', true);
     saveSetting('hideSidebar', true);
+    saveSetting('hideHistoryMenu', true);
+    saveSetting('skinName', 'qidian-parchment-dark');
     saveSetting('remainHeight', 500);
     saveSetting('disableAutoLaunch', true);
 
@@ -67,6 +71,8 @@ describe('设置保存', () => {
     expect(settings.fontSize).toBe(22);
     expect(settings.convertToTraditional).toBe(true);
     expect(settings.hideSidebar).toBe(true);
+    expect(settings.hideHistoryMenu).toBe(true);
+    expect(settings.skinName).toBe('qidian-parchment-dark');
     expect(settings.remainHeight).toBe(500);
     expect(settings.disableAutoLaunch).toBe(true);
   });

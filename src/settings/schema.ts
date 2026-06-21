@@ -20,6 +20,7 @@ export const KEYS = {
   convertToTraditional: 'convertToTraditional',
   splitContent: 'splitContent',
   hideSidebar: 'hideSidebar',
+  hideHistoryMenu: 'hideHistoryMenu',
   hideFooterNav: 'hideFooterNav',
   hidePreferencesButton: 'hidePreferencesButton',
   remainHeight: 'remainHeight',
@@ -59,6 +60,7 @@ export interface Settings {
   convertToTraditional: boolean;
   splitContent: boolean;
   hideSidebar: boolean;
+  hideHistoryMenu: boolean;
   hideFooterNav: boolean;
   hidePreferencesButton: boolean;
   remainHeight: number;
@@ -98,6 +100,7 @@ export const DEFAULT_SETTINGS: Settings = {
   convertToTraditional: false,
   splitContent: false,
   hideSidebar: false,
+  hideHistoryMenu: false,
   hideFooterNav: false,
   hidePreferencesButton: false,
   remainHeight: 300,
