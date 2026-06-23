@@ -4394,6 +4394,18 @@
       "url": "https?://wap\\.yc\\.ireader\\.com\\.cn/book/\\d+/\\d+/",
       "titleSelector": "h4",
       "contentSelector": "div.text"
+    },
+    {
+      "id": "quanben",
+      "name": "全本小说网(quanben.io)",
+      "url": "^https?://www\\.quanben\\.io/.*?/.*?/\\d+\\.html",
+      "bookTitleSelector": ".name",
+      "chapterTitleSelector": "h1.headline",
+      "contentSelector": "#content",
+      "prevSelector": ".list_page a[rel='pre']",
+      "nextSelector": ".list_page a[rel='next']",
+      "indexSelector": ".list_page a[rel='contents']",
+      "removeSelectors": ["#ad"]
     }
   ]
 }
