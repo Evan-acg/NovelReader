@@ -44,7 +44,7 @@ describe('设置默认值', () => {
     expect(settings.textRulesUrl).toBe(DEFAULT_SETTINGS.textRulesUrl);
     expect(settings.enabledTextRuleGroups).toEqual([]);
     expect(settings.keybindings).toEqual({});
-    expect(settings.disableAutoLaunch).toBe(false);
+    expect(settings.disableAutoLaunch).toBe(true);
     expect(settings.booklinkEnable).toBe(true);
     expect(settings.addNextPageToHistory).toBe(true);
     expect(settings.doubleClickPause).toBe(true);

@@ -14,8 +14,11 @@ vi.mock('../src/core/app', () => ({
   initApp: vi.fn(),
 }));
 
+vi.mock('../src/ui/reader-view', () => ({
+  destroyReaderView: vi.fn(),
+}));
+
 import { initApp } from '../src/core/app';
-import { loadAllSettings } from '../src/settings/storage';
 
 function setReadyState(value: DocumentReadyState): void {
   Object.defineProperty(document, 'readyState', {
@@ -27,76 +30,65 @@ function setReadyState(value: DocumentReadyState): void {
 describe('disableAutoLaunch 入口行为', () => {
   beforeEach(() => {
     Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
-    document.body.innerHTML = '';
+    document.body.innerHTML = '<div id="content">正文内容</div>';
     vi.clearAllMocks();
   });
 
-  function createManualStartButton(): HTMLElement | null {
-    const settings = loadAllSettings();
-    if (settings.disableAutoLaunch) {
-      const btn = document.createElement('button');
-      btn.className = 'nr-manual-start';
-      btn.textContent = '📖 阅读模式';
-      btn.addEventListener('click', () => {
-        btn.remove();
-        initApp();
-      });
-      document.body.appendChild(btn);
-      return btn;
-    }
-    return null;
-  }
-
-  it('disableAutoLaunch=true 时应渲染手动启动按钮', () => {
+  it('默认（disableAutoLaunch=true）应渲染切换按钮，不自动进入', () => {
     mockStorage['disableAutoLaunch'] = 'true';
+    const btn = document.createElement('button');
+    btn.className = 'nr-toggle-btn';
+    btn.textContent = '📖 阅读模式';
+    document.body.appendChild(btn);
 
-    const btn = createManualStartButton();
-    expect(btn).not.toBeNull();
-    expect(btn!.textContent).toContain('阅读模式');
+    expect(document.querySelector('.nr-toggle-btn')).not.toBeNull();
     expect(initApp).not.toHaveBeenCalled();
   });
 
-  it('点击手动启动按钮应调用 initApp 并移除按钮', () => {
-    mockStorage['disableAutoLaunch'] = 'true';
-
-    const btn = createManualStartButton()!;
-    btn.click();
-    expect(initApp).toHaveBeenCalledTimes(1);
-    expect(document.querySelector('.nr-manual-start')).toBeNull();
-  });
-
-  it('disableAutoLaunch=false 时不渲染按钮', () => {
+  it('disableAutoLaunch=false 应自动进入', () => {
     mockStorage['disableAutoLaunch'] = 'false';
 
-    const btn = createManualStartButton();
-    expect(btn).toBeNull();
-    expect(document.querySelector('.nr-manual-start')).toBeNull();
+    const btn = document.createElement('button');
+    btn.className = 'nr-toggle-btn';
+    btn.textContent = '📖 阅读模式';
+    document.body.appendChild(btn);
+
+    const isAutoLaunch = !(mockStorage['disableAutoLaunch'] === 'true');
+    if (isAutoLaunch) {
+      document.querySelector('.nr-toggle-btn')?.remove();
+      initApp();
+    }
+
+    expect(initApp).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('.nr-toggle-btn')).toBeNull();
   });
 });
 
 describe('userscript 入口启动时机', () => {
   beforeEach(() => {
     Object.keys(mockStorage).forEach((k) => delete mockStorage[k]);
-    document.body.innerHTML = '';
+    document.body.innerHTML = '<div id="content">正文内容</div>';
     vi.clearAllMocks();
     vi.resetModules();
   });
 
-  it('document 已完成加载时应立即启动', async () => {
+  it('document 已完成加载时应渲染按钮（默认非阅读模式）', async () => {
     setReadyState('complete');
 
     await import('../src/userscript/entry');
 
-    expect(initApp).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('.nr-toggle-btn')).not.toBeNull();
+    expect(initApp).not.toHaveBeenCalled();
   });
 
-  it('document 仍在 loading 时应等待 DOMContentLoaded 后启动', async () => {
+  it('document 仍在 loading 时应等待 DOMContentLoaded 后渲染按钮', async () => {
     setReadyState('loading');
 
     await import('../src/userscript/entry');
-    expect(initApp).not.toHaveBeenCalled();
+    expect(document.querySelector('.nr-toggle-btn')).toBeNull();
 
     document.dispatchEvent(new Event('DOMContentLoaded'));
-    expect(initApp).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('.nr-toggle-btn')).not.toBeNull();
+    expect(initApp).not.toHaveBeenCalled();
   });
 });

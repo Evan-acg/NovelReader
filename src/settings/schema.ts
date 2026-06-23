@@ -116,7 +116,7 @@ export const DEFAULT_SETTINGS: Settings = {
   extraCss: '',
   keybindings: {},
   skinName: 'default',
-  disableAutoLaunch: false,
+  disableAutoLaunch: true,
   booklinkEnable: true,
   language: 'zh-CN',
   copyCurrentTitle: false,
