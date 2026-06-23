@@ -42,6 +42,7 @@ export const KEYS = {
   doubleClickPause: 'doubleClickPause',
   scrollAnimate: 'scrollAnimate',
   debug: 'debug',
+  contentAlign: 'contentAlign',
 } as const;
 
 export interface Settings {
@@ -82,6 +83,7 @@ export interface Settings {
   doubleClickPause: boolean;
   scrollAnimate: boolean;
   debug: boolean;
+  contentAlign: 'center' | 'left' | 'right';
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -122,4 +124,5 @@ export const DEFAULT_SETTINGS: Settings = {
   doubleClickPause: true,
   scrollAnimate: true,
   debug: false,
+  contentAlign: 'left',
 };

@@ -195,6 +195,23 @@ function createTextarea(key: keyof Settings, value: string): HTMLTextAreaElement
   return textarea;
 }
 
+function createContentAlignSelect(value: string): HTMLSelectElement {
+  const select = document.createElement('select');
+  const opts: [string, string][] = [['center', '居中'], ['left', '居左'], ['right', '居右']];
+  for (const [val, label] of opts) {
+    const option = document.createElement('option');
+    option.value = val;
+    option.textContent = label;
+    select.appendChild(option);
+  }
+  select.value = value;
+  select.addEventListener('change', () => {
+    saveSetting('contentAlign', select.value as 'center' | 'left' | 'right');
+    onChangeCallback?.('contentAlign', select.value);
+  });
+  return select;
+}
+
 function createSkinSelect(value: string): HTMLSelectElement {
   const select = document.createElement('select');
   for (const [key, preset] of Object.entries(SKIN_PRESETS)) {
@@ -246,6 +263,7 @@ function buildPanel(settings: Settings): HTMLElement {
   styleSection.appendChild(createRow('字号(px)', createNumberInput('fontSize', settings.fontSize)));
   styleSection.appendChild(createRow('行高', createNumberInput('lineHeight', settings.lineHeight, 0.1)));
   styleSection.appendChild(createRow('内容宽度(px)', createNumberInput('contentWidth', settings.contentWidth)));
+  styleSection.appendChild(createRow('内容对齐', createContentAlignSelect(settings.contentAlign)));
   styleSection.appendChild(createRow('自定义CSS', createTextarea('extraCss', settings.extraCss), true));
 
   const toggleSection = addSection('功能开关');
