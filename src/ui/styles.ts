@@ -13,14 +13,17 @@ const READER_CSS = `
   font-size: var(--nr-font-size);
   line-height: var(--nr-line-height);
   display: flex;
-  overflow: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
 }
 .nr-sidebar {
   order: 0;
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 220px;
   min-width: 220px;
-  height: 100%;
+  height: 100vh;
+  flex-shrink: 0;
   background: inherit;
   border-right: 1px solid rgba(0,0,0,0.14);
   display: flex;
@@ -60,6 +63,7 @@ const READER_CSS = `
   font-size: 14px;
   color: #555;
   text-decoration: none;
+  text-align: left;
   border-left: 3px solid transparent;
   white-space: nowrap;
   overflow: hidden;
@@ -98,12 +102,11 @@ const READER_CSS = `
 .nr-content-area {
   order: 1;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  min-width: 0;
   padding: 40px 80px 80px;
   max-width: var(--nr-content-max-width);
-  margin: 0 auto;
-  scroll-behavior: smooth;
+  margin-left: var(--nr-content-ml, auto);
+  margin-right: var(--nr-content-mr, auto);
   text-align: left;
 }
 .nr-chapter {
@@ -242,6 +245,11 @@ export function updateReaderStyleVars(settings: Settings): void {
   container.style.setProperty('--nr-font-size', settings.fontSize + 'px');
   container.style.setProperty('--nr-line-height', String(settings.lineHeight));
   container.style.setProperty('--nr-content-max-width', settings.contentWidth + 'px');
+
+  const ml = settings.contentAlign === 'left' ? '0' : 'auto';
+  const mr = settings.contentAlign === 'right' ? '0' : 'auto';
+  container.style.setProperty('--nr-content-ml', ml);
+  container.style.setProperty('--nr-content-mr', mr);
 }
 
 export function updateSkinCss(skinName: string): void {

@@ -25,7 +25,6 @@ let textRules: TextRule[] = [];
 let cleanOptions: CleanOptions = {};
 let containerEl: HTMLElement | null = null;
 let contentAreaEl: HTMLElement | null = null;
-let intersectionObserver: IntersectionObserver | null = null;
 let isLoadingNext = false;
 let loadingIndicatorEl: HTMLElement | null = null;
 let errorIndicatorEl: HTMLElement | null = null;
@@ -63,39 +62,28 @@ function renderChapterElement(chapter: ParsedChapter, index: number): HTMLElemen
   return wrapper;
 }
 
-function setupIntersectionObserver(): void {
-  if (!contentAreaEl) return;
-
-  if (typeof IntersectionObserver === 'undefined') {
-    return;
-  }
-
-  if (intersectionObserver) {
-    intersectionObserver.disconnect();
-  }
-
-  intersectionObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          const index = Number(entry.target.getAttribute('data-chapter-index'));
-          if (!isNaN(index) && state && index !== state.activeIndex) {
-            state.activeIndex = index;
-            setActiveSidebarItem(index);
-            applyTitleUpdate(index);
-            updateHistory(index);
-          }
-        }
-      }
-    },
-    {
-      root: contentAreaEl,
-      threshold: 0.3,
-    },
-  );
-
+function syncActiveChapter(): void {
+  if (!containerEl || !contentAreaEl || !state) return;
+  const containerRect = containerEl.getBoundingClientRect();
   const chapters = contentAreaEl.querySelectorAll('.nr-chapter');
-  chapters.forEach((ch) => intersectionObserver!.observe(ch));
+  let bestIndex = -1;
+  let bestArea = 0;
+  for (const ch of chapters) {
+    const rect = ch.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.right, containerRect.right) - Math.max(rect.left, containerRect.left));
+    const y = Math.max(0, Math.min(rect.bottom, containerRect.bottom) - Math.max(rect.top, containerRect.top));
+    const area = x * y;
+    if (area > bestArea) {
+      bestArea = area;
+      bestIndex = Number(ch.getAttribute('data-chapter-index'));
+    }
+  }
+  if (bestIndex >= 0 && !isNaN(bestIndex) && bestIndex !== state.activeIndex) {
+    state.activeIndex = bestIndex;
+    setActiveSidebarItem(bestIndex);
+    applyTitleUpdate(bestIndex);
+    updateHistory(bestIndex);
+  }
 }
 
 function applyTitleUpdate(index: number): void {
@@ -193,23 +181,26 @@ async function triggerAutoLoad(url: string): Promise<void> {
 }
 
 function setupScrollLoad(): void {
-  if (!contentAreaEl) return;
+  if (!containerEl) return;
 
   const st = loadAllSettings();
 
   scrollHandler = () => {
-    if (!contentAreaEl || isLoadingNext || !state) return;
-    if (state.autoLoadPaused) return;
+    if (!containerEl || !state) return;
+
+    syncActiveChapter();
+
+    if (isLoadingNext || state.autoLoadPaused) return;
     const lastChapter = state.chapters[state.chapters.length - 1];
     if (!lastChapter?.nextUrl) return;
 
-    const { scrollTop, scrollHeight, clientHeight } = contentAreaEl;
+    const { scrollTop, scrollHeight, clientHeight } = containerEl;
     if (scrollHeight - scrollTop - clientHeight < st.remainHeight) {
       triggerAutoLoad(lastChapter.nextUrl);
     }
   };
 
-  contentAreaEl.addEventListener('scroll', scrollHandler, { passive: true });
+  containerEl.addEventListener('scroll', scrollHandler, { passive: true });
 }
 
 function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): void {
@@ -219,6 +210,7 @@ function onSettingChange(key: keyof Settings, value: Settings[keyof Settings]): 
     case 'fontSize':
     case 'lineHeight':
     case 'contentWidth':
+    case 'contentAlign':
       updateReaderStyleVars(all);
       break;
     case 'hideSidebar':
@@ -309,7 +301,6 @@ export function renderReaderView(
   const settings = loadAllSettings();
 
   injectReaderStyles();
-  updateReaderStyleVars(settings);
   updateSkinCss(settings.skinName);
   if (settings.extraCss) {
     updateExtraCss(settings.extraCss);
@@ -336,6 +327,7 @@ export function renderReaderView(
 
   containerEl.appendChild(contentAreaEl);
   document.body.appendChild(containerEl);
+  updateReaderStyleVars(settings);
 
   const settingsBtn = document.createElement('button');
   settingsBtn.className = 'nr-settings-btn';
@@ -373,7 +365,6 @@ export function renderReaderView(
     },
   );
 
-  setupIntersectionObserver();
   applyTitleUpdate(0);
   setupScrollLoad();
   setupKeyboard();
@@ -399,10 +390,6 @@ export function appendChapter(chapter: ParsedChapter): void {
 
   const chapterEl = renderChapterElement(chapter, index);
   contentAreaEl.appendChild(chapterEl);
-
-  if (intersectionObserver) {
-    intersectionObserver.observe(chapterEl);
-  }
 
   addSidebarItem(chapter, (i) => {
     scrollToChapter(i);
@@ -478,12 +465,8 @@ export function isQuietMode(): boolean {
 }
 
 export function destroyReaderView(): void {
-  if (intersectionObserver) {
-    intersectionObserver.disconnect();
-    intersectionObserver = null;
-  }
-  if (scrollHandler && contentAreaEl) {
-    contentAreaEl.removeEventListener('scroll', scrollHandler);
+  if (scrollHandler && containerEl) {
+    containerEl.removeEventListener('scroll', scrollHandler);
     scrollHandler = null;
   }
   if (keyboardCleanup) {

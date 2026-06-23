@@ -431,8 +431,8 @@ describe('连续加载', () => {
     const ch1 = makeChapter({ chapterTitle: '第一章', nextUrl: 'https://example.com/novel/2' });
     renderReaderView(ch1, baseRule, [], {});
 
-    const contentArea = document.querySelector('.nr-content-area') as HTMLElement;
-    contentArea.dispatchEvent(new Event('scroll'));
+    const container = document.querySelector('.nr-reader-container') as HTMLElement;
+    container.dispatchEvent(new Event('scroll'));
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -453,8 +453,8 @@ describe('连续加载', () => {
 
     vi.clearAllMocks();
 
-    const contentArea = document.querySelector('.nr-content-area') as HTMLElement;
-    contentArea.dispatchEvent(new Event('scroll'));
+    const container = document.querySelector('.nr-reader-container') as HTMLElement;
+    container.dispatchEvent(new Event('scroll'));
 
     await new Promise((resolve) => setTimeout(resolve, 50));
 
