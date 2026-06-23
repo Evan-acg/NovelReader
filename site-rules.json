@@ -2643,14 +2643,6 @@
       "loadWithIframe": true
     },
     {
-      "id": "legacy-site-083",
-      "name": "全本小说网",
-      "url": "^https?://www\\.quanben\\.io/.*?/.*?/\\d+\\.html",
-      "bookTitleSelector": ".name",
-      "waitSelector": "#content",
-      "loadWithIframe": true
-    },
-    {
       "id": "legacy-site-084",
       "name": "刺猬猫",
       "url": "^https?://www\\.ciweimao\\.com/chapter/\\d+",
