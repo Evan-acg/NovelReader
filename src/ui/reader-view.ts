@@ -14,7 +14,7 @@ import {
 import { createSidebar, addSidebarItem, setActiveSidebarItem, removeSidebar, toggleSidebarVisibility } from './sidebar';
 import { createBottomNav, updateBottomNav, removeBottomNav } from '../core/navigation';
 import { loadNextChapter, clearLoadedUrls, clearFailedUrls, preloadImages, isUrlFailed } from '../core/next-page-loader';
-import { loadAllSettings } from '../settings/storage';
+import { loadAllSettings, invalidateSettingsCache } from '../settings/storage';
 import { logger } from '../shared/logger';
 import { openPreferencesPanel } from './preferences-panel';
 import { initKeyboard, destroyKeyboard, type KeyboardHandlers } from './keyboard';
@@ -30,6 +30,7 @@ let loadingIndicatorEl: HTMLElement | null = null;
 let errorIndicatorEl: HTMLElement | null = null;
 let scrollHandler: (() => void) | null = null;
 let keyboardCleanup: (() => void) | null = null;
+let syncActiveChapterTimer: ReturnType<typeof setTimeout> | null = null;
 
 export function getReaderState(): ReaderState | null {
   return state;
@@ -188,7 +189,8 @@ function setupScrollLoad(): void {
   scrollHandler = () => {
     if (!containerEl || !state) return;
 
-    syncActiveChapter();
+    if (syncActiveChapterTimer) clearTimeout(syncActiveChapterTimer);
+    syncActiveChapterTimer = setTimeout(syncActiveChapter, 200);
 
     if (isLoadingNext || state.autoLoadPaused) return;
     const lastChapter = state.chapters[state.chapters.length - 1];
@@ -465,6 +467,11 @@ export function isQuietMode(): boolean {
 }
 
 export function destroyReaderView(): void {
+  invalidateSettingsCache();
+  if (syncActiveChapterTimer) {
+    clearTimeout(syncActiveChapterTimer);
+    syncActiveChapterTimer = null;
+  }
   if (scrollHandler && containerEl) {
     containerEl.removeEventListener('scroll', scrollHandler);
     scrollHandler = null;
