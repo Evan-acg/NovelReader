@@ -45,7 +45,21 @@ export function loadCachedSiteRules(): Result<SiteRuleSet> {
   return success(cached);
 }
 
+const CACHE_TTL = 60 * 60 * 1000;
+
+function isCacheFresh(key: string): boolean {
+  const updatedAt = getJsonSetting<number | null>(key, null);
+  return updatedAt !== null && (Date.now() - updatedAt) < CACHE_TTL;
+}
+
 export async function loadSiteRulesWithFallback(url?: string): Promise<SiteRuleSet> {
+  if (isCacheFresh(KEYS.siteRulesCacheUpdatedAt)) {
+    const cachedResult = loadCachedSiteRules();
+    if (cachedResult.success) {
+      return cachedResult.value;
+    }
+  }
+
   const remoteResult = await fetchRemoteSiteRules(url);
   if (remoteResult.success) {
     return remoteResult.value;

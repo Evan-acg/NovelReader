@@ -45,7 +45,21 @@ export function loadCachedTextRules(): Result<TextRuleSet> {
   return success(cached);
 }
 
+const CACHE_TTL = 60 * 60 * 1000;
+
+function isCacheFresh(key: string): boolean {
+  const updatedAt = getJsonSetting<number | null>(key, null);
+  return updatedAt !== null && (Date.now() - updatedAt) < CACHE_TTL;
+}
+
 export async function loadTextRulesWithFallback(url?: string): Promise<TextRuleSet> {
+  if (isCacheFresh(KEYS.textRulesCacheUpdatedAt)) {
+    const cachedResult = loadCachedTextRules();
+    if (cachedResult.success) {
+      return cachedResult.value;
+    }
+  }
+
   const remoteResult = await fetchRemoteTextRules(url);
   if (remoteResult.success) {
     return remoteResult.value;
