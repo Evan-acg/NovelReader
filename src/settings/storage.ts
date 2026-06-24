@@ -2,6 +2,8 @@ import { gmGetValue, gmSetValue } from '../shared/gm';
 import { logger } from '../shared/logger';
 import { type Settings, DEFAULT_SETTINGS } from './schema';
 
+let settingsCache: Settings | null = null;
+
 export function getSetting(key: string, defaultValue = ''): string {
   try {
     return gmGetValue(key, defaultValue);
@@ -17,6 +19,7 @@ export function setSetting(key: string, value: string): void {
   } catch (e) {
     logger.warn(`保存设置 ${key} 失败:`, e);
   }
+  invalidateSettingsCache();
 }
 
 export function getJsonSetting<T>(key: string, defaultValue: T): T {
@@ -35,9 +38,10 @@ export function setJsonSetting<T>(key: string, value: T): void {
   } catch (e) {
     logger.warn(`保存 JSON 设置 ${key} 失败:`, e);
   }
+  invalidateSettingsCache();
 }
 
-export function loadAllSettings(): Settings {
+function loadSettingsFromStorage(): Settings {
   const result: Record<string, unknown> = {};
   for (const [key, defaultValue] of Object.entries(DEFAULT_SETTINGS)) {
     const raw = getSetting(key, '');
@@ -64,6 +68,13 @@ export function loadAllSettings(): Settings {
   return result as unknown as Settings;
 }
 
+export function loadAllSettings(): Settings {
+  if (!settingsCache) {
+    settingsCache = loadSettingsFromStorage();
+  }
+  return settingsCache;
+}
+
 export function saveSetting<K extends keyof Settings>(key: K, value: Settings[K]): void {
   const dv = DEFAULT_SETTINGS[key];
   const type = typeof dv;
@@ -77,5 +88,17 @@ export function saveSetting<K extends keyof Settings>(key: K, value: Settings[K]
   } else {
     stored = value as string;
   }
-  setSetting(key as string, stored);
+  try {
+    gmSetValue(key as string, stored);
+  } catch (e) {
+    logger.warn(`保存设置 ${key} 失败:`, e);
+  }
+  if (!settingsCache) {
+    settingsCache = loadSettingsFromStorage();
+  }
+  settingsCache[key] = value;
+}
+
+export function invalidateSettingsCache(): void {
+  settingsCache = null;
 }
