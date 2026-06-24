@@ -190,18 +190,27 @@ const NEXT_PATTERNS = ['下一章', '下一页', '下一节', '后一章', '→'
 const PREV_PATTERNS = ['上一章', '上一页', '上一节', '前一章', '←', '&#8592;', 'prev'];
 const INDEX_PATTERNS = ['目录', '返回目录', '作品目录', '章节目录', '索引', 'index'];
 
-function findNavLink(doc: Document, patterns: string[], relValue?: string): NavLink | null {
+function findAllNavLinks(doc: Document): { prevUrl?: string; nextUrl?: string; indexUrl?: string } {
   const links = querySelectorAll<HTMLAnchorElement>(doc, 'a');
+  const nav: { prevUrl?: string; nextUrl?: string; indexUrl?: string } = {};
+
   for (const link of links) {
-    if (relValue && (link.rel === relValue || link.getAttribute('rel') === relValue)) {
-      return { url: link.href, text: getTextContent(link) };
-    }
     const text = getTextContent(link);
-    if (text && patterns.some((p) => text.includes(p))) {
-      return { url: link.href, text: getTextContent(link) };
+
+    if (!nav.prevUrl && (link.rel === 'prev' || (text && PREV_PATTERNS.some((p) => text.includes(p))))) {
+      nav.prevUrl = link.href;
     }
+    if (!nav.nextUrl && (link.rel === 'next' || (text && NEXT_PATTERNS.some((p) => text.includes(p))))) {
+      nav.nextUrl = link.href;
+    }
+    if (!nav.indexUrl && text && INDEX_PATTERNS.some((p) => text.includes(p))) {
+      nav.indexUrl = link.href;
+    }
+
+    if (nav.prevUrl && nav.nextUrl && nav.indexUrl) break;
   }
-  return null;
+
+  return nav;
 }
 
 export function extractNavigation(
@@ -226,17 +235,11 @@ export function extractNavigation(
     indexUrl = el?.href || undefined;
   }
 
-  if (!prevUrl) {
-    const found = findNavLink(doc, PREV_PATTERNS, 'prev');
-    prevUrl = found?.url || undefined;
-  }
-  if (!nextUrl) {
-    const found = findNavLink(doc, NEXT_PATTERNS, 'next');
-    nextUrl = found?.url || undefined;
-  }
-  if (!indexUrl) {
-    const found = findNavLink(doc, INDEX_PATTERNS);
-    indexUrl = found?.url || undefined;
+  if (!prevUrl || !nextUrl || !indexUrl) {
+    const autoNav = findAllNavLinks(doc);
+    prevUrl = prevUrl || autoNav.prevUrl;
+    nextUrl = nextUrl || autoNav.nextUrl;
+    indexUrl = indexUrl || autoNav.indexUrl;
   }
 
   const toAbs = (href: string | undefined): string | undefined => {

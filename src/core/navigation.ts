@@ -4,40 +4,46 @@ interface NavLinks {
   nextUrl?: string;
 }
 
-let navEl: HTMLElement | null = null;
+interface NavElements {
+  container: HTMLElement;
+  prev: HTMLAnchorElement;
+  index: HTMLAnchorElement;
+  next: HTMLAnchorElement;
+}
+
+let navRef: NavElements | null = null;
+
+function createNavLink(href: string, text: string, onClick?: () => void): HTMLAnchorElement {
+  const el = document.createElement('a');
+  el.textContent = text;
+  el.href = href || '#';
+  el.style.visibility = href ? '' : 'hidden';
+  if (onClick) {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      onClick();
+    });
+  }
+  return el;
+}
 
 export function createBottomNav(
   container: HTMLElement,
   links: NavLinks,
   onNavigate: (url: string) => void,
 ): HTMLElement {
-  navEl = document.createElement('div');
+  const navEl = document.createElement('div');
   navEl.className = 'nr-bottom-nav';
 
-  const prev = document.createElement('a');
-  prev.textContent = '上一章';
-  prev.href = links.prevUrl || '#';
-  prev.style.visibility = links.prevUrl ? '' : 'hidden';
-  prev.addEventListener('click', (e) => {
-    e.preventDefault();
+  const prev = createNavLink(links.prevUrl || '', '上一章', () => {
     if (links.prevUrl) onNavigate(links.prevUrl);
   });
 
-  const index = document.createElement('a');
-  index.textContent = '目录';
-  index.href = links.indexUrl || '#';
-  index.style.visibility = links.indexUrl ? '' : 'hidden';
-  index.addEventListener('click', (e) => {
-    e.preventDefault();
+  const index = createNavLink(links.indexUrl || '', '目录', () => {
     if (links.indexUrl) window.open(links.indexUrl, '_top');
   });
 
-  const next = document.createElement('a');
-  next.textContent = '下一章';
-  next.href = links.nextUrl || '#';
-  next.style.visibility = links.nextUrl ? '' : 'hidden';
-  next.addEventListener('click', (e) => {
-    e.preventDefault();
+  const next = createNavLink(links.nextUrl || '', '下一章', () => {
     if (links.nextUrl) onNavigate(links.nextUrl);
   });
 
@@ -46,49 +52,24 @@ export function createBottomNav(
   navEl.appendChild(next);
   container.appendChild(navEl);
 
+  navRef = { container: navEl, prev, index, next };
   return navEl;
 }
 
 export function updateBottomNav(links: NavLinks, onNavigate: (url: string) => void): void {
-  if (!navEl) return;
+  if (!navRef) return;
 
-  navEl.innerHTML = '';
-
-  const prev = document.createElement('a');
-  prev.textContent = '上一章';
-  prev.href = links.prevUrl || '#';
-  prev.style.visibility = links.prevUrl ? '' : 'hidden';
-  prev.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (links.prevUrl) onNavigate(links.prevUrl);
-  });
-
-  const index = document.createElement('a');
-  index.textContent = '目录';
-  index.href = links.indexUrl || '#';
-  index.style.visibility = links.indexUrl ? '' : 'hidden';
-  index.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (links.indexUrl) window.open(links.indexUrl, '_top');
-  });
-
-  const next = document.createElement('a');
-  next.textContent = '下一章';
-  next.href = links.nextUrl || '#';
-  next.style.visibility = links.nextUrl ? '' : 'hidden';
-  next.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (links.nextUrl) onNavigate(links.nextUrl);
-  });
-
-  navEl.appendChild(prev);
-  navEl.appendChild(index);
-  navEl.appendChild(next);
+  navRef.prev.href = links.prevUrl || '#';
+  navRef.prev.style.visibility = links.prevUrl ? '' : 'hidden';
+  navRef.index.href = links.indexUrl || '#';
+  navRef.index.style.visibility = links.indexUrl ? '' : 'hidden';
+  navRef.next.href = links.nextUrl || '#';
+  navRef.next.style.visibility = links.nextUrl ? '' : 'hidden';
 }
 
 export function removeBottomNav(): void {
-  if (navEl) {
-    navEl.remove();
-    navEl = null;
+  if (navRef) {
+    navRef.container.remove();
+    navRef = null;
   }
 }

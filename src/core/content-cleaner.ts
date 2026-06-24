@@ -40,9 +40,7 @@ function protectHtmlTags(html: string): { protectedHtml: string; map: Map<string
 function restoreHtmlTags(html: string, map: Map<string, string>): string {
   let result = html;
   for (const [placeholder, original] of map) {
-    while (result.includes(placeholder)) {
-      result = result.replace(placeholder, original);
-    }
+    result = result.replaceAll(placeholder, original);
   }
   return result;
 }
@@ -131,11 +129,7 @@ export async function loadS2TMapping(): Promise<S2TMapping> {
 }
 
 export function convertS2T(text: string, mapping: Record<string, string>): string {
-  let result = '';
-  for (const char of text) {
-    result += mapping[char] || char;
-  }
-  return result;
+  return Array.from(text, (char) => mapping[char] || char).join('');
 }
 
 export function cleanContent(
