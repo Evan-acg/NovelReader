@@ -43,6 +43,7 @@ export const KEYS = {
   scrollAnimate: 'scrollAnimate',
   debug: 'debug',
   contentAlign: 'contentAlign',
+  maxKeptChapters: 'maxKeptChapters',
 } as const;
 
 export interface Settings {
@@ -84,6 +85,7 @@ export interface Settings {
   scrollAnimate: boolean;
   debug: boolean;
   contentAlign: 'center' | 'left' | 'right';
+  maxKeptChapters: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -125,4 +127,5 @@ export const DEFAULT_SETTINGS: Settings = {
   scrollAnimate: true,
   debug: false,
   contentAlign: 'left',
+  maxKeptChapters: 30,
 };

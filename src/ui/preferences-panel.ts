@@ -304,6 +304,7 @@ function buildPanel(settings: Settings): HTMLElement {
   loadSection.appendChild(createRow('触发距离(px)', createNumberInput('remainHeight', settings.remainHeight)));
   loadSection.appendChild(createRow('最大重试', createNumberInput('maxRetries', settings.maxRetries)));
   loadSection.appendChild(createRow('重试间隔(ms)', createNumberInput('retryDelay', settings.retryDelay)));
+  loadSection.appendChild(createRow('保留章节数', createNumberInput('maxKeptChapters', settings.maxKeptChapters)));
 
   const kbSection = addSection('快捷键');
   const kbTextarea = document.createElement('textarea');

@@ -384,6 +384,25 @@ export function renderReaderView(
   });
 }
 
+function trimDistantChapters(): void {
+  if (!contentAreaEl || !state) return;
+
+  const maxKept = loadAllSettings().maxKeptChapters;
+  const chapterEls = contentAreaEl.querySelectorAll('.nr-chapter');
+  if (chapterEls.length <= maxKept) return;
+
+  const activeIdx = state.activeIndex;
+  const sorted = Array.from(chapterEls).sort((a, b) => {
+    const distA = Math.abs(Number(a.getAttribute('data-chapter-index')) - activeIdx);
+    const distB = Math.abs(Number(b.getAttribute('data-chapter-index')) - activeIdx);
+    return distB - distA;
+  });
+
+  for (let i = maxKept; i < sorted.length; i++) {
+    sorted[i].remove();
+  }
+}
+
 export function appendChapter(chapter: ParsedChapter): void {
   if (!state || !contentAreaEl) return;
 
@@ -407,23 +426,37 @@ export function appendChapter(chapter: ParsedChapter): void {
       await navigateToChapter(url);
     },
   );
+
+  trimDistantChapters();
 }
 
 export function scrollToChapter(index: number): void {
-  if (!contentAreaEl) return;
+  if (!contentAreaEl || !state) return;
 
-  const st = loadAllSettings();
-  const target = contentAreaEl.querySelector(`[data-chapter-index="${index}"]`);
+  let target = contentAreaEl.querySelector(`[data-chapter-index="${index}"]`) as HTMLElement | null;
+  if (!target) {
+    const chapter = state.chapters[index];
+    if (chapter) {
+      target = renderChapterElement(chapter, index);
+      const next = contentAreaEl.querySelector(`[data-chapter-index="${index + 1}"]`);
+      if (next) {
+        contentAreaEl.insertBefore(target, next);
+      } else {
+        contentAreaEl.appendChild(target);
+      }
+    }
+  }
+
   if (target && typeof target.scrollIntoView === 'function') {
+    const st = loadAllSettings();
     target.scrollIntoView({ behavior: st.scrollAnimate ? 'smooth' : 'auto', block: 'start' });
   }
 
-  if (state) {
-    state.activeIndex = index;
-  }
+  state.activeIndex = index;
   setActiveSidebarItem(index);
   applyTitleUpdate(index);
   updateHistory(index);
+  trimDistantChapters();
 }
 
 export async function navigateToChapter(url: string): Promise<void> {
