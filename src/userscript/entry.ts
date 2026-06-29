@@ -64,16 +64,15 @@ declare const unsafeWindow: Window & { startNovelReader?: () => Promise<void> };
       }
     }
 
-    document.body.appendChild(createToggleBtn());
-
-    if (!settings.disableAutoLaunch) {
-      document.querySelector('.nr-toggle-btn')?.remove();
+    if (settings.disableAutoLaunch) {
+      document.body.appendChild(createToggleBtn());
+    } else {
       initApp().then(() => {
         const readerEl = document.querySelector('.nr-reader-container');
         if (readerEl) {
           isReadingMode = true;
+          document.body.appendChild(createToggleBtn());
         }
-        document.body.appendChild(createToggleBtn());
       });
     }
 
