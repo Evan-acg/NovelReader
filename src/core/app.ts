@@ -30,7 +30,7 @@ function waitForSelector(selector: string, doc: Document, timeout = 10000): Prom
   });
 }
 
-export async function initApp(options?: { doc?: Document; url?: string }): Promise<void> {
+export async function initApp(options?: { doc?: Document; url?: string }): Promise<boolean> {
   const doc = options?.doc ?? document;
   const url = options?.url ?? location.href;
 
@@ -46,12 +46,12 @@ export async function initApp(options?: { doc?: Document; url?: string }): Promi
   const rule = matchRule(url);
   if (!rule) {
     logger.info('当前页面未匹配任何站点规则，跳过');
-    return;
+    return false;
   }
 
   if (rule.disableAuto) {
     logger.info('站点规则设置 disableAuto，跳过自动启动');
-    return;
+    return false;
   }
 
   if (rule.waitDelay && rule.waitDelay > 0) {
@@ -83,4 +83,5 @@ export async function initApp(options?: { doc?: Document; url?: string }): Promi
   });
 
   renderReaderView(chapter, rule, textRules, cleanOptions);
+  return true;
 }
