@@ -97,3 +97,44 @@
 5. 风险与影响
 
 如果任务无法继续，必须明确说明卡点，不能跳步，不能靠猜测补齐。
+
+## 项目技术栈与环境上下文
+
+### 项目概述
+通用小说阅读（Universal Novel Reader）—— Tampermonkey 用户脚本，统一阅读样式、内容去广告、修正拼音字、段落整理、自动下一页。
+
+### 技术栈
+
+| 层面 | 选型 |
+|------|------|
+| 语言 | TypeScript (strict mode, target ES2021) |
+| 构建 | Vite 6 + vite-plugin-monkey 5 |
+| 测试 | Vitest 2 + jsdom |
+| 包管理 | npm |
+| 运行环境 | Tampermonkey / Greasemonkey (GM\_\* API) |
+| 模块 | ESM |
+
+### 模块架构
+
+```
+src/
+├── userscript/     # 用户脚本入口，IIFE 自执行
+├── core/           # 应用、解析、导航、分页、内容清洗、阅读状态
+├── rules/          # 页面提取规则引擎（本地/远程源、注册中心、校验器）
+├── text-rules/     # 文本处理规则引擎（本地/远程源、注册中心、校验器）
+├── ui/             # 阅读视图、侧栏、设置面板、键盘快捷键、皮肤
+├── settings/       # 存储、配置 Schema
+├── shared/         # DOM 工具、GM 封装、日志、Result 类型
+└── integrations/   # 外部集成（booklink）
+```
+
+### 开发环境
+- 操作系统: Windows
+- Shell: PowerShell
+- 构建命令: `npm run dev`（vite build --watch）、`npm run build`、`npm run typecheck`、`npm run test`
+
+### 关键约束
+- 脚本以 IIFE 自执行，exports 通过 `unsafeWindow` 暴露
+- 存储通过 `GM_getValue / GM_setValue`
+- 网络请求通过 `GM_xmlhttpRequest`
+- 样式注入通过 `GM_addStyle`
