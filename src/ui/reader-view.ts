@@ -31,6 +31,7 @@ let errorIndicatorEl: HTMLElement | null = null;
 let scrollHandler: (() => void) | null = null;
 let keyboardCleanup: (() => void) | null = null;
 let syncActiveChapterTimer: ReturnType<typeof setTimeout> | null = null;
+let autoLoadCooldownTimer: ReturnType<typeof setTimeout> | null = null;
 
 export function getReaderState(): ReaderState | null {
   return state;
@@ -178,6 +179,9 @@ async function triggerAutoLoad(url: string): Promise<void> {
     showErrorIndicator(url);
   }
 
+  if (autoLoadCooldownTimer) clearTimeout(autoLoadCooldownTimer);
+  autoLoadCooldownTimer = setTimeout(() => { autoLoadCooldownTimer = null; }, 500);
+
   isLoadingNext = false;
 }
 
@@ -192,7 +196,7 @@ function setupScrollLoad(): void {
     if (syncActiveChapterTimer) clearTimeout(syncActiveChapterTimer);
     syncActiveChapterTimer = setTimeout(syncActiveChapter, 200);
 
-    if (isLoadingNext || state.autoLoadPaused) return;
+    if (isLoadingNext || state.autoLoadPaused || autoLoadCooldownTimer) return;
     const lastChapter = state.chapters[state.chapters.length - 1];
     if (!lastChapter?.nextUrl) return;
 
