@@ -399,7 +399,7 @@ function trimDistantChapters(): void {
   const sorted = Array.from(chapterEls).sort((a, b) => {
     const distA = Math.abs(Number(a.getAttribute('data-chapter-index')) - activeIdx);
     const distB = Math.abs(Number(b.getAttribute('data-chapter-index')) - activeIdx);
-    return distB - distA;
+    return distA - distB;
   });
 
   for (let i = maxKept; i < sorted.length; i++) {

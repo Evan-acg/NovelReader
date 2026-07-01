@@ -223,6 +223,20 @@ describe('章节追加', () => {
     expect(links[0].textContent).toBe('上一章');
     expect(links[2].textContent).toBe('下一章');
   });
+
+  it('超过保留章节数后应保留当前 active 章节 DOM', () => {
+    const ch1 = makeChapter({ chapterTitle: '第 1 章' });
+    renderReaderView(ch1, baseRule, [], {});
+
+    for (let i = 2; i <= 31; i++) {
+      appendChapter(makeChapter({ chapterTitle: `第 ${i} 章` }));
+    }
+
+    const chapters = document.querySelectorAll('.nr-chapter');
+    expect(chapters.length).toBe(30);
+    expect(document.querySelector('[data-chapter-index="0"]')).not.toBeNull();
+    expect(getReaderState()?.activeIndex).toBe(0);
+  });
 });
 
 describe('滚动高亮当前章节', () => {
